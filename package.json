@@ -12,11 +12,13 @@
   },
   "dependencies": {
     "@astrojs/vue": "^5.0.8",
+    "@nanostores/vue": "^0.11.0",
     "@tailwindcss/vite": "^4.0.17",
     "astro": "^5.5.5",
     "eslint": "^9.23.0",
     "eslint-plugin-vue": "^10.0.0",
     "lucide-vue-next": "^0.484.0",
+    "nanostores": "^0.11.4",
     "prettier": "^3.5.3",
     "prettier-plugin-astro": "^0.14.1",
     "vue": "^3.5.13"

@@ -4,11 +4,13 @@
     "": {
       "dependencies": {
         "@astrojs/vue": "^5.0.8",
+        "@nanostores/vue": "^0.11.0",
         "@tailwindcss/vite": "^4.0.17",
         "astro": "^5.5.5",
         "eslint": "^9.23.0",
         "eslint-plugin-vue": "^10.0.0",
         "lucide-vue-next": "^0.484.0",
+        "nanostores": "^0.11.4",
         "prettier": "^3.5.3",
         "prettier-plugin-astro": "^0.14.1",
         "vue": "^3.5.13",
@@ -215,6 +217,8 @@
     "@jridgewell/sourcemap-codec": ["@jridgewell/sourcemap-codec@1.5.0", "", {}, "sha512-gv3ZRaISU3fjPAgNsriBRqGWQL6quFx04YMPW/zD8XMLsU32mhCCbfbO6KZFLjvYpCZ8zyDEgqsgf+PwPaM7GQ=="],
 
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.25", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ=="],
+
+    "@nanostores/vue": ["@nanostores/vue@0.11.0", "", { "peerDependencies": { "@nanostores/logger": ">=0.4.0", "@vue/devtools-api": ">=7.6.2", "nanostores": ">=0.11.3", "vue": ">=3.3.1" }, "optionalPeers": ["@nanostores/logger", "@vue/devtools-api"] }, "sha512-4ndyLhwVFl1xhOnvWuMvYiG4K2rYvkaQWP3nJC1/RwK/dvpDgLPywwv6MnBdFydqbOGuXNaXOEwa3HsG9CujmA=="],
 
     "@oslojs/encoding": ["@oslojs/encoding@1.1.0", "", {}, "sha512-70wQhgYmndg4GCPxPPxPGevRKqTIJ2Nh4OkiMWmDAVYsTQ+Ta7Sq+rPevXyXGdzr30/qZBnyOalCszoMxlyldQ=="],
 
@@ -797,6 +801,8 @@
     "ms": ["ms@2.1.3", "", {}, "sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA=="],
 
     "nanoid": ["nanoid@3.3.11", "", { "bin": { "nanoid": "bin/nanoid.cjs" } }, "sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w=="],
+
+    "nanostores": ["nanostores@0.11.4", "", {}, "sha512-k1oiVNN4hDK8NcNERSZLQiMfRzEGtfnvZvdBvey3SQbgn8Dcrk0h1I6vpxApjb10PFUflZrgJ2WEZyJQ+5v7YQ=="],
 
     "natural-compare": ["natural-compare@1.4.0", "", {}, "sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw=="],
 

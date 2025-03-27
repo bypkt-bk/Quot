@@ -1,6 +1,6 @@
 <template>
   <header>
-    <img src="src/assets/billhub.svg" alt="logo" width="40" />
+    <img src="/src/assets/billhub.svg" alt="logo" width="40" />
     <h4>Bill Hub</h4>
     <nav class="desktop-nav">
       <ul>

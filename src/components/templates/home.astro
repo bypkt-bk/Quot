@@ -1,0 +1,50 @@
+---
+import Header from "@/components/organisms/header.vue";
+import Card from "@/components/organisms/card.vue";
+import Search from "@/components/atoms/search.vue";
+import CardLock from "@/components/organisms/cardlock.vue";
+---
+
+<Header client:load />
+<div class="home-section">
+  <div class="head-container">
+    <h1>Banyaphon's store</h1>
+    <Search />
+  </div>
+  <div class="store-container">
+    <Card client:load />
+    <Card client:load />
+    <CardLock client:load />
+  </div>
+</div>
+<style scoped>
+  h1 {
+    text-align: start;
+    font-family: Righteous;
+    font-size: 48px;
+  }
+  .home-section {
+    display: flex;
+    padding: 0px 80px 40px 80px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
+  }
+  .head-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .store-container {
+    display: grid;
+    width: 100%;
+    justify-content: start;
+    align-items: center;
+    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 240px));
+  }
+</style>

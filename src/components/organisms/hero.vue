@@ -6,7 +6,7 @@
         for your Store
       </h1>
       <p>Simplify Billing, Print with Ease, Manage with Power.</p>
-      <Button label="Get started" @click="handleClick" />
+      <Button @click="handleClick">Get started</Button>
     </div>
     <svg
       xmlns="http://www.w3.org/2000/svg"

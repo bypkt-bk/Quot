@@ -1,5 +1,5 @@
 <template>
-  <button :class="{ light: isDarkMode }">{{ label }}</button>
+  <button><slot /></button>
 </template>
 
 <script setup>

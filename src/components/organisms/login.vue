@@ -1,0 +1,41 @@
+<template>
+  <div>
+    <div class="container">
+      <h3 class="click-text">Check it. Print it.</h3>
+      <h3 class="login-text">Log in to your BillHub account</h3>
+      <Button class="btn">
+        <img src="src/assets/google.svg" alt="Google" />
+        Continue with Google
+      </Button>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import Button from "@/components/atoms/button.vue";
+</script>
+
+<style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 12px;
+}
+.click-text,
+.login-text {
+  font-family: "Righteous", sans-serif;
+  font-size: 24px;
+}
+.login-text {
+  opacity: 50%;
+}
+.btn {
+  gap: 18px;
+  display: flex;
+  width: 100%;
+  padding: 6px 12px;
+  justify-content: center;
+  gap: 18px;
+}
+</style>

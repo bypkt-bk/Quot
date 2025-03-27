@@ -11,7 +11,7 @@
       <div class="desktop-theme-login">
         <Moon v-if="isDarkMode" @click="toggleTheme" />
         <Sun v-if="!isDarkMode" @click="toggleTheme" />
-        <Button label="Login" @click="handleClick" />
+        <Button @click="handleClick">Login</Button>
       </div>
     </nav>
     <div class="mobile-nav">

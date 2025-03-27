@@ -19,6 +19,7 @@ button {
   border-radius: 6px;
   background-color: white;
   color: black;
+  cursor: pointer;
 }
 
 button.light {

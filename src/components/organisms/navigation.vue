@@ -1,17 +1,17 @@
 <template>
   <nav class="navigation">
-    <button class="nav-btn">
+    <a class="nav-btn" href="/home/1">
       <Home />
       <p>Home</p>
-    </button>
-    <button class="nav-btn">
+    </a>
+    <a class="nav-btn" href="/Item/1">
       <Archive />
       <p>Item</p>
-    </button>
-    <button class="nav-btn">
+    </a>
+    <a class="nav-btn" href="/Dashboard/1">
       <ChartPie />
       <p>Dashboard</p>
-    </button>
+    </a>
   </nav>
 </template>
 

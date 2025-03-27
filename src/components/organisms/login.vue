@@ -3,7 +3,7 @@
     <div class="container">
       <h3 class="click-text">Check it. Print it.</h3>
       <h3 class="login-text">Log in to your BillHub account</h3>
-      <Button class="btn">
+      <Button class="btn" @click="handleClick()">
         <img src="src/assets/google.svg" alt="Google" />
         Continue with Google
       </Button>
@@ -13,6 +13,10 @@
 
 <script setup>
 import Button from "@/components/atoms/button.vue";
+
+function handleClick() {
+  window.location.href = "/home/1";
+}
 </script>
 
 <style scoped>

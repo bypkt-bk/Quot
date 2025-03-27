@@ -1,7 +1,9 @@
 <template>
   <header>
-    <img src="/src/assets/billhub.svg" alt="logo" width="40" />
-    <h4>Bill Hub</h4>
+    <a class="logo" href="/">
+      <img src="/src/assets/billhub.svg" alt="logo" width="40" />
+      <h4>Bill Hub</h4>
+    </a>
     <nav class="desktop-nav">
       <ul>
         <li>Product<ChevronDown /></li>
@@ -32,7 +34,7 @@ function toggleTheme() {
 }
 
 function handleClick() {
-  alert("Button clicked!");
+  window.location.href = "/login";
 }
 </script>
 
@@ -43,7 +45,12 @@ header {
   align-items: center;
   border-bottom: 2px solid #3c3c3c;
 }
-
+.logo {
+  display: flex;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
 .desktop-nav {
   display: flex;
   justify-content: space-between;
@@ -61,7 +68,6 @@ h4 {
   font-family: "Righteous";
   font-size: 24px;
   white-space: nowrap;
-  padding-left: 20px;
 }
 ul {
   display: flex;

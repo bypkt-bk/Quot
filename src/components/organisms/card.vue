@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <a class="card" href="/store/1">
     <Pencil class="edit-icon" />
     <Store class="store-icon" />
     <h3>Rungcharuen</h3>
@@ -19,7 +19,7 @@
       <Landmark class="icon" />
       <span class="amount">100,000,000</span>
     </div>
-  </div>
+  </a>
 </template>
 
 <script setup>
@@ -37,6 +37,7 @@ import { Store, Crown, Users, Landmark, Pencil } from "lucide-vue-next";
   border: 1px solid #707070;
   background: #434343;
   position: relative;
+  cursor: pointer;
 }
 
 h3 {

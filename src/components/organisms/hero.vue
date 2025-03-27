@@ -33,7 +33,7 @@ const path = document.querySelector("svg path");
 const pathlenght = path.getTotalLength();
 
 function handleClick() {
-  alert("Button clicked!");
+  window.location.href = "/login";
 }
 </script>
 

@@ -1,0 +1,16 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import "@/assets/styles/globals.css";
+import EditStores from "@/components/templates/edit-store.astro";
+export function getStaticPaths() {
+  return [
+    { params: { store_id: "1" } },
+    { params: { store_id: "2" } },
+    { params: { store_id: "3" } },
+  ];
+}
+---
+
+<Layout>
+  <EditStores />
+</Layout>

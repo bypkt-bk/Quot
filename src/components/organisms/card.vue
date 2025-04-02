@@ -48,7 +48,7 @@ function getInitials(name: string): string {
 
 function editStore(id: number, event: Event) {
   event.preventDefault();
-  window.location.href = `/edit/${id}`;
+  window.location.href = `/edit/store/${id}`;
 }
 </script>
 

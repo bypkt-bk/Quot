@@ -2,13 +2,14 @@
 import Navigation from "@/components/organisms/navigation.vue";
 import BillData from "@/components/organisms/bill-table.tsx";
 import SelectTable from "@/components/organisms/select-item-table.tsx";
+import { Status } from "@/lib/shared";
 
 const bill = {
   id: 1,
   total: 53000,
   orderDate: "2025-03-05",
   shippingOn: "2025-03-08",
-  status: "paid",
+  status: Status.paid,
   customer: {
     id: 1,
     name: "Nicha P.",

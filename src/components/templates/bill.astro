@@ -1,14 +1,49 @@
 ---
-import Header from "@/components/organisms/header.vue";
 import Navigation from "@/components/organisms/navigation.vue";
-import Table from "@/components/organisms/bill-table.tsx";
+import BillData from "@/components/organisms/bill-table.tsx";
 import SelectTable from "@/components/organisms/select-item-table.tsx";
+
+const bill = {
+  id: 1,
+  total: 53000,
+  orderDate: "2025-03-05",
+  shippingOn: "2025-03-08",
+  status: "paid",
+  customer: {
+    id: 1,
+    name: "Nicha P.",
+    address: "Pattaya, Thailand",
+  },
+  product: [
+    {
+      billId: 1,
+      product: { id: 205, name: "Smartwatch", price: 8000 },
+      quantity: 1,
+    },
+    {
+      billId: 1,
+      product: { id: 314, name: "Smartphone", price: 15000 },
+      quantity: 3,
+    },
+    {
+      billId: 1,
+      product: { id: 1, name: "Bear", price: 8000 },
+      quantity: 6,
+    },
+    {
+      billId: 1,
+      product: { id: 2, name: "Guitar", price: 15000 },
+      quantity: 9,
+    },
+  ],
+  storeId: 1,
+};
 ---
 
 <div class="store-cotainer">
   <Navigation client:load />
   <div class="data-container">
-    <Table client:load />
+    <BillData client:load bill={bill} />
   </div>
   <div class="item-container">
     <SelectTable client:load />

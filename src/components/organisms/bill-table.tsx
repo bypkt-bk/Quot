@@ -40,6 +40,7 @@ import {
   Status,
   type Bill,
   type BillProduct,
+  type Customer,
   type Product,
 } from "@/lib/shared";
 ("use client");
@@ -108,116 +109,19 @@ export function DatePickerWithRange({
     </div>
   );
 }
-
-const data: Bill = {
-  id: 1,
-  total: 1024.99,
-  orderDate: "2025-04-02T12:00:00Z",
-  shippingOn: "2025-04-03T10:00:00Z",
-  status: Status.paid,
-  customer: {
-    id: 1,
-    name: "John Doe",
-    address: "456 Oak Ave",
-  },
-  product: [
-    {
-      billId: 1,
-      product: { id: 1, name: "Laptop", price: 999.99 },
-      quantity: 1,
-    },
-    {
-      billId: 1,
-      product: { id: 2, name: "Mouse", price: 25.0 },
-      quantity: 1,
-    },
-    {
-      billId: 1,
-      product: { id: 1, name: "Laptop", price: 999.99 },
-      quantity: 1,
-    },
-    {
-      billId: 1,
-      product: { id: 2, name: "Mouse", price: 25.0 },
-      quantity: 1,
-    },
-    {
-      billId: 1,
-      product: { id: 1, name: "Laptop", price: 999.99 },
-      quantity: 1,
-    },
-    {
-      billId: 1,
-      product: { id: 2, name: "Mouse", price: 25.0 },
-      quantity: 1,
-    },
-    {
-      billId: 1,
-      product: { id: 1, name: "Laptop", price: 999.99 },
-      quantity: 1,
-    },
-    {
-      billId: 1,
-      product: { id: 2, name: "Mouse", price: 25.0 },
-      quantity: 1,
-    },
-    {
-      billId: 1,
-      product: { id: 1, name: "Laptop", price: 999.99 },
-      quantity: 1,
-    },
-    {
-      billId: 1,
-      product: { id: 2, name: "Mouse", price: 25.0 },
-      quantity: 1,
-    },
-    {
-      billId: 1,
-      product: { id: 1, name: "Laptop", price: 999.99 },
-      quantity: 1,
-    },
-    {
-      billId: 1,
-      product: { id: 2, name: "Mouse", price: 25.0 },
-      quantity: 1,
-    },
-    {
-      billId: 1,
-      product: { id: 1, name: "Laptop", price: 999.99 },
-      quantity: 1,
-    },
-    {
-      billId: 1,
-      product: { id: 2, name: "Mouse", price: 25.0 },
-      quantity: 1,
-    },
-    {
-      billId: 1,
-      product: { id: 1, name: "Laptop", price: 999.99 },
-      quantity: 1,
-    },
-    {
-      billId: 1,
-      product: { id: 2, name: "Mouse", price: 25.0 },
-      quantity: 1,
-    },
-    {
-      billId: 1,
-      product: { id: 1, name: "Laptop", price: 999.99 },
-      quantity: 1,
-    },
-    {
-      billId: 1,
-      product: { id: 2, name: "Mouse", price: 25.0 },
-      quantity: 1,
-    },
-  ],
-};
-export default function DataTableDemo() {
+interface DataTableProps {
+  bill: Bill;
+}
+const BillData: React.FC<DataTableProps> = ({ bill }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [product, setProduct] = useState<BillProduct[]>(data.product);
+  const [product, setProduct] = useState<BillProduct[]>(bill.product ?? []);
+  const [customerName, setCustomerName] = useState<string>(bill.customer.name);
+  const [customerAddress, setCustomerAddress] = useState<string>(
+    bill.customer.address,
+  );
+
   const columns: ColumnDef<BillProduct>[] = [
     {
       accessorKey: "quantity",
@@ -267,7 +171,7 @@ export default function DataTableDemo() {
       },
     },
     {
-      accessorKey: "product",
+      accessorKey: "name",
       header: "Product",
       cell: ({ row }) => (
         <div className="capitalize">{row.original.product.name}</div>
@@ -329,11 +233,15 @@ export default function DataTableDemo() {
       <div className="flex w-full justify-between flex-wrap gap-2 py-2">
         <Input
           placeholder="Customer name"
+          value={customerName}
+          onChange={(e) => setCustomerName(e.target.value)}
           className="w-full flex-1 min-w-[300px] border-[#3C3C3C] rounded-[6px] py-[20px]"
         />
         <DatePickerWithRange />
         <Input
           placeholder="Address"
+          value={customerAddress}
+          onChange={(e) => setCustomerAddress(e.target.value)}
           className="w-full border-[#3C3C3C] rounded-[6px] py-[20px]"
         />
       </div>
@@ -385,4 +293,5 @@ export default function DataTableDemo() {
       </Table>
     </div>
   );
-}
+};
+export default BillData;

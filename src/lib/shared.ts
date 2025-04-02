@@ -11,9 +11,10 @@ export type Store = {
   id: number;
   name: string;
   address: string;
-  owner: User | null;
-  admin: User | null;
-  bills: Bill[];
+  owner: User[] | null;
+  admin: User[] | null;
+  revenue: number;
+  bill: Bill[];
 };
 export type Product = {
   id: number;
@@ -32,6 +33,7 @@ export type Bill = {
   status: Status;
   customer: Customer;
   product: BillProduct[];
+  storeId: number;
 };
 export type BillProduct = {
   billId: number;

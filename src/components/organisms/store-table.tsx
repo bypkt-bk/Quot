@@ -331,6 +331,10 @@ export default function DataTableDemo() {
     },
   });
 
+  React.useEffect(() => {
+    table.setPageSize(8);
+  }, [table]);
+
   return (
     <div className="w-full">
       <div className="flex items-center py-4">

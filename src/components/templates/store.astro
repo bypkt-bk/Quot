@@ -4,10 +4,8 @@ import Navigation from "@/components/organisms/navigation.vue";
 import Tables from "@/components/organisms/store-table.tsx";
 ---
 
-<Header client:load />
 <div class="store-cotainer">
   <Navigation client:load />
-
   <div class="data-container">
     <h1>Banyaphon's store</h1>
     <Tables client:load />
@@ -17,6 +15,7 @@ import Tables from "@/components/organisms/store-table.tsx";
 <style>
   .store-cotainer {
     display: flex;
+    flex-wrap: wrap;
     padding: 40px 80px 40px 80px;
     justify-content: center;
     align-items: flex-start;

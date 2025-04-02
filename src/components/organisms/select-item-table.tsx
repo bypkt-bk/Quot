@@ -47,6 +47,66 @@ const data: Product[] = [
     name: "Pencil",
     price: 10,
   },
+  {
+    id: 1,
+    name: "Pen",
+    price: 20,
+  },
+  {
+    id: 2,
+    name: "Pencil",
+    price: 10,
+  },
+  {
+    id: 1,
+    name: "Pen",
+    price: 20,
+  },
+  {
+    id: 2,
+    name: "Pencil",
+    price: 10,
+  },
+  {
+    id: 1,
+    name: "Pen",
+    price: 20,
+  },
+  {
+    id: 2,
+    name: "Pencil",
+    price: 10,
+  },
+  {
+    id: 2,
+    name: "Pencil",
+    price: 10,
+  },
+  {
+    id: 1,
+    name: "Pen",
+    price: 20,
+  },
+  {
+    id: 2,
+    name: "Pencil",
+    price: 10,
+  },
+  {
+    id: 2,
+    name: "Pencil",
+    price: 10,
+  },
+  {
+    id: 1,
+    name: "Pen",
+    price: 20,
+  },
+  {
+    id: 2,
+    name: "Pencil",
+    price: 10,
+  },
 ];
 export const columns: ColumnDef<Product>[] = [
   {
@@ -88,17 +148,7 @@ export const columns: ColumnDef<Product>[] = [
   },
   {
     accessorKey: "price",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Price
-          <ArrowUpDown />
-        </Button>
-      );
-    },
+    header: "Price",
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("price"));
 
@@ -144,69 +194,73 @@ export default function DataTableDemo() {
     table.setPageSize(data.length);
   }, [table]);
   return (
-    <div className="w-full">
-      <div className="flex items-center py-4">
+    <div className="flex flex-col w-full h-full">
+      <h1
+        style={{
+          textAlign: "start",
+          fontFamily: "Righteous",
+          fontSize: "36px",
+        }}
+      >
+        Item
+      </h1>
+      <div className="flex items-center pb-2 shrink-0">
         <Input
           placeholder="Search product..."
-          value={(table.getColumn("product")?.getFilterValue() as string) ?? ""}
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("product")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm border-[#3C3C3C] rounded-[6px] py-[20px]"
         />
       </div>
-      <div className="border border-[#3C3C3C] rounded-[6px] h-[55vh] overflow-y-auto">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="hover:bg-transparent">
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} className="text-white">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
+      <Table>
+        <TableHeader className="sticky top-0 bg-[#3C3C3C] z-10">
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow
+              key={headerGroup.id}
+              className="hover:bg-transparent border-none"
+            >
+              {headerGroup.headers.map((header) => {
+                return (
+                  <TableHead key={header.id} className="text-white">
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                  </TableHead>
+                );
+              })}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                className="border-[#3C3C3C] hover:bg-neutral-600 data-[state=selected]:bg-neutral-600"
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+                onClick={() => row.toggleSelected(!row.getIsSelected())}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  className="border-[#3C3C3C] hover:bg-neutral-600 data-[state=selected]:bg-neutral-600"
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                  onClick={() => row.toggleSelected(!row.getIsSelected())}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center "
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center ">
+                No results.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
     </div>
   );
 }

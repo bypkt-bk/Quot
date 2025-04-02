@@ -5,15 +5,12 @@ import Table from "@/components/organisms/bill-table.tsx";
 import SelectTable from "@/components/organisms/select-item-table.tsx";
 ---
 
-<Header client:load />
 <div class="store-cotainer">
   <Navigation client:load />
   <div class="data-container">
-    <h1>Banyaphon's store</h1>
     <Table client:load />
   </div>
   <div class="item-container">
-    <h1>Item</h1>
     <SelectTable client:load />
   </div>
 </div>
@@ -21,6 +18,7 @@ import SelectTable from "@/components/organisms/select-item-table.tsx";
 <style>
   .store-cotainer {
     display: flex;
+    flex-wrap: wrap;
     padding: 40px 80px 40px 80px;
     justify-content: center;
     align-items: flex-start;
@@ -29,7 +27,7 @@ import SelectTable from "@/components/organisms/select-item-table.tsx";
   }
   .data-container {
     display: flex;
-    min-height: 70vh;
+    height: 90vh;
     padding: 40px;
     flex-direction: column;
     align-items: flex-start;
@@ -40,8 +38,7 @@ import SelectTable from "@/components/organisms/select-item-table.tsx";
   }
   .item-container {
     display: flex;
-    max-height: 80vh;
-    min-height: 80vh;
+    height: 90vh;
     max-width: 400px;
     padding: 40px;
     flex-direction: column;
@@ -50,6 +47,8 @@ import SelectTable from "@/components/organisms/select-item-table.tsx";
     border-radius: 20px;
     border: 1px solid #3c3c3c;
     background: #242424;
+    /* position: sticky;
+    top: 40px; */
   }
   h1 {
     text-align: start;

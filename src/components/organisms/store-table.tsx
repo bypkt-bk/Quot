@@ -402,7 +402,7 @@ export default function DataTableDemo() {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
-                    (window.location.href = `/store/bill-${row.original.id}`)
+                    (window.location.href = `/store/bill/${row.original.id}`)
                   }
                 >
                   {row.getVisibleCells().map((cell) => (

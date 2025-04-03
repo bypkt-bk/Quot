@@ -1,6 +1,10 @@
 <template>
   <a class="card" :href="`/store/${store.id}`">
-    <Pencil class="edit-icon z-10" @click.stop="editStore(store.id, $event)" />
+    <Pencil
+      class="edit-icon z-10"
+      @click.stop="editStore(store.id, $event)"
+      aria-label="Edit store"
+    />
     <Stores class="store-icon" />
     <h3>{{ store.name }}</h3>
     <div class="group">
@@ -37,13 +41,11 @@ import { defineProps } from "vue";
 defineProps<{
   store: Store;
 }>();
-function getInitials(name: string): string {
-  const nameParts = name.split(" ");
-  const initials = nameParts
-    .map((part) => part.charAt(0).toUpperCase())
-    .join("");
 
-  return initials;
+function getInitials(name: string): string {
+  if (!name) return "";
+  const nameParts = name.split(" ");
+  return nameParts.map((part) => part.charAt(0).toUpperCase()).join("");
 }
 
 function editStore(id: number, event: Event) {

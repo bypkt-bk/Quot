@@ -35,9 +35,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Bill, Store } from "@/lib/shared";
+import type { Quote, Store } from "@/lib/shared";
 
-export const columns: ColumnDef<Bill>[] = [
+export const columns: ColumnDef<Quote>[] = [
   {
     accessorKey: "customer",
     header: ({ column }) => {
@@ -160,10 +160,10 @@ export const columns: ColumnDef<Bill>[] = [
 ];
 
 interface DataTableProps {
-  bill: Bill[];
+  quote: Quote[];
 }
-const DataTable: React.FC<DataTableProps> = ({ bill }) => {
-  const [data] = React.useState<Bill[]>(bill);
+const DataTable: React.FC<DataTableProps> = ({ quote }) => {
+  const [data] = React.useState<Quote[]>(quote);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
@@ -266,7 +266,7 @@ const DataTable: React.FC<DataTableProps> = ({ bill }) => {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
-                    (window.location.href = `/store/bill/${row.original.id}`)
+                    (window.location.href = `/store/quote/${row.original.id}`)
                   }
                 >
                   {row.getVisibleCells().map((cell) => (

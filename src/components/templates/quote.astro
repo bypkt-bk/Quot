@@ -1,10 +1,10 @@
 ---
 import Navigation from "@/components/organisms/navigation.vue";
-import BillData from "@/components/organisms/bill-table.tsx";
+import QuoteData from "@/components/organisms/quote-table.tsx";
 import SelectTable from "@/components/organisms/select-item-table.tsx";
 import { Status } from "@/lib/shared";
 
-const bill = {
+const quote = {
   id: 1,
   total: 53000,
   orderDate: "2025-03-05",
@@ -17,22 +17,22 @@ const bill = {
   },
   product: [
     {
-      billId: 1,
+      quoteId: 1,
       product: { id: 205, name: "Smartwatch", price: 8000 },
       quantity: 1,
     },
     {
-      billId: 1,
+      quoteId: 1,
       product: { id: 314, name: "Smartphone", price: 15000 },
       quantity: 3,
     },
     {
-      billId: 1,
+      quoteId: 1,
       product: { id: 1, name: "Bear", price: 8000 },
       quantity: 6,
     },
     {
-      billId: 1,
+      quoteId: 1,
       product: { id: 2, name: "Guitar", price: 15000 },
       quantity: 9,
     },
@@ -44,7 +44,7 @@ const bill = {
 <div class="store-cotainer">
   <Navigation client:load />
   <div class="data-container">
-    <BillData client:load bill={bill} />
+    <QuoteData client:load quote={quote} />
   </div>
   <div class="item-container">
     <SelectTable client:load />

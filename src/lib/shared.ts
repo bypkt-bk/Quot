@@ -14,7 +14,7 @@ export type Store = {
   owner: User[] | null;
   admin: User[] | null;
   revenue: number;
-  bill: Bill[];
+  quote: Quote[];
 };
 export type Product = {
   id: number;
@@ -25,18 +25,18 @@ export enum Status {
   unpaid = "unpaid",
   paid = "paid",
 }
-export type Bill = {
+export type Quote = {
   id: number;
   total: number;
   orderDate: string;
   shippingOn: string | null;
   status: Status;
   customer: Customer;
-  product: BillProduct[];
+  product: QuoteProduct[];
   storeId: number;
 };
-export type BillProduct = {
-  billId: number;
+export type QuoteProduct = {
+  quoteId: number;
   product: Product;
   quantity: number;
 };

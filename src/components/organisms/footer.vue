@@ -2,8 +2,8 @@
   <footer class="footer">
     <div class="footer_footerTop">
       <div class="logo">
-        <img src="src/assets/billhub.svg" alt="Logo" width="40" />
-        <h2>BILL HUB</h2>
+        <img src="src/assets/quot.svg" alt="Logo" width="40" />
+        <h2>QUOT</h2>
       </div>
       <div class="social-icons">
         <Facebook />
@@ -11,7 +11,7 @@
         <Github />
       </div>
       <a class="settings" href="#">Cookie settings</a>
-      <p class="Inc">© 2025 Bill Hub, Inc.</p>
+      <p class="Inc">© 2025 QUOT, Inc.</p>
     </div>
 
     <div class="footerColumn_list">
@@ -34,7 +34,7 @@
     </div>
 
     <div class="footerColumn_list">
-      <h3>Bill Hub for</h3>
+      <h3>QUOT for</h3>
       <ul>
         <li><a href="#">Small business</a></li>
         <li><a href="#">Restaurant</a></li>

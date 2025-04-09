@@ -100,10 +100,9 @@ export const columns: ColumnDef<Quote>[] = [
     },
     cell: ({ row }) => (
       <div>
-        {format(
-          row.original.shippingOn ? row.original.shippingOn : "",
-          "dd/MM/yyyy",
-        )}
+        {row.original.shippingOn
+          ? format(row.original.shippingOn, "dd/MM/yyyy")
+          : ""}
       </div>
     ),
   },

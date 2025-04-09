@@ -38,8 +38,8 @@ import {
 import { useEffect, useState } from "react";
 import {
   Status,
-  type Bill,
-  type BillProduct,
+  type Quote,
+  type QuoteProduct,
   type Customer,
   type Product,
 } from "@/lib/shared";
@@ -110,19 +110,19 @@ export function DatePickerWithRange({
   );
 }
 interface DataTableProps {
-  bill: Bill;
+  quote: Quote;
 }
-const BillData: React.FC<DataTableProps> = ({ bill }) => {
+const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [product, setProduct] = useState<BillProduct[]>(bill.product ?? []);
-  const [customerName, setCustomerName] = useState<string>(bill.customer.name);
+  const [product, setProduct] = useState<QuoteProduct[]>(quote.product ?? []);
+  const [customerName, setCustomerName] = useState<string>(quote.customer.name);
   const [customerAddress, setCustomerAddress] = useState<string>(
-    bill.customer.address,
+    quote.customer.address,
   );
 
-  const columns: ColumnDef<BillProduct>[] = [
+  const columns: ColumnDef<QuoteProduct>[] = [
     {
       accessorKey: "quantity",
       header: "Quantity",
@@ -199,7 +199,7 @@ const BillData: React.FC<DataTableProps> = ({ bill }) => {
       },
     },
   ];
-  const table = useReactTable<BillProduct>({
+  const table = useReactTable<QuoteProduct>({
     data: product,
     columns,
     onSortingChange: setSorting,
@@ -294,4 +294,4 @@ const BillData: React.FC<DataTableProps> = ({ bill }) => {
     </div>
   );
 };
-export default BillData;
+export default QuoteData;

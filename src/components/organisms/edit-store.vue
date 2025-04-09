@@ -14,11 +14,6 @@
         <p>Address</p>
       </div>
       <input class="address" placeholder="Address" />
-      <div class="next-address">
-        <input class="province" placeholder="Province" />
-
-        <input class="post-id" placeholder="Post ID" type="number" />
-      </div>
     </div>
   </div>
 </template>
@@ -34,7 +29,9 @@ import { Store, MapPin } from "lucide-vue-next";
 }
 .edit-container {
   display: flex;
-  width: 440px;
+  width: 100%;
+  min-width: 300px;
+  max-width: 440px;
   padding: 40px;
   flex-direction: column;
   align-items: center;
@@ -59,9 +56,7 @@ import { Store, MapPin } from "lucide-vue-next";
   align-self: stretch;
 }
 .name,
-.address,
-.province,
-.post-id {
+.address {
   display: flex;
   height: 40px;
   width: 100%;
@@ -73,12 +68,6 @@ import { Store, MapPin } from "lucide-vue-next";
   border: 1px solid #3c3c3c;
 }
 
-.next-address {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  align-self: stretch;
-}
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;

@@ -43,12 +43,9 @@ import {
   type Customer,
   type Product,
 } from "@/lib/shared";
-("use client");
-
 import { addDays } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import type { DateRange } from "react-day-picker";
-
 import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 import {

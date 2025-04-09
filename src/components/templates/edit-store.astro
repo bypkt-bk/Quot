@@ -1,25 +1,36 @@
 ---
-import Header from "@/components/organisms/header.vue";
 import EditStores from "../organisms/edit-store.vue";
 import EditStaff from "../organisms/edit-staff.vue";
+
+function handleClick() {
+  window.location.href = "/";
+}
 ---
 
-<Header client:load />
 <div class="edit-page">
   <h1>Banyaphon’s Store</h1>
   <div class="edit-form">
     <EditStores client:load />
     <EditStaff />
   </div>
+  <button onclick="handleClick()">Go Home</button>
+
 </div>
+
 <style scoped>
   .edit-page {
     display: flex;
-    padding: 0px 80px 40px 80px;
+    padding: 40px 80px 40px 80px;
     flex-direction: column;
     align-items: center;
+    height: 100%;
     gap: 40px;
     align-self: stretch;
+  }
+  @media (max-width: 440px) {
+    .edit-page {
+      padding: 40px 20px 40px 20px;
+    }
   }
   h1 {
     text-align: center;
@@ -32,5 +43,23 @@ import EditStaff from "../organisms/edit-staff.vue";
     align-items: flex-start;
     justify-content: center;
     gap: 40px;
+    width: 100%;
+  }
+  button {
+    font-family: "Onest", sans-serif;
+    display: flex;
+    width: fit-content;
+    height: fit-content;
+    padding: 6px 20px;
+    align-items: center;
+    border-radius: 6px;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+  }
+
+  button.light {
+    background-color: black;
+    color: white;
   }
 </style>

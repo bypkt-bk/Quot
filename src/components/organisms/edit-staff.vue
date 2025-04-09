@@ -33,7 +33,9 @@ import { Crown, Users, ContactRound } from "lucide-vue-next";
 }
 .edit-container {
   display: flex;
-  width: 440px;
+  width: 100%;
+  min-width: 300px;
+  max-width: 440px;
   padding: 40px;
   flex-direction: column;
   align-items: center;

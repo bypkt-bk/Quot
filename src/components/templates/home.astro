@@ -1,7 +1,6 @@
 ---
 import Header from "@/components/organisms/header.vue";
 import Card from "@/components/organisms/card.vue";
-import Search from "@/components/atoms/search.vue";
 import CardLock from "@/components/organisms/cardlock.vue";
 
 const stores = [
@@ -79,7 +78,6 @@ const stores = [
 <div class="home-section">
   <div class="head-container">
     <h1>Banyaphon's store</h1>
-    <Search />
   </div>
   <div class="store-container">
     {stores.map((store) => <Card client:load store={store} />)}

@@ -187,7 +187,7 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
       header: "totalPrice",
       cell: ({ row }) => {
         const amount = row.original.quantity * row.original.product.price;
-        const formatted = new Intl.NumberFormat("en-US", {
+        const formatted = new Intl.NumberFormat("th-US", {
           style: "currency",
           currency: "THB",
         }).format(amount);

@@ -123,7 +123,7 @@ export const columns: ColumnDef<Quote>[] = [
       const amount = parseFloat(row.original.total.toString());
 
       // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
+      const formatted = new Intl.NumberFormat("th-US", {
         style: "currency",
         currency: "THB",
       }).format(amount);

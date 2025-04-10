@@ -324,8 +324,7 @@ const store = {
     <Navigation client:load />
   </div>
   <div class="data-container">
-    <h1>{store.name}</h1>
-    <DataTable client:load quote={store.quote} />
+    <DataTable client:load quote={store.quote} name={store.name} />
   </div>
 </div>
 
@@ -341,7 +340,6 @@ const store = {
   }
   .data-container {
     display: flex;
-    height: 668px;
     width: 100%;
     min-width: 300px;
     padding: 40px;
@@ -351,11 +349,6 @@ const store = {
     border-radius: 20px;
     border: 1px solid #3c3c3c;
     background: #242424;
-  }
-  h1 {
-    text-align: start;
-    font-family: Righteous;
-    font-size: 36px;
   }
   @media (max-width: 440px) {
     .data-container {

@@ -160,8 +160,9 @@ export const columns: ColumnDef<Quote>[] = [
 
 interface DataTableProps {
   quote: Quote[];
+  name: string;
 }
-const DataTable: React.FC<DataTableProps> = ({ quote }) => {
+const DataTable: React.FC<DataTableProps> = ({ quote, name }) => {
   const [data] = React.useState<Quote[]>(quote);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -195,8 +196,17 @@ const DataTable: React.FC<DataTableProps> = ({ quote }) => {
   }, [table]);
 
   return (
-    <div className="flex flex-col w-full h-full">
-      <div className="flex items-center py-2">
+    <div className="flex flex-col w-full h-[588px]">
+      <h1
+        style={{
+          textAlign: "start",
+          fontFamily: "Righteous",
+          fontSize: "36px",
+        }}
+      >
+        {name}
+      </h1>
+      <div className="flex items-center py-2 gap-2">
         <Input
           placeholder="Search customer..."
           value={

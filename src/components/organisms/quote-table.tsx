@@ -212,9 +212,28 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
       rowSelection,
     },
   });
+  const [screenWidth, setScreenWidth] = useState(0);
+
+  useEffect(() => {
+    // Ensure this runs only in the browser (client-side)
+    if (typeof window !== "undefined") {
+      setScreenWidth(window.innerWidth);
+
+      const handleResize = () => setScreenWidth(window.innerWidth);
+      window.addEventListener("resize", handleResize);
+
+      // Clean up the event listener on component unmount
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
+
   React.useEffect(() => {
-    table.setPageSize(8);
-  }, [table]);
+    if (screenWidth < 850) {
+      table.setPageSize(7); // If screen width is less than 850px
+    } else {
+      table.setPageSize(8); // Otherwise, set it to 11
+    }
+  }, [screenWidth, table]);
 
   return (
     <div className="flex flex-col w-full h-[601px]">

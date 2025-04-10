@@ -7,6 +7,12 @@ export const usersModel = {
         return await prisma.user.findMany();
     },
 
+    async getUserById(id: number) {
+        return await prisma.user.findUnique({
+            where: { id },
+        });
+    },
+
     async getUserByGoogleId(id: number) {
         return await prisma.user.findUnique({
             where: { id },

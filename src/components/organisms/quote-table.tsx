@@ -213,7 +213,7 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
     },
   });
   React.useEffect(() => {
-    table.setPageSize(product.length);
+    table.setPageSize(8);
   }, [table]);
 
   return (
@@ -288,6 +288,24 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
           )}
         </TableBody>
       </Table>
+      <div className="space-x-2 flex items-end justify-end">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </Button>
+      </div>
     </div>
   );
 };

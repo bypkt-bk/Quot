@@ -178,7 +178,7 @@ export const columns: ColumnDef<Product>[] = [
   },
 ];
 
-export default function DataTableDemo() {
+export default function SelectProduct() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
@@ -206,7 +206,7 @@ export default function DataTableDemo() {
     },
   });
   React.useEffect(() => {
-    table.setPageSize(data.length);
+    table.setPageSize(11);
   }, [table]);
   return (
     <div className="flex flex-col w-full h-full">
@@ -217,9 +217,9 @@ export default function DataTableDemo() {
           fontSize: "36px",
         }}
       >
-        Item
+        Product
       </h1>
-      <div className="flex items-center pb-2 shrink-0">
+      <div className="flex items-center pb-2 pt-2 shrink-0">
         <Input
           placeholder="Search product..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
@@ -276,6 +276,25 @@ export default function DataTableDemo() {
           )}
         </TableBody>
       </Table>
+
+      <div className="space-x-2 flex items-end justify-end">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </Button>
+      </div>
     </div>
   );
 }

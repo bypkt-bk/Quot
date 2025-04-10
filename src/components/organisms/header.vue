@@ -1,7 +1,7 @@
 <template>
   <header>
     <a class="logo" href="/">
-      <img src="/src/assets/quot.svg" alt="logo" width="40" />
+      <img :src="logo.src" alt="logo" width="40" />
       <h4>QUOT</h4>
     </a>
     <nav class="desktop-nav">
@@ -26,7 +26,7 @@
 import { Moon, Sun, ChevronDown, Menu } from "lucide-vue-next";
 import { ref } from "vue";
 import Button from "@/components/atoms/button.vue";
-
+import logo from "@/assets/quot.svg";
 const isDarkMode = ref(false);
 
 function toggleTheme() {

@@ -2,7 +2,7 @@
   <footer class="footer">
     <div class="footer_footerTop">
       <div class="logo">
-        <img src="src/assets/quot.svg" alt="Logo" width="40" />
+        <img :src="logo.src" alt="Logo" width="40" />
         <h2>QUOT</h2>
       </div>
       <div class="social-icons">
@@ -45,6 +45,7 @@
 </template>
 <script setup>
 import { Facebook, Instagram, Github } from "lucide-vue-next";
+import logo from "@/assets/quot.svg";
 </script>
 <style scoped>
 .footer {

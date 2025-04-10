@@ -36,59 +36,139 @@ const quote = {
       product: { id: 2, name: "Guitar", price: 15000 },
       quantity: 9,
     },
+    {
+      quoteId: 1,
+      product: { id: 2, name: "Guitar", price: 15000 },
+      quantity: 9,
+    },
+    {
+      quoteId: 1,
+      product: { id: 2, name: "Guitar", price: 15000 },
+      quantity: 9,
+    },
+    {
+      quoteId: 1,
+      product: { id: 2, name: "Guitar", price: 15000 },
+      quantity: 9,
+    },
+    {
+      quoteId: 1,
+      product: { id: 2, name: "Guitar", price: 15000 },
+      quantity: 9,
+    },
+    {
+      quoteId: 1,
+      product: { id: 2, name: "Guitar", price: 15000 },
+      quantity: 9,
+    },
+    {
+      quoteId: 1,
+      product: { id: 2, name: "Guitar", price: 15000 },
+      quantity: 9,
+    },
+    {
+      quoteId: 1,
+      product: { id: 2, name: "Guitar", price: 15000 },
+      quantity: 9,
+    },
+    {
+      quoteId: 1,
+      product: { id: 2, name: "Guitar", price: 15000 },
+      quantity: 9,
+    },
   ],
   storeId: 1,
 };
 ---
 
 <div class="store-cotainer">
-  <Navigation client:load />
-  <div class="data-container">
-    <QuoteData client:load quote={quote} />
+  <div class="navigation">
+    <Navigation client:load />
   </div>
-  <div class="item-container">
-    <SelectTable client:load />
+  <div class="workspace">
+    <div class="data-container">
+      <QuoteData client:load quote={quote} />
+    </div>
+    <div class="item-container">
+      <SelectTable client:load />
+    </div>
   </div>
 </div>
 
 <style>
   .store-cotainer {
     display: flex;
-    flex-wrap: wrap;
     padding: 40px 80px 40px 80px;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 12px;
+    align-self: stretch;
+    width: 100%;
+  }
+  .workspace {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
     justify-content: center;
     align-items: flex-start;
     gap: 12px;
     align-self: stretch;
   }
   .data-container {
-    display: flex;
-    height: 90vh;
-    padding: 40px;
-    flex-direction: column;
-    align-items: flex-start;
+    max-width: 800px;
     flex: 1 0 0;
-    border-radius: 20px;
-    border: 1px solid #3c3c3c;
-    background: #242424;
   }
   .item-container {
+    max-width: 400px;
+  }
+  .item-container,
+  .data-container {
     display: flex;
     height: 90vh;
-    max-width: 400px;
+    width: 100%;
+    min-width: 400px;
     padding: 40px;
     flex-direction: column;
     align-items: flex-start;
-    flex: 1 0 0;
     border-radius: 20px;
     border: 1px solid #3c3c3c;
     background: #242424;
-    /* position: sticky;
-    top: 40px; */
   }
   h1 {
     text-align: start;
     font-family: Righteous;
     font-size: 36px;
+  }
+  @media (max-width: 1075px) {
+    .store-container {
+      padding: 20px;
+    }
+
+    .data-container,
+    .item-container {
+      max-width: 100%;
+      min-width: 100%;
+    }
+  }
+
+  @media (max-width: 440px) {
+    .data-container,
+    .item-container {
+      padding: 20px;
+    }
+  }
+  @media (max-width: 563px) {
+    .store-cotainer {
+      padding: 10px 10px;
+      flex-wrap: wrap;
+    }
+  }
+  @media (max-width: 454px) {
+    .navigation {
+      overflow-x: scroll;
+    }
+    .navigation::-webkit-scrollbar {
+      display: none;
+    }
   }
 </style>

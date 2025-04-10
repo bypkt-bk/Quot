@@ -2,6 +2,7 @@
 import Navigation from "@/components/organisms/navigation.vue";
 import DataTable from "@/components/organisms/store-table.tsx";
 import { Status } from "@/lib/shared";
+import Header from "../organisms/header.vue";
 
 const store = {
   id: 1,
@@ -128,8 +129,11 @@ const store = {
 };
 ---
 
+<Header />
 <div class="store-cotainer">
-  <Navigation client:load />
+  <div class="navigation">
+    <Navigation client:load />
+  </div>
   <div class="data-container">
     <h1>{store.name}</h1>
     <DataTable client:load quote={store.quote} />
@@ -150,6 +154,8 @@ const store = {
     display: flex;
     height: fit-content;
     min-height: screen;
+    width: 100%;
+    min-width: 300px;
     padding: 40px;
     flex-direction: column;
     align-items: flex-start;
@@ -162,5 +168,23 @@ const store = {
     text-align: start;
     font-family: Righteous;
     font-size: 36px;
+  }
+  @media (max-width: 440px) {
+    .data-container {
+      padding: 20px;
+    }
+  }
+  @media (max-width: 563px) {
+    .store-cotainer {
+      padding: 10px 10px;
+    }
+  }
+  @media (max-width: 454px) {
+    .navigation {
+      overflow-x: scroll;
+    }
+    .navigation::-webkit-scrollbar {
+      display: none;
+    }
   }
 </style>

@@ -67,6 +67,16 @@ import {
   border: 1px solid #3c3c3c;
   background: #242424;
 }
+@media (max-width: 563px) {
+  .navigation1,
+  .navigation2 {
+    flex-direction: row;
+    padding: 10px 10px;
+  }
+  .navbar {
+    flex-direction: row;
+  }
+}
 
 .nav-btn {
   display: flex;

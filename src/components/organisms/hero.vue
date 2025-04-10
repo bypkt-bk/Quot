@@ -277,5 +277,13 @@ p {
     width: 100%;
     height: 100%;
   }
+  .hero {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px 20px;
+  }
 }
 </style>

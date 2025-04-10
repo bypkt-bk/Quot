@@ -50,8 +50,10 @@ import logo from "@/assets/quot.svg";
 <style scoped>
 .footer {
   display: flex;
-  padding: 32px 80px;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 32px 0px;
+  gap: 20px;
+  justify-content: space-around;
   align-items: flex-start;
   border-top: 2px solid #3c3c3c;
 }

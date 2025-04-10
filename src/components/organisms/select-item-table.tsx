@@ -107,6 +107,21 @@ const data: Product[] = [
     name: "Pencil",
     price: 10,
   },
+  {
+    id: 2,
+    name: "Pencil",
+    price: 10,
+  },
+  {
+    id: 2,
+    name: "Pencil",
+    price: 10,
+  },
+  {
+    id: 2,
+    name: "Pencil",
+    price: 10,
+  },
 ];
 export const columns: ColumnDef<Product>[] = [
   {

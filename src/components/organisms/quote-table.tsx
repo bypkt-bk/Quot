@@ -70,7 +70,7 @@ export function DatePickerWithRange({
             id="date"
             variant={"outline"}
             className={cn(
-              "w-[250px] justify-start text-left font-normal bg-transparent border-[#3c3c3c] hover:bg-transparent hover:text-white rounded-[6px] py-[20px]",
+              "min-w-[248px] justify-start text-left font-normal bg-transparent border-[#3c3c3c] hover:bg-transparent hover:text-white rounded-[6px] py-[20px]",
               !date && "text-muted-foreground",
             )}
           >
@@ -232,14 +232,14 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
           placeholder="Customer name"
           value={customerName}
           onChange={(e) => setCustomerName(e.target.value)}
-          className="w-full flex-1 min-w-[300px] border-[#3C3C3C] rounded-[6px] py-[20px]"
+          className="flex-1 min-w-[248px] border-[#3C3C3C] rounded-[6px] py-[20px]"
         />
         <DatePickerWithRange />
         <Input
           placeholder="Address"
           value={customerAddress}
           onChange={(e) => setCustomerAddress(e.target.value)}
-          className="w-full border-[#3C3C3C] rounded-[6px] py-[20px]"
+          className="min-w-[248px] border-[#3C3C3C] rounded-[6px] py-[20px]"
         />
       </div>
       <Table>

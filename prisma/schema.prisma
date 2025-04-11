@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int     @id @default(autoincrement())
+  googleId      String  @unique
+  email         String  @unique
+  name          String
+  taxId         String? 
+  phoneNumber   String?
+  ownedStores   Store[] @relation("OwnedStores")
+  adminStores   Store[] @relation("AdminStores")
+}
+
+model Store {
+  id            Int        @id @default(autoincrement())
+  name          String
+  address       String
+  revenue       Float
+  owner         User[]     @relation("OwnedStores")
+  admin         User[]     @relation("AdminStores")
+  quote         Quote[]
+}
+
+model Product {
+  id        Int     @id @default(autoincrement())
+  name      String
+  price     Float
+
+  quoteProducts QuoteProduct[]
+}
+
+enum Status {
+  unpaid
+  paid
+}
+
+model Quote {
+  id          Int           @id @default(autoincrement())
+  total       Float
+  orderDate   String
+  shippingOn  String?
+  status      Status
+  customerId  Int
+  customer    Customer      @relation(fields: [customerId], references: [id])
+  storeId     Int
+  store       Store         @relation(fields: [storeId], references: [id])
+  products    QuoteProduct[]
+}
+
+model QuoteProduct {
+  id        Int      @id @default(autoincrement())
+  quoteId   Int
+  quote     Quote    @relation(fields: [quoteId], references: [id])
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+}
+
+model Customer {
+  id        Int     @id @default(autoincrement())
+  name      String
+  address   String
+  quotes    Quote[]
+}

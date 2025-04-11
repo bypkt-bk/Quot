@@ -4,6 +4,8 @@
       <div class="logo">
         <img :src="logo.src" alt="Logo" width="40" />
         <h2>QUOT</h2>
+        <img src="src/assets/quot.svg" alt="Logo" width="40" />
+        <h2>QUOT</h2>
       </div>
       <div class="social-icons">
         <Facebook />
@@ -11,6 +13,7 @@
         <Github />
       </div>
       <a class="settings" href="#">Cookie settings</a>
+      <p class="Inc">© 2025 QUOT, Inc.</p>
       <p class="Inc">© 2025 QUOT, Inc.</p>
     </div>
 
@@ -34,6 +37,7 @@
     </div>
 
     <div class="footerColumn_list">
+      <h3>QUOT for</h3>
       <h3>QUOT for</h3>
       <ul>
         <li><a href="#">Small business</a></li>

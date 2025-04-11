@@ -13,10 +13,29 @@
 
 <script setup>
 import Button from "@/components/atoms/button.vue";
-import google from "@/assets/google.svg";
+import { signInWithGoogle } from "@/firebase/auth";
+import { trpc } from "@/lib/trpc";
 
 function handleClick() {
-  window.location.href = "/home/1";
+  signInWithGoogle()
+    .then(async ({ user, token }) => {
+      console.log("User signed in successfully");
+      const User = await trpc.getUserById.query({
+        id: user.uid,
+      });
+      if (!User) {
+        await trpc.createUser.mutate({
+          googleId: user.uid,
+          email: user.email,
+          name: user.displayName,
+        });
+        return window.location.href = "/home/1";
+      }
+      window.location.href = "/home/1";
+    })
+    .catch((error) => {
+      console.error("Error signing in with Google:", error);
+    });
 }
 </script>
 

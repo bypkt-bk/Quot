@@ -1,7 +1,7 @@
 <template>
   <header>
     <a class="logo" href="/">
-      <img :src="logo.src" alt="logo" width="40" />
+      <img src="/src/assets/quot.svg" alt="logo" width="40" />
       <h4>QUOT</h4>
     </a>
     <nav class="desktop-nav">
@@ -49,6 +49,7 @@ header {
   display: flex;
   display: flex;
   align-items: center;
+  gap: 12px;
   gap: 12px;
 }
 .desktop-nav {

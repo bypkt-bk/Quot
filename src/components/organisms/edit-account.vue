@@ -1,25 +1,27 @@
 <template>
   <div class="edit-container">
-    <Store class="logo-head" />
+    <CircleUserRound class="logo-head" />
     <div class="edit-name">
-      <div class="header-name">
-        <Store />
-        <p>Store</p>
-      </div>
-      <input class="name" placeholder="Store name" />
+      <p>First name & Last name</p>
+      <input placeholder="Your name" />
     </div>
-    <div class="edit-address">
-      <div class="header-address">
-        <MapPin />
-        <p>Address</p>
-      </div>
-      <input class="address" placeholder="Address" />
+    <div class="edit-texId">
+      <p>Tax ID</p>
+      <input placeholder="Tax ID" />
+    </div>
+    <div class="edit-phone">
+      <p>Phone number</p>
+      <input placeholder="Your phone number" />
+    </div>
+    <div class="btn">
+      <button class="save-btn">save</button>
+      <button class="cancel-btn">cancel</button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { Store, MapPin } from "lucide-vue-next";
+import { CircleUserRound } from "lucide-vue-next";
 </script>
 
 <style scoped>
@@ -29,9 +31,7 @@ import { Store, MapPin } from "lucide-vue-next";
 }
 .edit-container {
   display: flex;
-  width: 100%;
-  min-width: 300px;
-  max-width: 440px;
+  width: 440px;
   padding: 40px;
   flex-direction: column;
   align-items: center;
@@ -40,14 +40,10 @@ import { Store, MapPin } from "lucide-vue-next";
   border: 1px solid #3c3c3c;
   background: #242424;
 }
-.header-name,
-.header-address {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+
 .edit-name,
-.edit-address {
+.edit-texId,
+.edit-phone {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -55,8 +51,7 @@ import { Store, MapPin } from "lucide-vue-next";
   gap: 8px;
   align-self: stretch;
 }
-.name,
-.address {
+input {
   display: flex;
   height: 40px;
   width: 100%;
@@ -75,5 +70,39 @@ input::-webkit-inner-spin-button {
 }
 input[type="number"] {
   -moz-appearance: textfield;
+}
+.btn {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 20px;
+}
+.save-btn {
+  font-family: "Onest", sans-serif;
+  display: flex;
+  width: 100%;
+  min-width: fit-content;
+  height: fit-content;
+  padding: 6px 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+}
+.cancel-btn {
+  font-family: "Onest", sans-serif;
+  display: flex;
+  flex-shrink: 1 0 0;
+  width: 100%;
+  min-width: fit-content;
+  height: fit-content;
+  padding: 6px 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  border: 1px solid white;
+  cursor: pointer;
 }
 </style>

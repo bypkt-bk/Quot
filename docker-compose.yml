@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   mariadb:
@@ -6,10 +6,10 @@ services:
     container_name: mariadb-compose
     environment:
       MYSQL_USER: root
-      MYSQL_ROOT_PASSWORD: bill1234 
+      MYSQL_ROOT_PASSWORD: bill1234
       MYSQL_DATABASE: mydb
     ports:
-      - "3306:3306" 
+      - "3306:3306"
     networks:
       - mariadb_network
 

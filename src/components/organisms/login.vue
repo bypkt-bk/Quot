@@ -30,7 +30,7 @@ function handleClick() {
           email: user.email,
           name: user.displayName,
         });
-        return window.location.href = "/home/1";
+        return (window.location.href = "/home/1");
       }
       window.location.href = "/home/1";
     })

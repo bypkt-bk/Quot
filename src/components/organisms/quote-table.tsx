@@ -312,23 +312,28 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
           </TableBody>
         </Table>
       </div>
-      <div className="space-x-2 flex items-end justify-end flex-grow">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
+      <div className="flex flex-grow justify-between items-end">
+        <div className="text-nowrap text-sm text-muted-foreground justify-end flex h-[32px] items-center">
+          {table.getFilteredRowModel().rows.length} product(s).
+        </div>
+        <div className="space-x-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </Button>
+        </div>
       </div>
     </div>
   );

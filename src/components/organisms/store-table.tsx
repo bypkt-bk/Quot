@@ -39,7 +39,8 @@ import type { Quote, Store } from "@/lib/shared";
 
 export const columns: ColumnDef<Quote>[] = [
   {
-    accessorKey: "customer",
+    accessorFn: (row) => row.customer.name, // use accessorFn to access customer
+    id: "customer",
     header: ({ column }) => {
       return (
         <Button
@@ -301,7 +302,6 @@ const DataTable: React.FC<DataTableProps> = ({ quote, name }) => {
           </TableBody>
         </Table>
       </div>
-
       <div className="space-x-2 flex items-end justify-end flex-grow">
         <Button
           variant="ghost"

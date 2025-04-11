@@ -324,8 +324,7 @@ const store = {
     <Navigation client:load />
   </div>
   <div class="data-container">
-    <h1>{store.name}</h1>
-    <DataTable client:load quote={store.quote} />
+    <DataTable client:load quote={store.quote} name={store.name} />
   </div>
 </div>
 

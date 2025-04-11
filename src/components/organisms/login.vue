@@ -13,6 +13,7 @@
 
 <script setup>
 import Button from "@/components/atoms/button.vue";
+import google from "@/assets/google.svg";
 import { signInWithGoogle } from "@/firebase/auth";
 import { trpc } from "@/lib/trpc";
 

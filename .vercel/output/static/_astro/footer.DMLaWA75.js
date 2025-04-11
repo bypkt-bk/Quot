@@ -1,0 +1,16 @@
+/* empty css                       */import{_ as i}from"./_plugin-vue_export-helper.DlAUqK2U.js";import{c as f,a as t,g as l,d as s,o as d}from"./runtime-core.esm-bundler.BBEKxJJC.js";import{c}from"./createLucideIcon.9kFW5APZ.js";/**
+ * @license lucide-vue-next v0.484.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const n=c("facebook",[["path",{d:"M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z",key:"1jg4f8"}]]);/**
+ * @license lucide-vue-next v0.484.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const v=c("github",[["path",{d:"M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4",key:"tonef"}],["path",{d:"M9 18c-4.51 2-5-2-7-2",key:"9comsn"}]]);/**
+ * @license lucide-vue-next v0.484.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const u=c("instagram",[["rect",{width:"20",height:"20",x:"2",y:"2",rx:"5",ry:"5",key:"2e1cvw"}],["path",{d:"M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z",key:"9exkf1"}],["line",{x1:"17.5",x2:"17.51",y1:"6.5",y2:"6.5",key:"r4j83e"}]]),h={__name:"footer",setup(r,{expose:a}){a();const e={get Facebook(){return n},get Instagram(){return u},get Github(){return v}};return Object.defineProperty(e,"__isScriptSetup",{enumerable:!1,value:!0}),e}},m={class:"footer"},p={class:"footer_footerTop"},_={class:"social-icons"};function g(r,a,e,o,b,y){return d(),f("footer",m,[t("div",p,[a[0]||(a[0]=t("div",{class:"logo"},[t("img",{src:"src/assets/billhub.svg",alt:"Logo",width:"40"}),t("h2",null,"BILL HUB")],-1)),t("div",_,[s(o.Facebook),s(o.Instagram),s(o.Github)]),a[1]||(a[1]=t("a",{class:"settings",href:"#"},"Cookie settings",-1)),a[2]||(a[2]=t("p",{class:"Inc"},"© 2025 Bill Hub, Inc.",-1))]),a[3]||(a[3]=l('<div class="footerColumn_list" data-v-7209c9f4><h3 data-v-7209c9f4>Company</h3><ul data-v-7209c9f4><li data-v-7209c9f4><a href="#" data-v-7209c9f4>About us</a></li><li data-v-7209c9f4><a href="#" data-v-7209c9f4>Security</a></li><li data-v-7209c9f4><a href="#" data-v-7209c9f4>Status</a></li><li data-v-7209c9f4><a href="#" data-v-7209c9f4>Terms &amp; privacy</a></li></ul></div><div class="footerColumn_list" data-v-7209c9f4><h3 data-v-7209c9f4>Resources</h3><ul data-v-7209c9f4><li data-v-7209c9f4><a href="#" data-v-7209c9f4>Help center</a></li><li data-v-7209c9f4><a href="#" data-v-7209c9f4>Pricing</a></li><li data-v-7209c9f4><a href="#" data-v-7209c9f4>Community</a></li></ul></div><div class="footerColumn_list" data-v-7209c9f4><h3 data-v-7209c9f4>Bill Hub for</h3><ul data-v-7209c9f4><li data-v-7209c9f4><a href="#" data-v-7209c9f4>Small business</a></li><li data-v-7209c9f4><a href="#" data-v-7209c9f4>Restaurant</a></li><li data-v-7209c9f4><a href="#" data-v-7209c9f4>Store</a></li></ul></div>',3))])}const C=i(h,[["render",g],["__scopeId","data-v-7209c9f4"]]);export{C as default};

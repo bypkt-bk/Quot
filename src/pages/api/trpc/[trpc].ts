@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 export const prerender = false; // Disable static generation for this API route
 
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
@@ -10,3 +11,14 @@ export const ALL = async ({ request }: { request: Request }) => {
     router: appRouter,
   });
 };
+=======
+import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
+import { appRouter } from "../../../server/trpc";
+export const ALL = async ({ request }: { request: Request }) => {
+	return fetchRequestHandler({
+		endpoint: "/api/trpc",
+		req: request,
+		router: appRouter,
+	});
+};
+>>>>>>> 5f18958 (feat: api)

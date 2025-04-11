@@ -13,9 +13,9 @@ export const usersModel = {
         });
     },
 
-    async getUserByGoogleId(id: number) {
+    async getUserByGoogleId(id: string) {
         return await prisma.user.findUnique({
-            where: { id },
+            where: { googleId: id },
         });
     },
 
@@ -30,14 +30,14 @@ export const usersModel = {
     },
 
     async updateUser(
-        id: number,
+        googleId: string,
         name: string,
         email?: string,
         taxId?: string,
         phoneNumber?: string
     ) {
         return await prisma.user.update({
-            where: { id },
+            where: { googleId },
             data: {
                 name,
                 ...(email && { email }),
@@ -47,9 +47,9 @@ export const usersModel = {
         });
     },
 
-    async deleteUser(id: number) {
+    async deleteUser(googleId: string) {
         return await prisma.user.delete({
-            where: { id },
+            where: { googleId },
         });
     },
 };

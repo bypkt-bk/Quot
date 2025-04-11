@@ -5,6 +5,7 @@ services:
     image: mariadb:latest
     container_name: mariadb-compose
     environment:
+      MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: bill1234 
       MYSQL_DATABASE: mydb
     ports:

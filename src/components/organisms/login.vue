@@ -18,11 +18,13 @@ import { trpc } from "@/lib/trpc";
 
 function handleClick() {
   signInWithGoogle()
-    .then(({ user, token }) => {
+    .then(async ({ user, token }) => {
       console.log("User signed in successfully");
-      const User = trpc.getUserById(user.uid);
+      const User = await trpc.getUserById.query({
+        id: user.uid,
+      });
       if (!User) {
-        appRouter.createUser({
+        await trpc.createUser.mutate({
           googleId: user.uid,
           email: user.email,
           name: user.displayName,

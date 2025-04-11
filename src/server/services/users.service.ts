@@ -4,22 +4,22 @@ export const usersService = {
     async getUsers() {
         return await usersModel.getUser();
     },
-    async getUserByGoogleId(id: number) {
+    async getUserByGoogleId(id: string) {
         return await usersModel.getUserByGoogleId(id);
     },
     async createUser(name: string, email: string, googleId: string) {
         return await usersModel.createUser(name, email, googleId);
     },
     async updateUser(
-        id: number,
+        googleId: string,
         name: string,
         email?: string,
         taxId?: string,
         phoneNumber?: string
     ) {
-        return await usersModel.updateUser(id, name, email, taxId, phoneNumber);
+        return await usersModel.updateUser(googleId, name, email, taxId, phoneNumber);
     },
-    async deleteUser(id: number) {
-        return await usersModel.deleteUser(id);
+    async deleteUser(googleId: string) {
+        return await usersModel.deleteUser(googleId);
     },
 }

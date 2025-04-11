@@ -12,9 +12,14 @@ export const appRouter = t.router({
 		return usersService.getUsers();
 	}),
   getUserById: t.procedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ id: z.string() }))
     .query(async (opts) => {
       return usersService.getUserByGoogleId(opts.input.id);
+    }),
+  getUserByGoogleId: t.procedure
+    .input(z.object({ googleId: z.string() }))
+    .query(async (opts) => {
+      return usersService.getUserByGoogleId(opts.input.googleId);
     }),
   createUser: t.procedure
     .input(z.object({ name: z.string(), email: z.string(), googleId: z.string() }))
@@ -24,7 +29,7 @@ export const appRouter = t.router({
   updateUser: t.procedure
     .input(
       z.object({
-        id: z.number(),
+        id: z.string(),
         name: z.string(),
         email: z.string().optional(),
         taxId: z.string().optional(),
@@ -41,9 +46,9 @@ export const appRouter = t.router({
       );
     }),
   deleteUser: t.procedure
-    .input(z.object({ id: z.number() }))
+    .input(z.object({ googleId: z.string() }))
     .mutation(async (opts) => {
-      return usersService.deleteUser(opts.input.id);
+      return usersService.deleteUser(opts.input.googleId);
     }),
   getProducts: t.procedure.query(async () => {
     return productsService.getProducts();

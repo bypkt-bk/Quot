@@ -26,7 +26,7 @@
 import { Moon, Sun, ChevronDown, Menu } from "lucide-vue-next";
 import { ref } from "vue";
 import Button from "@/components/atoms/button.vue";
-
+import logo from "@/assets/quot.svg";
 const isDarkMode = ref(false);
 
 function toggleTheme() {
@@ -49,6 +49,7 @@ header {
   display: flex;
   display: flex;
   align-items: center;
+  gap: 12px;
   gap: 12px;
 }
 .desktop-nav {

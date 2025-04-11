@@ -70,7 +70,7 @@ export function DatePickerWithRange({
             id="date"
             variant={"outline"}
             className={cn(
-              "w-[250px] justify-start text-left font-normal bg-transparent border-[#3c3c3c] hover:bg-transparent hover:text-white rounded-[6px] py-[20px]",
+              "min-w-[248px] justify-start text-left font-normal bg-transparent border-[#3c3c3c] hover:bg-transparent hover:text-white rounded-[6px] py-[20px]",
               !date && "text-muted-foreground",
             )}
           >
@@ -187,7 +187,7 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
       header: "totalPrice",
       cell: ({ row }) => {
         const amount = row.original.quantity * row.original.product.price;
-        const formatted = new Intl.NumberFormat("en-US", {
+        const formatted = new Intl.NumberFormat("th-US", {
           style: "currency",
           currency: "THB",
         }).format(amount);
@@ -212,12 +212,31 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
       rowSelection,
     },
   });
+  const [screenWidth, setScreenWidth] = useState(0);
+
+  useEffect(() => {
+    // Ensure this runs only in the browser (client-side)
+    if (typeof window !== "undefined") {
+      setScreenWidth(window.innerWidth);
+
+      const handleResize = () => setScreenWidth(window.innerWidth);
+      window.addEventListener("resize", handleResize);
+
+      // Clean up the event listener on component unmount
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
+
   React.useEffect(() => {
-    table.setPageSize(product.length);
-  }, [table]);
+    if (screenWidth < 850) {
+      table.setPageSize(7); // If screen width is less than 850px
+    } else {
+      table.setPageSize(8); // Otherwise, set it to 11
+    }
+  }, [screenWidth, table]);
 
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="flex flex-col w-full h-[601px]">
       <h1
         style={{
           textAlign: "start",
@@ -232,62 +251,90 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
           placeholder="Customer name"
           value={customerName}
           onChange={(e) => setCustomerName(e.target.value)}
-          className="w-full flex-1 min-w-[300px] border-[#3C3C3C] rounded-[6px] py-[20px]"
+          className="flex-1 min-w-[248px] border-[#3C3C3C] rounded-[6px] py-[20px]"
         />
         <DatePickerWithRange />
         <Input
           placeholder="Address"
           value={customerAddress}
           onChange={(e) => setCustomerAddress(e.target.value)}
-          className="w-full border-[#3C3C3C] rounded-[6px] py-[20px]"
+          className="min-w-[248px] border-[#3C3C3C] rounded-[6px] py-[20px]"
         />
       </div>
-      <Table>
-        <TableHeader className="sticky top-0 bg-[#3C3C3C] z-10">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow
-              key={headerGroup.id}
-              className="hover:bg-transparent border-none"
-            >
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id} className="text-white">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody className="h-full">
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                className="border-[#3C3C3C] hover:bg-transparent data-[state=selected]:bg-neutral-600"
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+      <div className="border border-[#3C3C3C] rounded-[6px]">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id} className="hover:bg-transparent">
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id} className="text-white">
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                    </TableHead>
+                  );
+                })}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+            ))}
+          </TableHeader>
+          <TableBody className="h-full">
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  className="border-[#3C3C3C] hover:bg-transparent data-[state=selected]:bg-neutral-600"
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      <div className="flex flex-grow justify-between items-end">
+        <div className="text-nowrap text-sm text-muted-foreground justify-end flex h-[32px] items-center">
+          {table.getFilteredRowModel().rows.length} product(s).
+        </div>
+        <div className="space-x-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };

@@ -2,6 +2,8 @@
   <footer class="footer">
     <div class="footer_footerTop">
       <div class="logo">
+        <img :src="logo.src" alt="Logo" width="40" />
+        <h2>QUOT</h2>
         <img src="src/assets/quot.svg" alt="Logo" width="40" />
         <h2>QUOT</h2>
       </div>
@@ -11,6 +13,7 @@
         <Github />
       </div>
       <a class="settings" href="#">Cookie settings</a>
+      <p class="Inc">© 2025 QUOT, Inc.</p>
       <p class="Inc">© 2025 QUOT, Inc.</p>
     </div>
 
@@ -35,6 +38,7 @@
 
     <div class="footerColumn_list">
       <h3>QUOT for</h3>
+      <h3>QUOT for</h3>
       <ul>
         <li><a href="#">Small business</a></li>
         <li><a href="#">Restaurant</a></li>
@@ -45,12 +49,15 @@
 </template>
 <script setup>
 import { Facebook, Instagram, Github } from "lucide-vue-next";
+import logo from "@/assets/quot.svg";
 </script>
 <style scoped>
 .footer {
   display: flex;
-  padding: 32px 80px;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 32px 0px;
+  gap: 20px;
+  justify-content: space-around;
   align-items: flex-start;
   border-top: 2px solid #3c3c3c;
 }

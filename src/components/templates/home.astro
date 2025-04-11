@@ -110,9 +110,14 @@ const stores = [
   .store-container {
     display: grid;
     width: 100%;
-    justify-content: start;
+    justify-content: center;
     align-items: center;
     gap: 16px;
     grid-template-columns: repeat(auto-fit, minmax(240px, 240px));
+  }
+  @media (max-width: 440px) {
+    .home-section {
+      padding: 20px 20px;
+    }
   }
 </style>

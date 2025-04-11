@@ -36,10 +36,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { Quote, Store } from "@/lib/shared";
+import type { Quote, Store } from "@/lib/shared";
 
 export const columns: ColumnDef<Quote>[] = [
+export const columns: ColumnDef<Quote>[] = [
   {
-    accessorKey: "customer",
+    accessorFn: (row) => row.customer.name, // use accessorFn to access customer
+    id: "customer",
     header: ({ column }) => {
       return (
         <Button
@@ -103,6 +106,9 @@ export const columns: ColumnDef<Quote>[] = [
         {row.original.shippingOn
           ? format(row.original.shippingOn, "dd/MM/yyyy")
           : ""}
+        {row.original.shippingOn
+          ? format(row.original.shippingOn, "dd/MM/yyyy")
+          : ""}
       </div>
     ),
   },
@@ -123,7 +129,7 @@ export const columns: ColumnDef<Quote>[] = [
       const amount = parseFloat(row.original.total.toString());
 
       // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
+      const formatted = new Intl.NumberFormat("th-US", {
         style: "currency",
         currency: "THB",
       }).format(amount);
@@ -195,8 +201,17 @@ const DataTable: React.FC<DataTableProps> = ({ quote }) => {
   }, [table]);
 
   return (
-    <div className="w-full">
-      <div className="flex items-center py-4">
+    <div className="flex flex-col w-full h-[588px]">
+      <h1
+        style={{
+          textAlign: "start",
+          fontFamily: "Righteous",
+          fontSize: "36px",
+        }}
+      >
+        {name}
+      </h1>
+      <div className="flex items-center py-2 gap-2">
         <Input
           placeholder="Search customer..."
           value={
@@ -266,6 +281,7 @@ const DataTable: React.FC<DataTableProps> = ({ quote }) => {
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
                     (window.location.href = `/store/quote/${row.original.id}`)
+                    (window.location.href = `/store/quote/${row.original.id}`)
                   }
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -291,29 +307,23 @@ const DataTable: React.FC<DataTableProps> = ({ quote }) => {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
-        <div className="space-x-2">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
+      <div className="space-x-2 flex items-end justify-end flex-grow">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </Button>
       </div>
     </div>
   );

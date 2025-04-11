@@ -36,9 +36,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { Quote, Store } from "@/lib/shared";
-import type { Quote, Store } from "@/lib/shared";
 
-export const columns: ColumnDef<Quote>[] = [
 export const columns: ColumnDef<Quote>[] = [
   {
     accessorFn: (row) => row.customer.name, // use accessorFn to access customer
@@ -209,7 +207,6 @@ const DataTable: React.FC<DataTableProps> = ({ quote }) => {
           fontSize: "36px",
         }}
       >
-        {name}
       </h1>
       <div className="flex items-center py-2 gap-2">
         <Input
@@ -280,7 +277,6 @@ const DataTable: React.FC<DataTableProps> = ({ quote }) => {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
-                    (window.location.href = `/store/quote/${row.original.id}`)
                     (window.location.href = `/store/quote/${row.original.id}`)
                   }
                 >

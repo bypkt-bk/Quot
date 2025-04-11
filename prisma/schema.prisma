@@ -19,19 +19,25 @@ model User {
 }
 
 model Store {
-  id            Int        @id @default(autoincrement())
-  name          String
-  address       String
-  revenue       Float
-  owner         User[]     @relation("OwnedStores")
-  admin         User[]     @relation("AdminStores")
-  quote         Quote[]
+  id        Int        @id @default(autoincrement())
+  name      String
+  address   String
+  revenue   Float
+
+  owner     User[]     @relation("OwnedStores")
+  admin     User[]     @relation("AdminStores")
+  quote     Quote[]
+  products  Product[]
+  customers Customer[]
 }
 
 model Product {
   id        Int     @id @default(autoincrement())
   name      String
   price     Float
+
+  storeId   Int
+  store     Store   @relation(fields: [storeId], references: [id])
 
   quoteProducts QuoteProduct[]
 }
@@ -67,5 +73,9 @@ model Customer {
   id        Int     @id @default(autoincrement())
   name      String
   address   String
+
+  storeId   Int
+  store     Store   @relation(fields: [storeId], references: [id])
+
   quotes    Quote[]
 }

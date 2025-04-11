@@ -9,8 +9,8 @@ const t = initTRPC.create();
 
 export const appRouter = t.router({
   getUsers: t.procedure.query(async () => {
-		return usersService.getUsers();
-	}),
+    return usersService.getUsers();
+  }),
   getUserById: t.procedure
     .input(z.object({ id: z.string() }))
     .query(async (opts) => {
@@ -22,9 +22,15 @@ export const appRouter = t.router({
       return usersService.getUserByGoogleId(opts.input.googleId);
     }),
   createUser: t.procedure
-    .input(z.object({ name: z.string(), email: z.string(), googleId: z.string() }))
+    .input(
+      z.object({ name: z.string(), email: z.string(), googleId: z.string() }),
+    )
     .mutation(async (opts) => {
-      return usersService.createUser(opts.input.name, opts.input.email, opts.input.googleId);
+      return usersService.createUser(
+        opts.input.name,
+        opts.input.email,
+        opts.input.googleId,
+      );
     }),
   updateUser: t.procedure
     .input(
@@ -34,7 +40,7 @@ export const appRouter = t.router({
         email: z.string().optional(),
         taxId: z.string().optional(),
         phoneNumber: z.string().optional(),
-      })
+      }),
     )
     .mutation(async (opts) => {
       return usersService.updateUser(
@@ -42,7 +48,7 @@ export const appRouter = t.router({
         opts.input.name,
         opts.input.email,
         opts.input.taxId,
-        opts.input.phoneNumber
+        opts.input.phoneNumber,
       );
     }),
   deleteUser: t.procedure
@@ -70,7 +76,7 @@ export const appRouter = t.router({
         name: z.string().optional(),
         price: z.number().optional(),
         stock: z.number().optional(),
-      })
+      }),
     )
     .mutation(async (opts) => {
       return productsService.updateProduct(
@@ -103,7 +109,7 @@ export const appRouter = t.router({
         storeId: z.number(),
         status: z.enum(["unpaid", "paid"]),
         shippingOn: z.string().optional(),
-      })
+      }),
     )
     .mutation(async (opts) => {
       return quoteService.createQuote(
@@ -112,7 +118,7 @@ export const appRouter = t.router({
         opts.input.customerId,
         opts.input.storeId,
         opts.input.status,
-        opts.input.shippingOn
+        opts.input.shippingOn,
       );
     }),
   updateQuote: t.procedure
@@ -123,18 +129,15 @@ export const appRouter = t.router({
         orderDate: z.string().optional(),
         shippingOn: z.string().optional(),
         status: z.enum(["unpaid", "paid"]).optional(),
-      })
+      }),
     )
     .mutation(async (opts) => {
-      return quoteService.updateQuote(
-        opts.input.id,
-        {
-          total: opts.input.total,
-          orderDate: opts.input.orderDate,
-          shippingOn: opts.input.shippingOn,
-          status: opts.input.status,
-        }
-      );
+      return quoteService.updateQuote(opts.input.id, {
+        total: opts.input.total,
+        orderDate: opts.input.orderDate,
+        shippingOn: opts.input.shippingOn,
+        status: opts.input.status,
+      });
     }),
   deleteQuote: t.procedure
     .input(z.object({ id: z.number() }))
@@ -150,9 +153,15 @@ export const appRouter = t.router({
       return storesService.getStoreById(opts.input.id);
     }),
   createStore: t.procedure
-    .input(z.object({ name: z.string(), location: z.string(), revenue: z.number() }))
+    .input(
+      z.object({ name: z.string(), location: z.string(), revenue: z.number() }),
+    )
     .mutation(async (opts) => {
-      return storesService.createStore(opts.input.name, opts.input.location, opts.input.revenue);
+      return storesService.createStore(
+        opts.input.name,
+        opts.input.location,
+        opts.input.revenue,
+      );
     }),
   updateStore: t.procedure
     .input(
@@ -160,13 +169,13 @@ export const appRouter = t.router({
         id: z.number(),
         name: z.string().optional(),
         location: z.string().optional(),
-      })
+      }),
     )
     .mutation(async (opts) => {
       return storesService.updateStore(
         opts.input.id,
         opts.input.name,
-        opts.input.location
+        opts.input.location,
       );
     }),
   deleteStore: t.procedure

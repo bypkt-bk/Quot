@@ -104,9 +104,6 @@ export const columns: ColumnDef<Quote>[] = [
         {row.original.shippingOn
           ? format(row.original.shippingOn, "dd/MM/yyyy")
           : ""}
-        {row.original.shippingOn
-          ? format(row.original.shippingOn, "dd/MM/yyyy")
-          : ""}
       </div>
     ),
   },
@@ -164,8 +161,9 @@ export const columns: ColumnDef<Quote>[] = [
 
 interface DataTableProps {
   quote: Quote[];
+  name: string;
 }
-const DataTable: React.FC<DataTableProps> = ({ quote }) => {
+const DataTable: React.FC<DataTableProps> = ({ quote, name }) => {
   const [data] = React.useState<Quote[]>(quote);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -207,6 +205,7 @@ const DataTable: React.FC<DataTableProps> = ({ quote }) => {
           fontSize: "36px",
         }}
       >
+        {name}
       </h1>
       <div className="flex items-center py-2 gap-2">
         <Input

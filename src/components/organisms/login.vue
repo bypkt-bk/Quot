@@ -13,6 +13,7 @@
 
 <script setup>
 import Button from "@/components/atoms/button.vue";
+import google from "@/assets/google.svg";
 import { signInWithGoogle } from "@/firebase/auth";
 import { trpc } from "@/lib/trpc";
 
@@ -29,7 +30,7 @@ function handleClick() {
           email: user.email,
           name: user.displayName,
         });
-        return window.location.href = "/home/1";
+        return (window.location.href = "/home/1");
       }
       window.location.href = "/home/1";
     })

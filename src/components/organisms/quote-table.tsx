@@ -113,7 +113,7 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [product, setProduct] = useState<QuoteProduct[]>(quote.product ?? []);
+  const [product, setProduct] = useState<QuoteProduct[]>(quote.products ?? []);
   const [customerName, setCustomerName] = useState<string>(quote.customer.name);
   const [customerAddress, setCustomerAddress] = useState<string>(
     quote.customer.address,

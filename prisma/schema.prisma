@@ -8,37 +8,35 @@ datasource db {
 }
 
 model User {
-  id            Int     @id @default(autoincrement())
-  googleId      String  @unique
-  email         String  @unique
+  id            String     @id @default(cuid())
+  googleId      String     @unique
+  email         String     @unique
   name          String
   taxId         String? 
   phoneNumber   String?
-  ownedStores   Store[] @relation("OwnedStores")
-  adminStores   Store[] @relation("AdminStores")
+  ownedStores   Store[]    @relation("OwnedStores")
+  adminStores   Store[]    @relation("AdminStores")
 }
 
 model Store {
-  id        Int        @id @default(autoincrement())
-  name      String
-  address   String
-  revenue   Float
+  id         String     @id @default(cuid())
+  name       String
+  address    String
+  revenue    Float
 
-  owner     User[]     @relation("OwnedStores")
-  admin     User[]     @relation("AdminStores")
-  quote     Quote[]
-  products  Product[]  @relation("StoreProducts")
-  customers Customer[]
+  owner      User[]     @relation("OwnedStores")
+  admin      User[]     @relation("AdminStores")
+  quote      Quote[]
+  products   Product[]
+  customers  Customer[]
 }
 
 model Product {
-  id        Int     @id @default(autoincrement())
-  name      String
-  price     Float
-
-  storeId   Int
-  store     Store   @relation("StoreProducts", fields: [storeId], references: [id])
-
+  id            String          @id @default(cuid())
+  name          String
+  price         Float
+  storeId       String
+  store         Store           @relation(fields: [storeId], references: [id])
   quoteProducts QuoteProduct[]
 }
 
@@ -48,34 +46,32 @@ enum Status {
 }
 
 model Quote {
-  id          Int           @id @default(autoincrement())
+  id          String          @id @default(cuid())
   total       Float
   orderDate   String
   shippingOn  String?
   status      Status
-  customerId  Int
-  customer    Customer      @relation(fields: [customerId], references: [id])
-  storeId     Int
-  store       Store         @relation(fields: [storeId], references: [id])
+  customerId  String
+  customer    Customer        @relation(fields: [customerId], references: [id])
+  storeId     String
+  store       Store           @relation(fields: [storeId], references: [id])
   products    QuoteProduct[]
 }
 
 model QuoteProduct {
-  id        Int      @id @default(autoincrement())
-  quoteId   Int
-  quote     Quote    @relation(fields: [quoteId], references: [id])
-  productId Int
-  product   Product @relation(fields: [productId], references: [id])
-  quantity  Int
+  id         String         @id @default(cuid())
+  quoteId    String
+  quote      Quote          @relation(fields: [quoteId], references: [id])
+  productId  String
+  product    Product        @relation(fields: [productId], references: [id])
+  quantity   Int
 }
 
 model Customer {
-  id        Int     @id @default(autoincrement())
-  name      String
-  address   String
-
-  storeId   Int
-  store     Store   @relation(fields: [storeId], references: [id])
-
-  quotes    Quote[]
+  id         String     @id @default(cuid())
+  name       String
+  address    String
+  storeId    String
+  store      Store      @relation(fields: [storeId], references: [id])
+  quotes     Quote[]
 }

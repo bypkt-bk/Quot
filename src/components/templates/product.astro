@@ -4,9 +4,60 @@ import Navigation from "@/components/organisms/navigation.vue";
 import ProductData from "@/components/organisms/product-table.tsx";
 import type { Product } from "@/lib/shared";
 const data: Product[] = [
-  { id: 1, name: "Pen", price: 20 },
-  { id: 2, name: "Pencil", price: 10 },
-  { id: 3, name: "Marker", price: 30 },
+  {
+    id: 1,
+    name: "Pen",
+    price: 20,
+    storeId: 1,
+    store: {
+      id: 1,
+      name: "Stationery Store",
+      address: "123 Main St",
+      revenue: 100000,
+      owner: [],
+      admin: [],
+      quote: [],
+      products: [],
+      customers: [],
+    },
+    quoteProducts: [],
+  },
+  {
+    id: 2,
+    name: "Pencil",
+    price: 10,
+    storeId: 1,
+    store: {
+      id: 1,
+      name: "Stationery Store",
+      address: "123 Main St",
+      revenue: 100000,
+      owner: [],
+      admin: [],
+      quote: [],
+      products: [],
+      customers: [],
+    },
+    quoteProducts: [],
+  },
+  {
+    id: 3,
+    name: "Marker",
+    price: 30,
+    storeId: 1,
+    store: {
+      id: 1,
+      name: "Stationery Store",
+      address: "123 Main St",
+      revenue: 100000,
+      owner: [],
+      admin: [],
+      quote: [],
+      products: [],
+      customers: [],
+    },
+    quoteProducts: [],
+  },
 ];
 ---
 

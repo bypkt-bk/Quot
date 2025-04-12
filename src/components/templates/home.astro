@@ -2,15 +2,18 @@
 import Header from "@/components/organisms/header.vue";
 import Card from "@/components/organisms/card.vue";
 import CardLock from "@/components/organisms/cardlock.vue";
+import type { Store } from "@/lib/shared";
 
-const stores = [
+const stores: Store[] = [
   {
     id: 1,
     name: "SuperStore",
     address: "123 Market St, Cityville, Country",
+    revenue: 5000000,
     owner: [
       {
         id: 1001,
+        googleId: "google-1001",
         email: "owner@example.com",
         name: "John Doe",
         taxId: "123-456-789",
@@ -22,6 +25,7 @@ const stores = [
     admin: [
       {
         id: 2001,
+        googleId: "google-2001",
         email: "admin1@example.com",
         name: "Jane Smith",
         taxId: "987-654-321",
@@ -31,6 +35,7 @@ const stores = [
       },
       {
         id: 2002,
+        googleId: "google-2002",
         email: "admin2@example.com",
         name: "Bob White",
         taxId: "123-456-789",
@@ -39,16 +44,19 @@ const stores = [
         adminStores: [],
       },
     ],
-    revenue: 5000000,
     quote: [],
+    products: [],
+    customers: [],
   },
   {
     id: 2,
     name: "MegaMart",
     address: "456 Commerce Ave, Cityville, Country",
+    revenue: 7000000,
     owner: [
       {
         id: 1002,
+        googleId: "google-1002",
         email: "owner2@example.com",
         name: "Alice Cooper",
         taxId: "123-654-987",
@@ -60,6 +68,7 @@ const stores = [
     admin: [
       {
         id: 2003,
+        googleId: "google-2003",
         email: "admin3@example.com",
         name: "Tom Jones",
         taxId: "456-789-123",
@@ -68,8 +77,9 @@ const stores = [
         adminStores: [],
       },
     ],
-    revenue: 7000000,
     quote: [],
+    products: [],
+    customers: [],
   },
 ];
 ---

@@ -36,93 +36,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { Product } from "@/lib/shared";
-const data: Product[] = [
-  {
-    id: 1,
-    name: "Pen",
-    price: 20,
-  },
-  {
-    id: 2,
-    name: "Pencil",
-    price: 10,
-  },
-  {
-    id: 1,
-    name: "Pen",
-    price: 20,
-  },
-  {
-    id: 2,
-    name: "Pencil",
-    price: 10,
-  },
-  {
-    id: 1,
-    name: "Pen",
-    price: 20,
-  },
-  {
-    id: 2,
-    name: "Pencil",
-    price: 10,
-  },
-  {
-    id: 1,
-    name: "Pen",
-    price: 20,
-  },
-  {
-    id: 2,
-    name: "Pencil",
-    price: 10,
-  },
-  {
-    id: 2,
-    name: "Pencil",
-    price: 10,
-  },
-  {
-    id: 1,
-    name: "Pen",
-    price: 20,
-  },
-  {
-    id: 2,
-    name: "Pencil",
-    price: 10,
-  },
-  {
-    id: 2,
-    name: "Pencil",
-    price: 10,
-  },
-  {
-    id: 1,
-    name: "Pen",
-    price: 20,
-  },
-  {
-    id: 2,
-    name: "Pencil",
-    price: 10,
-  },
-  {
-    id: 2,
-    name: "Pencil",
-    price: 10,
-  },
-  {
-    id: 2,
-    name: "Pencil",
-    price: 10,
-  },
-  {
-    id: 2,
-    name: "Pencil",
-    price: 10,
-  },
-];
+
 export const columns: ColumnDef<Product>[] = [
   {
     id: "select",
@@ -178,7 +92,10 @@ export const columns: ColumnDef<Product>[] = [
   },
 ];
 
-export default function SelectProduct() {
+interface DataTableProps {
+  products: Product[];
+}
+const ProductData: React.FC<DataTableProps> = ({ products }) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
@@ -186,7 +103,7 @@ export default function SelectProduct() {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
-
+  const data = products;
   const table = useReactTable({
     data,
     columns,
@@ -307,4 +224,5 @@ export default function SelectProduct() {
       </div>
     </div>
   );
-}
+};
+export default ProductData;

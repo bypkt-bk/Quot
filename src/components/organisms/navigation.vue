@@ -1,7 +1,7 @@
 <template>
   <div class="navbar">
     <nav class="navigation1">
-      <a class="nav-btn" href="/edit/account/1">
+      <a class="nav-btn" href="/account/1">
         <CircleUserRound />
         <p>Account</p>
       </a>

@@ -1,10 +1,5 @@
 <template>
   <a class="card" :href="`/store/${store.id}`">
-    <Pencil
-      class="edit-icon z-10"
-      @click.stop="editStore(store.id, $event)"
-      aria-label="Edit store"
-    />
     <Stores class="store-icon" />
     <h3>{{ store.name }}</h3>
     <div class="group">
@@ -27,13 +22,7 @@
 </template>
 
 <script lang="ts" setup>
-import {
-  Store as Stores,
-  Crown,
-  Users,
-  Landmark,
-  Pencil,
-} from "lucide-vue-next";
+import { Store as Stores, Crown, Users, Landmark } from "lucide-vue-next";
 import { type Store } from "@/lib/shared";
 import { defineProps } from "vue";
 
@@ -46,11 +35,6 @@ function getInitials(name: string): string {
   if (!name) return "";
   const nameParts = name.split(" ");
   return nameParts.map((part) => part.charAt(0).toUpperCase()).join("");
-}
-
-function editStore(id: number, event: Event) {
-  event.preventDefault();
-  window.location.href = `/edit/store/${id}`;
 }
 </script>
 

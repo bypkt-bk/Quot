@@ -36,9 +36,9 @@ export const appRouter = t.router({
         ),
       ),
     getStoreByOwnerId: t.procedure
-      .input(z.object({ userId: z.string() }))
+      .input(z.string())
       .query(async ({ input }) => {
-        return storesService.getStoreByOwnerId(input.userId);
+        return storesService.getStoreByOwnerId(input);
       }),
     update: t.procedure
       .input(
@@ -188,6 +188,9 @@ export const appRouter = t.router({
     getByGoogleId: t.procedure
       .input(z.string())
       .query(({ input }) => usersService.getUserByGoogleId(input)),
+    getByUserId: t.procedure
+      .input(z.string())
+      .query(({ input }) => usersService.getUserById(input)),
     create: t.procedure
       .input(
         z.object({

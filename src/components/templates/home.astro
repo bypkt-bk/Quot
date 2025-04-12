@@ -1,15 +1,17 @@
 ---
 import Header from "@/components/organisms/header.vue";
 import Card from "@/components/organisms/card.vue";
-import CardLock from "@/components/organisms/cardlock.vue";
-import type { Store } from "@/lib/shared";
+import NewStore from "@/components/organisms/card-newstore.vue";
+import type { Store, User } from "@/lib/shared";
 import { trpc } from "@/lib/trpc";
 
-const { userId } = Astro.props;
+const { userId } = Astro.props as { userId: string };
 
 let stores: Store[] = [];
+let user!: User;
 try {
-  stores = await trpc.store.getStoreByOwnerId.query({ userId });
+  user = await trpc.user.getByUserId.query(userId);
+  stores = await trpc.store.getStoreByOwnerId.query(userId);
 } catch (err) {
   console.error("Failed to fetch stores:", err);
 }
@@ -18,11 +20,11 @@ try {
 <Header client:load />
 <div class="home-section">
   <div class="head-container">
-    <h1>Banyaphon's store</h1>
+    <h1>{user.name}</h1>
   </div>
   <div class="store-container">
     {stores.map((store) => <Card client:load store={store} />)}
-    <CardLock client:load />
+    <NewStore client:load userId={userId} />
   </div>
 </div>
 
@@ -34,11 +36,11 @@ try {
   }
   .home-section {
     display: flex;
-    padding: 0px 80px 40px 80px;
+    padding: 20px 80px 40px 80px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 40px;
+    gap: 20px;
     width: 100%;
   }
   .head-container {

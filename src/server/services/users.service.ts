@@ -7,6 +7,9 @@ export const usersService = {
   async getUserByGoogleId(id: string) {
     return await usersModel.getUserByGoogleId(id);
   },
+  async getUserById(id: string) {
+    return await usersModel.getUserById(id);
+  },
   async createUser(name: string, email: string, googleId: string) {
     return await usersModel.createUser(name, email, googleId);
   },

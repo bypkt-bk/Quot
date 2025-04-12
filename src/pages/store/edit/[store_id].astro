@@ -1,0 +1,12 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import "@/styles/globals.css";
+import EditStores from "@/components/templates/edit-store.astro";
+
+const storeId = Astro.params.store_id as string;
+const currentPath = Astro.url.pathname;
+---
+
+<Layout>
+  <EditStores storeId={storeId} currentPath={currentPath} />
+</Layout>

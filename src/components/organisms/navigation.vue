@@ -15,9 +15,9 @@
         <Store />
         <p>Store</p>
       </a>
-      <a class="nav-btn" href="/item/1">
+      <a class="nav-btn" href="/store/product/1">
         <Archive />
-        <p>Item</p>
+        <p>Product</p>
       </a>
       <a class="nav-btn" href="/dashboard/1">
         <ChartPie />

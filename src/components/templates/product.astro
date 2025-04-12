@@ -1,0 +1,63 @@
+---
+import Header from "@/components/organisms/header.vue";
+import Navigation from "@/components/organisms/navigation.vue";
+import ProductData from "@/components/organisms/product-table.tsx";
+import type { Product } from "@/lib/shared";
+const data: Product[] = [
+  { id: 1, name: "Pen", price: 20 },
+  { id: 2, name: "Pencil", price: 10 },
+  { id: 3, name: "Marker", price: 30 },
+];
+---
+
+<Header />
+<div class="product-cotainer">
+  <div class="navigation">
+    <Navigation client:load />
+  </div>
+  <div class="data-container">
+    <ProductData products={data} client:load />
+  </div>
+</div>
+
+<style>
+  .product-cotainer {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 40px 80px 0px 80px;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 12px;
+    align-self: stretch;
+  }
+  .data-container {
+    display: flex;
+    width: 100%;
+    min-width: 300px;
+    padding: 40px;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 0;
+    border-radius: 20px;
+    border: 1px solid #3c3c3c;
+    background: #242424;
+  }
+  @media (max-width: 440px) {
+    .data-container {
+      padding: 20px;
+    }
+  }
+  @media (max-width: 563px) {
+    .product-cotainer {
+      padding: 10px 10px;
+    }
+  }
+  @media (max-width: 454px) {
+    .navigation {
+      overflow-x: scroll;
+    }
+    .navigation::-webkit-scrollbar {
+      display: none;
+    }
+  }
+</style>

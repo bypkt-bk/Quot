@@ -16,7 +16,7 @@
     "@astrojs/vue": "^5.0.9",
     "@falcondev-oss/trpc-vue-query": "^0.4.2",
     "@nanostores/vue": "^0.11.0",
-    "@prisma/client": "6.5.0",
+    "@prisma/client": "^6.6.0",
     "@radix-ui/react-checkbox": "^1.1.5",
     "@radix-ui/react-dropdown-menu": "^2.1.7",
     "@radix-ui/react-popover": "^1.1.7",

@@ -27,7 +27,7 @@ model Store {
   owner     User[]     @relation("OwnedStores")
   admin     User[]     @relation("AdminStores")
   quote     Quote[]
-  products  Product[]
+  products  Product[]  @relation("StoreProducts")
   customers Customer[]
 }
 
@@ -37,7 +37,7 @@ model Product {
   price     Float
 
   storeId   Int
-  store     Store   @relation(fields: [storeId], references: [id])
+  store     Store   @relation("StoreProducts", fields: [storeId], references: [id])
 
   quoteProducts QuoteProduct[]
 }

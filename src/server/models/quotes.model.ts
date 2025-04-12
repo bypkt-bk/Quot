@@ -33,37 +33,38 @@ export const quoteModel = {
   },
 
   async createQuote(
-    total: number,
-    orderDate: string,
     customerId: number,
     storeId: number,
-    status: Status,
-    shippingOn?: string,
+    products: Array<{ productId: number; quantity: number }>,
+    orderDate: string,
+    status: Status = Status.unpaid, 
+    shippingOn?: string
   ) {
     return await prisma.quote.create({
       data: {
-        total,
-        orderDate,
-        status,
         customerId,
         storeId,
-        ...(shippingOn && { shippingOn }),
+        orderDate,
+        status,
+        shippingOn,
+        total: products.reduce((sum, p) => sum + p.quantity * 100, 0),
+        products: {
+          create: products.map(p => ({
+            productId: p.productId,
+            quantity: p.quantity
+          }))
+        }
       },
+      include: {
+        products: true
+      }
     });
   },
 
-  async updateQuote(
-    id: number,
-    data: {
-      total?: number;
-      orderDate?: string;
-      shippingOn?: string;
-      status?: Status;
-    },
-  ) {
+  async updateQuoteStatus(id: number, status: Status) {
     return await prisma.quote.update({
       where: { id },
-      data,
+      data: { status },
     });
   },
 
@@ -71,5 +72,5 @@ export const quoteModel = {
     return await prisma.quote.delete({
       where: { id },
     });
-  },
+  }
 };

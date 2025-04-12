@@ -1,70 +1,37 @@
-import { quoteModel } from "../models/quotes.model"; // Adjusted the path to the correct location
-import { Prisma, Status } from "@prisma/client";
+import { quoteModel } from "../models/quotes.model";
+import { Status } from "@prisma/client";
 
-export const quoteService = {
+export const quotesService = {
   async getAllQuotes() {
-    try {
-      return await quoteModel.getQuotes();
-    } catch (error) {
-      throw new Error("Error fetching quotes: " + error);
-    }
+    return await quoteModel.getQuotes();
   },
 
-  async getQuoteById(id: number) {
-    try {
-      const quote = await quoteModel.getQuoteById(id);
-      if (!quote) {
-        throw new Error(`Quote with ID ${id} not found`);
-      }
-      return quote;
-    } catch (error) {
-      throw new Error("Error fetching quote: " + error);
-    }
+  async getQuote(id: number) {
+    return await quoteModel.getQuoteById(id);
   },
 
   async createQuote(
-    total: number,
-    orderDate: string,
     customerId: number,
     storeId: number,
-    status: Status,
-    shippingOn?: string,
+    products: Array<{ productId: number; quantity: number }>,
+    orderDate: string,
+    shippingOn?: string
   ) {
-    try {
-      return await quoteModel.createQuote(
-        total,
-        orderDate,
-        customerId,
-        storeId,
-        status,
-        shippingOn,
-      );
-    } catch (error) {
-      throw new Error("Error creating quote: " + error);
-    }
+    return await quoteModel.createQuote(
+      customerId,
+      storeId,
+      products,
+      orderDate,
+      Status.unpaid,
+      shippingOn
+    );
   },
 
-  async updateQuote(
-    id: number,
-    data: {
-      total?: number;
-      orderDate?: string;
-      shippingOn?: string;
-      status?: Status;
-    },
-  ) {
-    try {
-      return await quoteModel.updateQuote(id, data);
-    } catch (error) {
-      throw new Error("Error updating quote: " + error);
-    }
+  async markAsPaid(id: number) {
+    return await quoteModel.updateQuoteStatus(id, Status.paid);
   },
 
   async deleteQuote(id: number) {
-    try {
-      return await quoteModel.deleteQuote(id);
-    } catch (error) {
-      throw new Error("Error deleting quote: " + error);
-    }
-  },
+    return await quoteModel.deleteQuote(id);
+  }
 };

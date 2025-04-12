@@ -16,23 +16,23 @@ import Button from "@/components/atoms/button.vue";
 import google from "@/assets/google.svg";
 import { signInWithGoogle } from "@/firebase/auth";
 import { trpc } from "@/lib/trpc";
+import VueCookies from "vue-cookies";
 
-function handleClick() {
+async function handleClick() {
   signInWithGoogle()
     .then(async ({ user, token }) => {
       console.log("User signed in successfully");
-      const User = await trpc.getUserById.query({
-        id: user.uid,
-      });
+      let User = await trpc.getUserById.query({ id: user.uid });
+
       if (!User) {
-        await trpc.createUser.mutate({
+        User = await trpc.createUser.mutate({
           googleId: user.uid,
           email: user.email,
           name: user.displayName,
         });
-        return (window.location.href = "/home/1");
       }
-      window.location.href = "/home/1";
+      VueCookies.set("auth", token, "7d");
+      window.location.href = `/home/${User.id}`;
     })
     .catch((error) => {
       console.error("Error signing in with Google:", error);

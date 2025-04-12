@@ -2,13 +2,6 @@
 import Layout from "../../layouts/Layout.astro";
 import "@/styles/globals.css";
 import Home from "@/components/templates/home.astro";
-export function getStaticPaths() {
-  return [
-    { params: { user_id: "1" } },
-    { params: { user_id: "2" } },
-    { params: { user_id: "3" } },
-  ];
-}
 ---
 
 <Layout>

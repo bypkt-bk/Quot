@@ -17,7 +17,7 @@ export const quoteModel = {
     });
   },
 
-  async getQuoteById(id: number) {
+  async getQuoteById(id: string) {
     return await prisma.quote.findUnique({
       where: { id },
       include: {
@@ -33,43 +33,44 @@ export const quoteModel = {
   },
 
   async createQuote(
-    total: number,
+    customerId: string,
+    storeId: string,
+    products: Array<{ productId: string; quantity: number }>,
     orderDate: string,
-    customerId: number,
-    storeId: number,
-    status: Status,
-    shippingOn?: string,
+    status: Status = Status.unpaid, 
+    shippingOn?: string
   ) {
     return await prisma.quote.create({
       data: {
-        total,
-        orderDate,
-        status,
         customerId,
         storeId,
-        ...(shippingOn && { shippingOn }),
+        orderDate,
+        status,
+        shippingOn,
+        total: products.reduce((sum, p) => sum + p.quantity * 100, 0),
+        products: {
+          create: products.map(p => ({
+            productId: p.productId,
+            quantity: p.quantity
+          }))
+        }
       },
+      include: {
+        products: true
+      }
     });
   },
 
-  async updateQuote(
-    id: number,
-    data: {
-      total?: number;
-      orderDate?: string;
-      shippingOn?: string;
-      status?: Status;
-    },
-  ) {
+  async updateQuoteStatus(id: string, status: Status) {
     return await prisma.quote.update({
       where: { id },
-      data,
+      data: { status },
     });
   },
 
-  async deleteQuote(id: number) {
+  async deleteQuote(id: string) {
     return await prisma.quote.delete({
       where: { id },
     });
-  },
+  }
 };

@@ -3,11 +3,11 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const usersModel = {
-  async getUser() {
+  async getAllUser() {
     return await prisma.user.findMany();
   },
 
-  async getUserById(id: number) {
+  async getUserById(id: string) {
     return await prisma.user.findUnique({
       where: { id },
     });
@@ -16,6 +16,21 @@ export const usersModel = {
   async getUserByGoogleId(id: string) {
     return await prisma.user.findUnique({
       where: { googleId: id },
+    });
+  },
+
+  async getStoreOwnerByGoogleId(id: string) {
+    return await prisma.user.findUnique({
+      where: { googleId: id },
+      include: {
+        ownedStores: {
+          select: {
+            name: true,
+            address: true,
+            revenue: true
+          }
+        }
+      }
     });
   },
 

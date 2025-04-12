@@ -1,8 +1,8 @@
 import { usersModel } from "../models/users.model";
 
 export const usersService = {
-  async getUsers() {
-    return await usersModel.getUser();
+  async getAllUsers() {
+    return await usersModel.getAllUser();
   },
   async getUserByGoogleId(id: string) {
     return await usersModel.getUserByGoogleId(id);
@@ -27,5 +27,9 @@ export const usersService = {
   },
   async deleteUser(googleId: string) {
     return await usersModel.deleteUser(googleId);
+  },
+
+  async getStoreOwnerByGoogleId(id: string) {
+    return await usersModel.getStoreOwnerByGoogleId(id);
   },
 };

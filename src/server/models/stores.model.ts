@@ -43,7 +43,11 @@ export const storeModel = {
       include: {
         owner: true,
         admin: true,
-        quote: true,
+        quote: {
+          include: {
+            customer: true,
+          },
+        },
         products: true,
         customers: true,
       },

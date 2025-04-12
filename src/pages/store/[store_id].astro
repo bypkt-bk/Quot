@@ -2,15 +2,10 @@
 import Layout from "../../layouts/Layout.astro";
 import "@/styles/globals.css";
 import Store from "@/components/templates/store.astro";
-export function getStaticPaths() {
-  return [
-    { params: { store_id: "1" } },
-    { params: { store_id: "2" } },
-    { params: { store_id: "3" } },
-  ];
-}
+
+const storeId = Astro.params.store_id as string;
 ---
 
 <Layout>
-  <Store />
+  <Store storeId={storeId} />
 </Layout>

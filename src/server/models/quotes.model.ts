@@ -37,8 +37,8 @@ export const quoteModel = {
     storeId: string,
     products: Array<{ productId: string; quantity: number }>,
     orderDate: string,
-    status: Status = Status.unpaid, 
-    shippingOn?: string
+    status: Status = Status.unpaid,
+    shippingOn?: string,
   ) {
     return await prisma.quote.create({
       data: {
@@ -49,15 +49,15 @@ export const quoteModel = {
         shippingOn,
         total: products.reduce((sum, p) => sum + p.quantity * 100, 0),
         products: {
-          create: products.map(p => ({
+          create: products.map((p) => ({
             productId: p.productId,
-            quantity: p.quantity
-          }))
-        }
+            quantity: p.quantity,
+          })),
+        },
       },
       include: {
-        products: true
-      }
+        products: true,
+      },
     });
   },
 
@@ -72,5 +72,5 @@ export const quoteModel = {
     return await prisma.quote.delete({
       where: { id },
     });
-  }
+  },
 };

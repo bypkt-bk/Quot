@@ -9,14 +9,10 @@ export const customersService = {
     return await customersModel.getCustomerById(id);
   },
 
-  async createCustomer(
-    storeId: string,
-    name: string,
-    address: string
-  ) {
+  async createCustomer(storeId: string, name: string, address: string) {
     return await customersModel.createCustomer(storeId, {
       name,
-      address
+      address,
     });
   },
 
@@ -25,12 +21,12 @@ export const customersService = {
     data: {
       name?: string;
       address?: string;
-    }
+    },
   ) {
     return await customersModel.updateCustomer(id, data);
   },
 
   async deleteCustomer(id: string) {
     return await customersModel.deleteCustomer(id);
-  }
+  },
 };

@@ -2,11 +2,15 @@ import { storeModel } from "../models/stores.model";
 
 export const storesService = {
   async getStores() {
-    return await storeModel.getAllStores(); 
+    return await storeModel.getAllStores();
   },
 
   async getStoreById(id: string) {
     return await storeModel.getStoreById(id);
+  },
+
+  async getStoreByOwnerId(userId: string) {
+    return await storeModel.getStoreByOwnerId(userId);
   },
 
   async createStore(
@@ -14,24 +18,24 @@ export const storesService = {
     address: string,
     ownerIds: string[],
     revenue?: number,
-    adminIds?: string[]
+    adminIds?: string[],
   ) {
     return await storeModel.createStore({
       name,
       address,
       revenue: revenue || 0,
       ownerIds,
-      adminIds
+      adminIds,
     });
   },
 
   async updateStore(
     id: string,
-    data: { 
-      name?: string,
-      address?: string,
-      revenue?: number
-    }
+    data: {
+      name?: string;
+      address?: string;
+      revenue?: number;
+    },
   ) {
     return await storeModel.updateStore(id, data);
   },
@@ -54,5 +58,5 @@ export const storesService = {
 
   async getStoreQuotes(storeId: string) {
     return await storeModel.getStoreQuotes(storeId);
-  }
+  },
 };

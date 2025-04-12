@@ -27,10 +27,10 @@ export const usersModel = {
           select: {
             name: true,
             address: true,
-            revenue: true
-          }
-        }
-      }
+            revenue: true,
+          },
+        },
+      },
     });
   },
 

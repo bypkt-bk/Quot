@@ -13,8 +13,8 @@ export const customersModel = {
     return await prisma.customer.findUnique({
       where: { id },
       include: {
-        quotes: true 
-      }
+        quotes: true,
+      },
     });
   },
 
@@ -23,12 +23,12 @@ export const customersModel = {
     data: {
       name: string;
       address: string;
-    }
+    },
   ) {
     return await prisma.customer.create({
       data: {
         ...data,
-        storeId
+        storeId,
       },
     });
   },
@@ -38,11 +38,11 @@ export const customersModel = {
     data: {
       name?: string;
       address?: string;
-    }
+    },
   ) {
     return await prisma.customer.update({
       where: { id },
-      data
+      data,
     });
   },
 
@@ -50,5 +50,5 @@ export const customersModel = {
     return await prisma.customer.delete({
       where: { id },
     });
-  }
+  },
 };

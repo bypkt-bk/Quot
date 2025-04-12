@@ -15,7 +15,7 @@ export const quotesService = {
     storeId: string,
     products: Array<{ productId: string; quantity: number }>,
     orderDate: string,
-    shippingOn?: string
+    shippingOn?: string,
   ) {
     return await quoteModel.createQuote(
       customerId,
@@ -23,7 +23,7 @@ export const quotesService = {
       products,
       orderDate,
       Status.unpaid,
-      shippingOn
+      shippingOn,
     );
   },
 
@@ -33,5 +33,5 @@ export const quotesService = {
 
   async deleteQuote(id: string) {
     return await quoteModel.deleteQuote(id);
-  }
+  },
 };

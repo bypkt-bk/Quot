@@ -1,11 +1,11 @@
 <template>
   <div class="card">
-    <Lock class="lock" />
+    <PlusIcon class="lock" />
   </div>
 </template>
 
 <script setup>
-import { Lock } from "lucide-vue-next";
+import { PlusIcon } from "lucide-vue-next";
 </script>
 
 <style scoped>

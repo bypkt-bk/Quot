@@ -13,35 +13,35 @@ export const productsModel = {
     return await prisma.product.findUnique({
       where: { id },
       include: {
-        store: true
-      }
+        store: true,
+      },
     });
   },
 
   async createProduct(
-    storeId: string, 
+    storeId: string,
     data: {
       name: string;
       price: number;
-    }
+    },
   ) {
     return await prisma.product.create({
       data: {
         ...data,
-        storeId
+        storeId,
       },
     });
   },
   async updateProduct(
-    id: string, 
+    id: string,
     data: {
       name?: string;
       price?: number;
-    }
+    },
   ) {
     return await prisma.product.update({
       where: { id },
-      data
+      data,
     });
   },
 
@@ -49,5 +49,5 @@ export const productsModel = {
     return await prisma.product.delete({
       where: { id },
     });
-  }
+  },
 };

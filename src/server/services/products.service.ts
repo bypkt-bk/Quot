@@ -9,14 +9,10 @@ export const productsService = {
     return await productsModel.getProductById(id);
   },
 
-  async createProduct(
-    storeId: string,
-    name: string,
-    price: number
-  ) {
+  async createProduct(storeId: string, name: string, price: number) {
     return await productsModel.createProduct(storeId, {
       name,
-      price
+      price,
     });
   },
 
@@ -25,12 +21,12 @@ export const productsService = {
     data: {
       name?: string;
       price?: number;
-    }
+    },
   ) {
     return await productsModel.updateProduct(id, data);
   },
 
   async deleteProduct(id: string) {
     return await productsModel.deleteProduct(id);
-  }
+  },
 };

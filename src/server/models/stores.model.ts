@@ -6,11 +6,11 @@ export const storeModel = {
   async getAllStores() {
     return await prisma.store.findMany({
       include: {
-        owner: true,  
-        admin: true,   
-        quote: true,   
-        products: true, 
-        customers: true 
+        owner: true,
+        admin: true,
+        quote: true,
+        products: true,
+        customers: true,
       },
     });
   },
@@ -28,11 +28,11 @@ export const storeModel = {
         address: data.address,
         revenue: data.revenue || 0,
         owner: {
-          connect: data.ownerIds.map(id => ({ id })) 
+          connect: data.ownerIds.map((id) => ({ id })),
         },
         admin: {
-          connect: data.adminIds?.map(id => ({ id }))
-        }
+          connect: data.adminIds?.map((id) => ({ id })),
+        },
       },
     });
   },
@@ -45,8 +45,26 @@ export const storeModel = {
         admin: true,
         quote: true,
         products: true,
-        customers: true
-      }
+        customers: true,
+      },
+    });
+  },
+  async getStoreByOwnerId(userId: string) {
+    return await prisma.store.findMany({
+      where: {
+        owner: {
+          some: {
+            id: userId,
+          },
+        },
+      },
+      include: {
+        owner: true,
+        admin: true,
+        quote: true,
+        products: true,
+        customers: true,
+      },
     });
   },
 
@@ -56,29 +74,26 @@ export const storeModel = {
       name?: string;
       address?: string;
       revenue?: number;
-    }
+    },
   ) {
     return await prisma.store.update({
       where: { id },
       data: {
         name: data.name,
         address: data.address,
-        revenue: data.revenue
+        revenue: data.revenue,
       },
     });
   },
 
-  async updateStoreOwner(
-    storeId: string,
-    newOwnerIds: number[]
-  ) {
+  async updateStoreOwner(storeId: string, newOwnerIds: number[]) {
     return await prisma.store.update({
       where: { id: storeId },
       data: {
         owner: {
-          set: newOwnerIds.map(id => ({ id: id.toString() }))
-        }
-      }
+          set: newOwnerIds.map((id) => ({ id: id.toString() })),
+        },
+      },
     });
   },
 
@@ -96,10 +111,10 @@ export const storeModel = {
           select: {
             id: true,
             name: true,
-            price: true
-          }
-        }
-      }
+            price: true,
+          },
+        },
+      },
     });
   },
 
@@ -107,8 +122,8 @@ export const storeModel = {
     return await prisma.store.findUnique({
       where: { id: storeId },
       select: {
-        customers: true
-      }
+        customers: true,
+      },
     });
   },
 
@@ -116,8 +131,8 @@ export const storeModel = {
     return await prisma.store.findUnique({
       where: { id: storeId },
       select: {
-        quote: true
-      }
+        quote: true,
+      },
     });
-  }
+  },
 };

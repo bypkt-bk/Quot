@@ -154,7 +154,6 @@ export const appRouter = t.router({
     create: t.procedure
       .input(
         z.object({
-          customerId: z.string(),
           storeId: z.string(),
           products: z.array(
             z.object({
@@ -168,7 +167,6 @@ export const appRouter = t.router({
       )
       .mutation(({ input }) =>
         quotesService.createQuote(
-          input.customerId,
           input.storeId,
           input.products,
           input.orderDate,

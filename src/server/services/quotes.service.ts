@@ -11,14 +11,12 @@ export const quotesService = {
   },
 
   async createQuote(
-    customerId: string,
     storeId: string,
     products: Array<{ productId: string; quantity: number }>,
     orderDate: string,
     shippingOn?: string,
   ) {
     return await quoteModel.createQuote(
-      customerId,
       storeId,
       products,
       orderDate,

@@ -13,7 +13,12 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import {
+  ArrowUpDown,
+  ChevronDown,
+  MoreHorizontal,
+  PlusIcon,
+} from "lucide-react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -36,10 +41,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { Quote, Store } from "@/lib/shared";
+import { trpc } from "@/lib/trpc";
+import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export const columns: ColumnDef<Quote>[] = [
   {
-    accessorFn: (row) => row.customer.name, // use accessorFn to access customer
+    accessorFn: (row) => row.customer?.name, // use accessorFn to access customer
     id: "customer",
     header: ({ column }) => {
       return (
@@ -52,7 +64,7 @@ export const columns: ColumnDef<Quote>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div>{row.original.customer.name}</div>,
+    cell: ({ row }) => <div>{row.original.customer?.name ?? ""}</div>,
   },
   {
     accessorKey: "status",
@@ -159,12 +171,24 @@ export const columns: ColumnDef<Quote>[] = [
   },
 ];
 
-interface DataTableProps {
-  quote: Quote[];
-  name: string;
+interface DataProps {
+  store: Store;
 }
-const DataTable: React.FC<DataTableProps> = ({ quote, name }) => {
-  const [data] = React.useState<Quote[]>(quote);
+const DataTable: React.FC<DataProps> = (prop) => {
+  const [data, setData] = React.useState<Quote[]>([]);
+  const [storeId, setStoreId] = React.useState<string>("");
+  const [name, setName] = React.useState<string>("");
+  const [customerPhone, setCustomerPhone] = React.useState<string>("");
+  React.useEffect(() => {
+    const fetchData = async () => {
+      if (prop) {
+        setName(prop.store.name);
+        setData(prop.store.quote);
+        setStoreId(prop.store.id.toString());
+      }
+    };
+    fetchData();
+  }, []);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
@@ -195,7 +219,21 @@ const DataTable: React.FC<DataTableProps> = ({ quote, name }) => {
   React.useEffect(() => {
     table.setPageSize(8);
   }, [table]);
+  const handleNewQuote = async () => {
+    try {
+      const result = await trpc.quote.create.mutate({
+        storeId,
+        orderDate: new Date().toISOString(),
+        shippingOn: undefined,
+        products: [],
+      });
 
+      console.log("✅ New quote:", result);
+      window.location.href = `/store/quote/${result.id}`;
+    } catch (err) {
+      console.error("❌ Failed to create quote:", err);
+    }
+  };
   return (
     <div className="flex flex-col w-full h-[588px]">
       <h1
@@ -203,11 +241,15 @@ const DataTable: React.FC<DataTableProps> = ({ quote, name }) => {
           textAlign: "start",
           fontFamily: "Righteous",
           fontSize: "36px",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          maxWidth: "100%",
         }}
       >
         {name}
       </h1>
-      <div className="flex items-center py-2 gap-2">
+      <div className="flex items-center justify-between py-2 gap-2">
         <Input
           placeholder="Search customer..."
           value={
@@ -218,7 +260,44 @@ const DataTable: React.FC<DataTableProps> = ({ quote, name }) => {
           }
           className="max-w-sm border-[#3C3C3C] rounded-[6px] py-[20px]"
         />
-        <DropdownMenu>
+        <Button
+          variant="outline"
+          className="text-black"
+          onClick={handleNewQuote}
+        >
+          Quote
+          <PlusIcon />
+        </Button>
+        {/* <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline" className="text-black">
+              Quote
+              <PlusIcon />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-80">
+            <div className="grid gap-4">
+              <div className="space-y-2">
+                <h4 className="font-medium leading-none">Customer</h4>
+                <p className="text-sm text-muted-foreground">
+                  add customer phone number
+                </p>
+              </div>
+              <div className="grid gap-2">
+                <div className="grid grid-cols-3 items-center gap-4">
+                  <Label htmlFor="width">Phone</Label>
+                  <Input
+                    id="width"
+                    className="col-span-2 h-8"
+                    onChange={(e) => setCustomerPhone(e.target.value)}
+                  />
+                </div>
+                <Button onClick={handleNewQuote}>Create</Button>
+              </div>
+            </div>
+          </PopoverContent>
+        </Popover> */}
+        {/* <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
@@ -246,7 +325,7 @@ const DataTable: React.FC<DataTableProps> = ({ quote, name }) => {
                 );
               })}
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu> */}
       </div>
       <div className="border border-[#3C3C3C] rounded-[6px]">
         <Table>

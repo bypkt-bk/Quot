@@ -10,7 +10,6 @@ const storeId = Astro.params.store_id as string;
 let store!: Store;
 try {
   store = await trpc.store.getById.query(storeId);
-  console.log("quote data:", store.quote);
 } catch (e) {
   console.error("Error fetching store data:", e);
 }
@@ -22,7 +21,7 @@ try {
     <Navigation client:load />
   </div>
   <div class="data-container">
-    <DataTable client:load quote={store.quote} name={store.name} />
+    <DataTable client:load store={store} />
   </div>
 </div>
 

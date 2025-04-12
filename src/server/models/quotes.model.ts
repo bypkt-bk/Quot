@@ -33,21 +33,21 @@ export const quoteModel = {
   },
 
   async createQuote(
-    customerId: string,
     storeId: string,
     products: Array<{ productId: string; quantity: number }>,
     orderDate: string,
     status: Status = Status.unpaid,
     shippingOn?: string,
+    customerId?: string,
   ) {
     return await prisma.quote.create({
       data: {
-        customerId,
         storeId,
         orderDate,
         status,
         shippingOn,
         total: products.reduce((sum, p) => sum + p.quantity * 100, 0),
+        ...(customerId && { customerId }),
         products: {
           create: products.map((p) => ({
             productId: p.productId,

@@ -22,10 +22,10 @@ async function handleClick() {
   signInWithGoogle()
     .then(async ({ user, token }) => {
       console.log("User signed in successfully");
-      let User = await trpc.getUserById.query({ id: user.uid });
+      let User = await trpc.user.getByUserId.query(user.uid);
 
       if (!User) {
-        User = await trpc.createUser.mutate({
+        User = await trpc.user.create.mutate({
           googleId: user.uid,
           email: user.email,
           name: user.displayName,

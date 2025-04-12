@@ -17,7 +17,7 @@ export const quoteModel = {
     });
   },
 
-  async getQuoteById(id: number) {
+  async getQuoteById(id: string) {
     return await prisma.quote.findUnique({
       where: { id },
       include: {
@@ -33,9 +33,9 @@ export const quoteModel = {
   },
 
   async createQuote(
-    customerId: number,
-    storeId: number,
-    products: Array<{ productId: number; quantity: number }>,
+    customerId: string,
+    storeId: string,
+    products: Array<{ productId: string; quantity: number }>,
     orderDate: string,
     status: Status = Status.unpaid, 
     shippingOn?: string
@@ -61,14 +61,14 @@ export const quoteModel = {
     });
   },
 
-  async updateQuoteStatus(id: number, status: Status) {
+  async updateQuoteStatus(id: string, status: Status) {
     return await prisma.quote.update({
       where: { id },
       data: { status },
     });
   },
 
-  async deleteQuote(id: number) {
+  async deleteQuote(id: string) {
     return await prisma.quote.delete({
       where: { id },
     });

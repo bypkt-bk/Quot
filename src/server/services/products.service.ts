@@ -1,16 +1,16 @@
 import { productsModel } from "../models/products.model";
 
 export const productsService = {
-  async getStoreProducts(storeId: number) {
+  async getStoreProducts(storeId: string) {
     return await productsModel.getProductsByStoreId(storeId);
   },
 
-  async getProduct(id: number) {
+  async getProduct(id: string) {
     return await productsModel.getProductById(id);
   },
 
   async createProduct(
-    storeId: number,
+    storeId: string,
     name: string,
     price: number
   ) {
@@ -21,7 +21,7 @@ export const productsService = {
   },
 
   async updateProduct(
-    id: number,
+    id: string,
     data: {
       name?: string;
       price?: number;
@@ -30,7 +30,7 @@ export const productsService = {
     return await productsModel.updateProduct(id, data);
   },
 
-  async deleteProduct(id: number) {
+  async deleteProduct(id: string) {
     return await productsModel.deleteProduct(id);
   }
 };

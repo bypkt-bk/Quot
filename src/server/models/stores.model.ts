@@ -19,8 +19,8 @@ export const storeModel = {
     name: string;
     address: string;
     revenue?: number;
-    ownerIds: number[];
-    adminIds?: number[];
+    ownerIds: string[];
+    adminIds?: string[];
   }) {
     return await prisma.store.create({
       data: {
@@ -37,7 +37,7 @@ export const storeModel = {
     });
   },
 
-  async getStoreById(id: number) {
+  async getStoreById(id: string) {
     return await prisma.store.findUnique({
       where: { id },
       include: {
@@ -51,7 +51,7 @@ export const storeModel = {
   },
 
   async updateStore(
-    id: number,
+    id: string,
     data: {
       name?: string;
       address?: string;
@@ -69,26 +69,26 @@ export const storeModel = {
   },
 
   async updateStoreOwner(
-    storeId: number,
+    storeId: string,
     newOwnerIds: number[]
   ) {
     return await prisma.store.update({
       where: { id: storeId },
       data: {
         owner: {
-          set: newOwnerIds.map(id => ({ id }))
+          set: newOwnerIds.map(id => ({ id: id.toString() }))
         }
       }
     });
   },
 
-  async deleteStore(id: number) {
+  async deleteStore(id: string) {
     return await prisma.store.delete({
       where: { id },
     });
   },
 
-  async getStoreProducts(storeId: number) {
+  async getStoreProducts(storeId: string) {
     return await prisma.store.findUnique({
       where: { id: storeId },
       include: {
@@ -103,7 +103,7 @@ export const storeModel = {
     });
   },
 
-  async getStoreCustomers(storeId: number) {
+  async getStoreCustomers(storeId: string) {
     return await prisma.store.findUnique({
       where: { id: storeId },
       select: {
@@ -112,7 +112,7 @@ export const storeModel = {
     });
   },
 
-  async getStoreQuotes(storeId: number) {
+  async getStoreQuotes(storeId: string) {
     return await prisma.store.findUnique({
       where: { id: storeId },
       select: {

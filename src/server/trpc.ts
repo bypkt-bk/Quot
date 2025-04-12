@@ -13,23 +13,23 @@ export const appRouter = t.router({
   // Store Routes
   store: t.router({
     getAll: t.procedure.query(() => storesService.getStores()),
-    getById: t.procedure.input(z.number()).query(({ input }) => 
+    getById: t.procedure.input(z.string()).query(({ input }) => 
       storesService.getStoreById(input)
     ),
     create: t.procedure
       .input(z.object({
         name: z.string(),
         address: z.string(),
-        ownerIds: z.array(z.number()),
+        ownerIds: z.array(z.string()),
         revenue: z.number().optional(),
-        adminIds: z.array(z.number()).optional()
+        adminIds: z.array(z.string()).optional()
       }))
       .mutation(({ input }) => 
         storesService.createStore(input.name, input.address, input.ownerIds, input.revenue, input.adminIds)
       ),
     update: t.procedure
       .input(z.object({
-        id: z.number(),
+        id: z.string(),
         data: z.object({
           name: z.string().optional(),
           address: z.string().optional(),
@@ -41,28 +41,28 @@ export const appRouter = t.router({
       ),
     updateOwners: t.procedure
       .input(z.object({
-        id: z.number(),
+        id: z.string(),
         newOwnerIds: z.array(z.number())
       }))
       .mutation(({ input }) => 
         storesService.updateStoreOwner(input.id, input.newOwnerIds)
       ),
     delete: t.procedure
-      .input(z.number())
+      .input(z.string())
       .mutation(({ input }) => storesService.deleteStore(input))
   }),
 
   // Product Routes
   product: t.router({
     getByStore: t.procedure
-      .input(z.number())
+      .input(z.string())
       .query(({ input }) => productsService.getStoreProducts(input)),
     getById: t.procedure
-      .input(z.number())
+      .input(z.string())
       .query(({ input }) => productsService.getProduct(input)),
     create: t.procedure
       .input(z.object({
-        storeId: z.number(),
+        storeId: z.string(),
         name: z.string(),
         price: z.number()
       }))
@@ -71,7 +71,7 @@ export const appRouter = t.router({
       ),
     update: t.procedure
       .input(z.object({
-        id: z.number(),
+        id: z.string(),
         data: z.object({
           name: z.string().optional(),
           price: z.number().optional()
@@ -81,21 +81,21 @@ export const appRouter = t.router({
         productsService.updateProduct(input.id, input.data)
       ),
     delete: t.procedure
-      .input(z.number())
+      .input(z.string())
       .mutation(({ input }) => productsService.deleteProduct(input))
   }),
 
   // Customer Routes
   customer: t.router({
     getByStore: t.procedure
-      .input(z.number())
+      .input(z.string())
       .query(({ input }) => customersService.getStoreCustomers(input)),
     getById: t.procedure
-      .input(z.number())
+      .input(z.string())
       .query(({ input }) => customersService.getCustomer(input)),
     create: t.procedure
       .input(z.object({
-        storeId: z.number(),
+        storeId: z.string(),
         name: z.string(),
         address: z.string()
       }))
@@ -104,7 +104,7 @@ export const appRouter = t.router({
       ),
     update: t.procedure
       .input(z.object({
-        id: z.number(),
+        id: z.string(),
         data: z.object({
           name: z.string().optional(),
           address: z.string().optional()
@@ -114,7 +114,7 @@ export const appRouter = t.router({
         customersService.updateCustomer(input.id, input.data)
       ),
     delete: t.procedure
-      .input(z.number())
+      .input(z.string())
       .mutation(({ input }) => customersService.deleteCustomer(input))
   }),
 
@@ -122,14 +122,14 @@ export const appRouter = t.router({
   quote: t.router({
     getAll: t.procedure.query(() => quotesService.getAllQuotes()),
     getById: t.procedure
-      .input(z.number())
+      .input(z.string())
       .query(({ input }) => quotesService.getQuote(input)),
     create: t.procedure
       .input(z.object({
-        customerId: z.number(),
-        storeId: z.number(),
+        customerId: z.string(),
+        storeId: z.string(),
         products: z.array(z.object({
-          productId: z.number(),
+          productId: z.string(),
           quantity: z.number()
         })),
         orderDate: z.string(),
@@ -145,10 +145,10 @@ export const appRouter = t.router({
         )
       ),
     markPaid: t.procedure
-      .input(z.number())
+      .input(z.string())
       .mutation(({ input }) => quotesService.markAsPaid(input)),
     delete: t.procedure
-      .input(z.number())
+      .input(z.string())
       .mutation(({ input }) => quotesService.deleteQuote(input))
   }),
 

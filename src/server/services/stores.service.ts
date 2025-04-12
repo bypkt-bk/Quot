@@ -5,16 +5,16 @@ export const storesService = {
     return await storeModel.getAllStores(); 
   },
 
-  async getStoreById(id: number) {
+  async getStoreById(id: string) {
     return await storeModel.getStoreById(id);
   },
 
   async createStore(
     name: string,
     address: string,
-    ownerIds: number[],
+    ownerIds: string[],
     revenue?: number,
-    adminIds?: number[]
+    adminIds?: string[]
   ) {
     return await storeModel.createStore({
       name,
@@ -26,7 +26,7 @@ export const storesService = {
   },
 
   async updateStore(
-    id: number,
+    id: string,
     data: { 
       name?: string,
       address?: string,
@@ -36,23 +36,23 @@ export const storesService = {
     return await storeModel.updateStore(id, data);
   },
 
-  async updateStoreOwner(id: number, newOwnerIds: number[]) {
+  async updateStoreOwner(id: string, newOwnerIds: number[]) {
     return await storeModel.updateStoreOwner(id, newOwnerIds);
   },
 
-  async deleteStore(id: number) {
+  async deleteStore(id: string) {
     return await storeModel.deleteStore(id);
   },
 
-  async getStoreProducts(storeId: number) {
+  async getStoreProducts(storeId: string) {
     return await storeModel.getStoreProducts(storeId);
   },
 
-  async getStoreCustomers(storeId: number) {
+  async getStoreCustomers(storeId: string) {
     return await storeModel.getStoreCustomers(storeId);
   },
 
-  async getStoreQuotes(storeId: number) {
+  async getStoreQuotes(storeId: string) {
     return await storeModel.getStoreQuotes(storeId);
   }
 };

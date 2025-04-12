@@ -3,13 +3,13 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export const customersModel = {
-  async getCustomersByStoreId(storeId: number) {
+  async getCustomersByStoreId(storeId: string) {
     return await prisma.customer.findMany({
       where: { storeId },
     });
   },
 
-  async getCustomerById(id: number) {
+  async getCustomerById(id: string) {
     return await prisma.customer.findUnique({
       where: { id },
       include: {
@@ -19,7 +19,7 @@ export const customersModel = {
   },
 
   async createCustomer(
-    storeId: number,
+    storeId: string,
     data: {
       name: string;
       address: string;
@@ -34,7 +34,7 @@ export const customersModel = {
   },
 
   async updateCustomer(
-    id: number,
+    id: string,
     data: {
       name?: string;
       address?: string;
@@ -46,7 +46,7 @@ export const customersModel = {
     });
   },
 
-  async deleteCustomer(id: number) {
+  async deleteCustomer(id: string) {
     return await prisma.customer.delete({
       where: { id },
     });

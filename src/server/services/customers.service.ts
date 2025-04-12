@@ -1,16 +1,16 @@
 import { customersModel } from "../models/customers.model";
 
 export const customersService = {
-  async getStoreCustomers(storeId: number) {
+  async getStoreCustomers(storeId: string) {
     return await customersModel.getCustomersByStoreId(storeId);
   },
 
-  async getCustomer(id: number) {
+  async getCustomer(id: string) {
     return await customersModel.getCustomerById(id);
   },
 
   async createCustomer(
-    storeId: number,
+    storeId: string,
     name: string,
     address: string
   ) {
@@ -21,7 +21,7 @@ export const customersService = {
   },
 
   async updateCustomer(
-    id: number,
+    id: string,
     data: {
       name?: string;
       address?: string;
@@ -30,7 +30,7 @@ export const customersService = {
     return await customersModel.updateCustomer(id, data);
   },
 
-  async deleteCustomer(id: number) {
+  async deleteCustomer(id: string) {
     return await customersModel.deleteCustomer(id);
   }
 };

@@ -7,7 +7,7 @@ export const usersModel = {
     return await prisma.user.findMany();
   },
 
-  async getUserById(id: number) {
+  async getUserById(id: string) {
     return await prisma.user.findUnique({
       where: { id },
     });

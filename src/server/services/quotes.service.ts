@@ -6,14 +6,14 @@ export const quotesService = {
     return await quoteModel.getQuotes();
   },
 
-  async getQuote(id: number) {
+  async getQuote(id: string) {
     return await quoteModel.getQuoteById(id);
   },
 
   async createQuote(
-    customerId: number,
-    storeId: number,
-    products: Array<{ productId: number; quantity: number }>,
+    customerId: string,
+    storeId: string,
+    products: Array<{ productId: string; quantity: number }>,
     orderDate: string,
     shippingOn?: string
   ) {
@@ -27,11 +27,11 @@ export const quotesService = {
     );
   },
 
-  async markAsPaid(id: number) {
+  async markAsPaid(id: string) {
     return await quoteModel.updateQuoteStatus(id, Status.paid);
   },
 
-  async deleteQuote(id: number) {
+  async deleteQuote(id: string) {
     return await quoteModel.deleteQuote(id);
   }
 };

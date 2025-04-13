@@ -13,7 +13,12 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import {
+  ArrowUpDown,
+  ChevronDown,
+  MoreHorizontal,
+  PlusIcon,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -37,11 +42,19 @@ import {
 } from "@/components/ui/table";
 import type { Product } from "@/lib/shared";
 import { useState } from "react";
+import { trpc } from "@/lib/trpc";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Label } from "@/components/ui/label";
 
 interface DataTableProps {
   products: Product[];
+  storeId: string;
 }
-const ProductData: React.FC<DataTableProps> = ({ products }) => {
+const ProductData: React.FC<DataTableProps> = ({ products, storeId }) => {
   const data = products;
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -93,7 +106,28 @@ const ProductData: React.FC<DataTableProps> = ({ products }) => {
               ...prev,
               [row.id]: !prev[row.id],
             }));
+            trpc.product.update.mutate({
+              id: row.original.id,
+              data: {
+                name: productName,
+                price: row.original.price,
+              },
+            });
           }
+        };
+        const handleOnblur = () => {
+          row.original.name = productName;
+          setEditingRows((prev) => ({
+            ...prev,
+            [row.id]: !prev[row.id],
+          }));
+          trpc.product.update.mutate({
+            id: row.original.id,
+            data: {
+              name: productName,
+              price: row.original.price,
+            },
+          });
         };
         return (
           <Input
@@ -101,6 +135,7 @@ const ProductData: React.FC<DataTableProps> = ({ products }) => {
             value={productName}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
+            onBlur={handleOnblur}
             disabled={!isEditing}
           />
         );
@@ -137,7 +172,28 @@ const ProductData: React.FC<DataTableProps> = ({ products }) => {
               ...prev,
               [row.id]: !prev[row.id],
             }));
+            trpc.product.update.mutate({
+              id: row.original.id,
+              data: {
+                name: row.original.name,
+                price: productPrice,
+              },
+            });
           }
+        };
+        const handleOnblur = () => {
+          row.original.price = productPrice;
+          setEditingRows((prev) => ({
+            ...prev,
+            [row.id]: !prev[row.id],
+          }));
+          trpc.product.update.mutate({
+            id: row.original.id,
+            data: {
+              name: row.original.name,
+              price: productPrice,
+            },
+          });
         };
 
         return (
@@ -146,6 +202,7 @@ const ProductData: React.FC<DataTableProps> = ({ products }) => {
             value={productPrice}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
+            onBlur={handleOnblur}
             disabled={!isEditing}
           />
         );
@@ -156,6 +213,14 @@ const ProductData: React.FC<DataTableProps> = ({ products }) => {
       enableHiding: false,
       cell: ({ row }) => {
         const isEditing = editingRows[row.id];
+        const handleDelete = async () => {
+          try {
+            await trpc.product.delete.mutate(row.original.id);
+          } catch (error) {
+            alert("❌ this product is used in quote");
+            console.error(error);
+          }
+        };
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -175,7 +240,7 @@ const ProductData: React.FC<DataTableProps> = ({ products }) => {
               >
                 {isEditing ? "Stop Editing" : "Edit"}
               </DropdownMenuItem>
-              <DropdownMenuItem>Delete</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleDelete}>Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -203,7 +268,24 @@ const ProductData: React.FC<DataTableProps> = ({ products }) => {
   React.useEffect(() => {
     table.setPageSize(8);
   }, [table]);
+  const [newProductOpen, setNewProductOpen] = useState(false);
+
   const columnDefs = getColumns(editingRows, setEditingRows);
+  const [productName, setProductName] = useState<string>("");
+  const [productPrice, setProductPrice] = useState<number>(0);
+  const handleNewProduct = async () => {
+    if (productName && productPrice) {
+      await trpc.product.create.mutate({
+        storeId,
+        name: productName,
+        price: productPrice,
+      });
+      setProductName("");
+      setProductPrice(0);
+      setNewProductOpen(false);
+      window.location.reload();
+    }
+  };
 
   return (
     <div className="flex flex-col w-full h-[588px]">
@@ -216,7 +298,7 @@ const ProductData: React.FC<DataTableProps> = ({ products }) => {
       >
         Product
       </h1>
-      <div className="flex items-center pb-2 pt-2 shrink-0">
+      <div className="flex items-center justify-between pb-2 pt-2 shrink-0">
         <Input
           placeholder="Search product..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
@@ -225,6 +307,55 @@ const ProductData: React.FC<DataTableProps> = ({ products }) => {
           }
           className="max-w-sm border-[#3C3C3C] rounded-[6px] py-[20px]"
         />
+        <Popover open={newProductOpen} onOpenChange={setNewProductOpen}>
+          <PopoverTrigger asChild>
+            <Button variant="outline" className="text-black">
+              Quote
+              <PlusIcon />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-80" align="end">
+            <div className="grid gap-4">
+              <div className="space-y-2">
+                <h4 className="font-medium leading-none">Customer</h4>
+                <p className="text-sm text-muted-foreground">
+                  add customer phone number
+                </p>
+              </div>
+              <div className="grid gap-2">
+                <div className="grid grid-cols-3 items-center gap-4">
+                  <Label htmlFor="name">Product</Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    className="col-span-2 h-8"
+                    onChange={(e) => {
+                      setProductName(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="grid grid-cols-3 items-center gap-4">
+                  <Label htmlFor="price">Price</Label>
+                  <Input
+                    id="price"
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    className="col-span-2 h-8"
+                    value={productPrice}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      if (/^\d*$/.test(value)) {
+                        setProductPrice(Number(value));
+                      }
+                    }}
+                  />
+                </div>
+                <Button onClick={handleNewProduct}>Create</Button>
+              </div>
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
       <div className="border border-[#3C3C3C] rounded-[6px]">
         <Table>

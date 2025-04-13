@@ -41,6 +41,7 @@
     "lucide-react": "^0.485.0",
     "lucide-vue-next": "^0.484.0",
     "nanostores": "^0.11.4",
+    "next-themes": "^0.4.6",
     "prettier": "^3.5.3",
     "prettier-plugin-astro": "^0.14.1",
     "prisma": "^6.5.0",

@@ -84,7 +84,7 @@ export const columns: ColumnDef<Product>[] = [
       const amount = parseFloat(row.getValue("price"));
 
       // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
+      const formatted = new Intl.NumberFormat("th-US", {
         style: "currency",
         currency: "THB",
       }).format(amount);

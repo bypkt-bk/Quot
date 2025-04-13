@@ -178,7 +178,7 @@ const DataTable: React.FC<DataProps> = (prop) => {
   const [data, setData] = React.useState<Quote[]>([]);
   const [storeId, setStoreId] = React.useState<string>("");
   const [name, setName] = React.useState<string>("");
-  const [customerPhone, setCustomerPhone] = React.useState<string>("");
+  const [phoneNumber, setPhoneNumber] = React.useState<string>("");
   React.useEffect(() => {
     const fetchData = async () => {
       if (prop) {
@@ -219,26 +219,42 @@ const DataTable: React.FC<DataProps> = (prop) => {
   React.useEffect(() => {
     table.setPageSize(8);
   }, [table]);
-  const handleNewQuote = async () => {
-    try {
-      const alreadyExists = await trpc.customer.getById.query(customerPhone);
-      let result;
 
-      if (alreadyExists === null) {
-        await trpc.customer.create.mutate({
-          id: customerPhone,
+  const handleNewQuote = async () => {
+    if (!phoneNumber) {
+      alert("Please enter a phone number.");
+      return;
+    }
+    if (phoneNumber.length < 10 || phoneNumber.length > 10) {
+      alert("Please enter a valid phone number.");
+      return;
+    }
+    try {
+      const existingCustomer = await trpc.customer.getByStoreIdAndPhone.query({
+        storeId,
+        phoneNumber,
+      });
+
+      let customerId: string;
+
+      if (!existingCustomer) {
+        const newCustomer = await trpc.customer.create.mutate({
           storeId,
           name: "",
+          phoneNumber,
           address: "",
         });
+        customerId = newCustomer.id;
+      } else {
+        customerId = existingCustomer.id;
       }
 
-      result = await trpc.quote.create.mutate({
+      const result = await trpc.quote.create.mutate({
         storeId,
         orderDate: new Date().toISOString(),
         shippingOn: undefined,
         products: [],
-        customerId: customerPhone,
+        customerId,
       });
 
       console.log("✅ New quote:", result);
@@ -299,11 +315,17 @@ const DataTable: React.FC<DataProps> = (prop) => {
               </div>
               <div className="grid gap-2">
                 <div className="grid grid-cols-3 items-center gap-4">
-                  <Label htmlFor="width">Phone</Label>
+                  <Label htmlFor="phone">Phone</Label>
                   <Input
-                    id="width"
+                    id="phone"
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
                     className="col-span-2 h-8"
-                    onChange={(e) => setCustomerPhone(e.target.value)}
+                    onChange={(e) => {
+                      const onlyDigits = e.target.value.replace(/\D/g, "");
+                      setPhoneNumber(onlyDigits);
+                    }}
                   />
                 </div>
                 <Button onClick={handleNewQuote}>Create</Button>

@@ -51,6 +51,7 @@ model Quote {
   orderDate   String
   shippingOn  String?
   status      Status
+  address     String?
   customerId  String?
   customer    Customer?       @relation(fields: [customerId], references: [id])
   storeId     String
@@ -70,6 +71,7 @@ model QuoteProduct {
 model Customer {
   id         String     @id @default(cuid())
   name       String
+  phoneNumber String
   address    String
   storeId    String
   store      Store      @relation(fields: [storeId], references: [id])

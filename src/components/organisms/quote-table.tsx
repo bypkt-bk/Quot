@@ -53,6 +53,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { trpc } from "@/lib/trpc";
 
 export function DatePickerWithRange({
   className,
@@ -117,11 +118,9 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
   const [customerName, setCustomerName] = useState<string>(
     quote.customer?.name ?? "",
   );
-  const [customerAddress, setCustomerAddress] = useState<string>(
-    quote.customer?.address ?? "",
-  );
+  const [quoteAddress, setQuoteAddress] = useState<string>(quote.address ?? "");
   const [customerPhone, setCustomerPhone] = useState<string>(
-    quote.customer?.id ?? "",
+    quote.customer?.phoneNumber ?? "",
   );
 
   const columns: ColumnDef<QuoteProduct>[] = [
@@ -240,6 +239,37 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
     }
   }, [screenWidth, table]);
 
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      if (quote.customer?.id) {
+        trpc.customer.update.mutate({
+          id: quote.customer.id,
+          data: {
+            name: customerName,
+            phoneNumber: customerPhone,
+          },
+        });
+      }
+    }, 1000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [customerName, customerPhone]);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      trpc.quote.updateAddress.mutate({
+        id: quote.id,
+        address: quoteAddress,
+      });
+    }, 1000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [quoteAddress]);
+
   return (
     <div className="flex flex-col w-full h-[601px]">
       <h1
@@ -262,8 +292,8 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
         <div className="flex gap-2 w-full flex-nowrap">
           <Input
             placeholder="Address"
-            value={customerAddress}
-            onChange={(e) => setCustomerAddress(e.target.value)}
+            value={quoteAddress}
+            onChange={(e) => setQuoteAddress(e.target.value)}
             className=" border-[#3C3C3C] rounded-[6px] py-[20px]"
           />
           <Input

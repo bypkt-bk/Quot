@@ -40,6 +40,7 @@ export type Quote = {
   total: number;
   orderDate: string;
   shippingOn: string | null;
+  address: string | null;
   status: Status;
   customerId: number | null;
   customer: Customer | null;
@@ -60,6 +61,7 @@ export type QuoteProduct = {
 export type Customer = {
   id: string;
   name: string;
+  phoneNumber: string | null;
   address: string;
   storeId: string;
   store: Store;

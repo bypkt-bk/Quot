@@ -38,12 +38,14 @@ export const quoteModel = {
     products: Array<{ productId: string; quantity: number }>,
     orderDate: string,
     status: Status = Status.unpaid,
+    address?: string,
     shippingOn?: string,
   ) {
     return await prisma.quote.create({
       data: {
         storeId,
         orderDate,
+        address,
         status,
         shippingOn,
         total: products.reduce((sum, p) => sum + p.quantity * 100, 0),
@@ -60,7 +62,12 @@ export const quoteModel = {
       },
     });
   },
-
+  async updateAddress(id: string, address: string) {
+    return await prisma.quote.update({
+      where: { id },
+      data: { address },
+    });
+  },
   async updateQuoteStatus(id: string, status: Status) {
     return await prisma.quote.update({
       where: { id },

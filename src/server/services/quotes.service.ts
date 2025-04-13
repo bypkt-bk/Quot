@@ -15,6 +15,7 @@ export const quotesService = {
     customerId: string,
     products: Array<{ productId: string; quantity: number }>,
     orderDate: string,
+    address?: string,
     shippingOn?: string,
   ) {
     return await quoteModel.createQuote(
@@ -23,8 +24,12 @@ export const quotesService = {
       products,
       orderDate,
       Status.unpaid,
+      address,
       shippingOn,
     );
+  },
+  async updateAddress(id: string, address: string) {
+    return await quoteModel.updateAddress(id, address);
   },
 
   async markAsPaid(id: string) {

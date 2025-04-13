@@ -17,19 +17,30 @@ export const customersModel = {
       },
     });
   },
+  async getCustomerByStoreIdAndPhone(storeId: string, phoneNumber: string) {
+    return await prisma.customer.findFirst({
+      where: {
+        storeId,
+        phoneNumber,
+      },
+      include: {
+        quotes: true,
+        store: true,
+      },
+    });
+  },
 
   async createCustomer(
-    id: string,
     storeId: string,
     data: {
       name: string;
+      phoneNumber: string;
       address: string;
     },
   ) {
     return await prisma.customer.create({
       data: {
         ...data,
-        id,
         storeId,
       },
     });
@@ -40,6 +51,7 @@ export const customersModel = {
     data: {
       name?: string;
       address?: string;
+      phoneNumber?: string;
     },
   ) {
     return await prisma.customer.update({

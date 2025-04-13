@@ -114,20 +114,33 @@ export const appRouter = t.router({
     getById: t.procedure
       .input(z.string())
       .query(({ input }) => customersService.getCustomer(input)),
+    getByStoreIdAndPhone: t.procedure
+      .input(
+        z.object({
+          storeId: z.string(),
+          phoneNumber: z.string(),
+        }),
+      )
+      .query(({ input }) =>
+        customersService.getCustomerByStoreIdAndPhone(
+          input.storeId,
+          input.phoneNumber,
+        ),
+      ),
     create: t.procedure
       .input(
         z.object({
-          id: z.string(),
           storeId: z.string(),
           name: z.string(),
+          phoneNumber: z.string(),
           address: z.string(),
         }),
       )
       .mutation(({ input }) =>
         customersService.createCustomer(
-          input.id,
           input.storeId,
           input.name,
+          input.phoneNumber,
           input.address,
         ),
       ),
@@ -138,6 +151,7 @@ export const appRouter = t.router({
           data: z.object({
             name: z.string().optional(),
             address: z.string().optional(),
+            phoneNumber: z.string().optional(),
           }),
         }),
       )
@@ -178,6 +192,16 @@ export const appRouter = t.router({
           input.orderDate,
           input.shippingOn,
         ),
+      ),
+    updateAddress: t.procedure
+      .input(
+        z.object({
+          id: z.string(),
+          address: z.string(),
+        }),
+      )
+      .mutation(({ input }) =>
+        quotesService.updateAddress(input.id, input.address),
       ),
     markPaid: t.procedure
       .input(z.string())

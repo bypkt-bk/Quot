@@ -1,40 +1,42 @@
 <template>
   <div class="navbar">
-    <nav class="navigation1">
-      <a class="nav-btn" href="/account/1">
-        <CircleUserRound />
-        <p>Account</p>
-      </a>
-    </nav>
     <nav class="navigation2">
-      <a class="nav-btn" href="/home/1">
+      <a class="nav-btn" :href="`/home/${userId}`">
         <Home />
         <p>Home</p>
       </a>
-      <a class="nav-btn" href="/store/1">
+      <a class="nav-btn" :href="`/store/${props.storeId}`">
         <Store />
         <p>Store</p>
       </a>
-      <a class="nav-btn" href="/store/product/1">
+      <a class="nav-btn" :href="`/store/product/${props.storeId}`">
         <Archive />
         <p>Product</p>
       </a>
-      <a class="nav-btn" href="/dashboard/1">
+      <a class="nav-btn" :href="`/dashboard/${props.storeId}`">
         <ChartPie />
         <p>Dashboard</p>
+      </a>
+    </nav>
+    <nav class="navigation1">
+      <a class="nav-btn" :href="`/store/setting/${props.storeId}`">
+        <Settings />
+        <p>Setting</p>
       </a>
     </nav>
   </div>
 </template>
 
 <script setup>
-import {
-  Home,
-  Archive,
-  ChartPie,
-  CircleUserRound,
-  Store,
-} from "lucide-vue-next";
+import { Home, Archive, ChartPie, Settings, Store } from "lucide-vue-next";
+import { defineProps, onMounted, ref } from "vue";
+import VueCookies from "vue-cookies";
+const props = defineProps(["storeId"]);
+const userId = ref("");
+onMounted(() => {
+  const auth = VueCookies.get("auth");
+  userId.value = auth.userId;
+});
 </script>
 
 <style>

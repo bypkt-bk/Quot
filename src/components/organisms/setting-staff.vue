@@ -15,9 +15,7 @@
         <Users />
         <p>Admin</p>
       </div>
-      <select class="admin" placeholder="Admin">
-        <option>Banyaphon Kongtham</option>
-      </select>
+      coming soon
     </div>
   </div>
 </template>

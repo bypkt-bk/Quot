@@ -5,6 +5,8 @@ import SelectTable from "@/components/organisms/selectproduct-table";
 import { Status } from "@/lib/shared";
 import Header from "../organisms/header.vue";
 import type { Product, Quote, Store } from "@/lib/shared";
+const { storeId } = Astro.props as { storeId: string };
+
 const quote: Quote = {
   id: 1,
   total: 53000,
@@ -126,10 +128,10 @@ const product: Product[] = [
 ];
 ---
 
-<Header client:load/>
+<Header client:load />
 <div class="store-cotainer">
   <div class="navigation">
-    <Navigation client:load />
+    <Navigation client:load storeId={quote.storeId}/>
   </div>
   <div class="workspace">
     <div class="data-container">

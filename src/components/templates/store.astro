@@ -18,7 +18,7 @@ try {
 <Header client:load />
 <div class="store-cotainer">
   <div class="navigation">
-    <Navigation client:load />
+    <Navigation client:load storeId={store.id} />
   </div>
   <div class="data-container">
     <DataTable client:load store={store} />

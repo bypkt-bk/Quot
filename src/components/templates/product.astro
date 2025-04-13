@@ -3,7 +3,9 @@ import Header from "@/components/organisms/header.vue";
 import Navigation from "@/components/organisms/navigation.vue";
 import ProductData from "@/components/organisms/product-table.tsx";
 import type { Product } from "@/lib/shared";
-const data: Product[] = [
+const storeId = Astro.params.store_id as string;
+
+const product: Product[] = [
   {
     id: 1,
     name: "Pen",
@@ -61,13 +63,13 @@ const data: Product[] = [
 ];
 ---
 
-<Header client:load/>
+<Header client:load />
 <div class="product-cotainer">
   <div class="navigation">
-    <Navigation client:load />
+    <Navigation client:load storeId={storeId}/>
   </div>
   <div class="data-container">
-    <ProductData products={data} client:load />
+    <ProductData products={product} client:load />
   </div>
 </div>
 

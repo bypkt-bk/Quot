@@ -41,8 +41,8 @@ export type Quote = {
   orderDate: string;
   shippingOn: string | null;
   status: Status;
-  customerId: number;
-  customer: Customer;
+  customerId: number | null;
+  customer: Customer | null;
   storeId: number;
   store: Store;
   products: QuoteProduct[];

@@ -20,6 +20,8 @@
 
 <script setup>
 import { Store, MapPin } from "lucide-vue-next";
+const props = defineProps(["store"]);
+const store = [props.store];
 </script>
 
 <style scoped>

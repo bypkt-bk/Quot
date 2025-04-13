@@ -1,6 +1,6 @@
 ---
-import EditStores from "../organisms/edit-store.vue";
-import EditStaff from "../organisms/edit-staff.vue";
+import SettingStores from "../organisms/setting-store.vue";
+import SettingStaff from "../organisms/setting-staff.vue";
 import type { Store } from "@/lib/shared";
 import { trpc } from "@/lib/trpc";
 import Header from "../organisms/header.vue";
@@ -17,13 +17,13 @@ try {
 }
 ---
 
-<Header client:load/>
+<Header client:load />
 <div class="edit-page">
   <h1>{store.name}</h1>
   <button onclick="handleClick">Go Home</button>
   <div class="edit-form">
-    <EditStores client:load store={store} />
-    <EditStaff store={store} />
+    <SettingStores client:load store={store} />
+    <SettingStaff store={store} />
   </div>
 </div>
 

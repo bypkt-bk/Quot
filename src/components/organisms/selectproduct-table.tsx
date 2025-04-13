@@ -35,21 +35,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Product } from "@/lib/shared";
+import type { Product, Quote } from "@/lib/shared";
+import { trpc } from "@/lib/trpc";
+import { useEffect, useState } from "react";
 
 export const columns: ColumnDef<Product>[] = [
   {
     id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
+    // header: ({ table }) => (
+    //   <Checkbox
+    //     checked={
+    //       table.getIsAllPageRowsSelected() ||
+    //       (table.getIsSomePageRowsSelected() && "indeterminate")
+    //     }
+    //     onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+    //     aria-label="Select all"
+    //   />
+    // ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
@@ -94,8 +96,9 @@ export const columns: ColumnDef<Product>[] = [
 
 interface DataTableProps {
   products: Product[];
+  quote: Quote;
 }
-const ProductData: React.FC<DataTableProps> = ({ products }) => {
+const ProductData: React.FC<DataTableProps> = ({ products, quote }) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
@@ -103,10 +106,16 @@ const ProductData: React.FC<DataTableProps> = ({ products }) => {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+
   const data = products;
+  useEffect(() => {
+    const selectedIds = quote.products.map((p) => p.productId);
+    setRowSelection(Object.fromEntries(selectedIds.map((id) => [id, true])));
+  }, [quote]);
   const table = useReactTable({
     data,
     columns,
+    getRowId: (row) => row.id,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -122,9 +131,30 @@ const ProductData: React.FC<DataTableProps> = ({ products }) => {
       rowSelection,
     },
   });
-  React.useEffect(() => {
+  useEffect(() => {
     table.setPageSize(11);
   }, [table]);
+
+  const toggleSelectProduct = async ({
+    product,
+    isSelected,
+  }: {
+    product: Product;
+    isSelected: boolean;
+  }) => {
+    if (!isSelected) {
+      await trpc.quoteproduct.create.mutate({
+        quoteId: quote.id,
+        productId: product.id,
+      });
+    } else {
+      await trpc.quoteproduct.deleteQuoteProduct.mutate({
+        quoteId: quote.id,
+        productId: product.id,
+      });
+    }
+  };
+
   return (
     <div className="flex flex-col w-full h-[601px]">
       <h1
@@ -173,7 +203,14 @@ const ProductData: React.FC<DataTableProps> = ({ products }) => {
                   className="border-[#3C3C3C] hover:bg-neutral-600 data-[state=selected]:bg-neutral-600"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  onClick={() => row.toggleSelected(!row.getIsSelected())}
+                  onClick={() => {
+                    const nextSelected = !row.getIsSelected(); // ✅ ใช้ตัวแปรก่อน toggle
+                    row.toggleSelected(nextSelected);
+                    toggleSelectProduct({
+                      product: row.original,
+                      isSelected: !nextSelected, // ✅ ถูกต้อง
+                    });
+                  }}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

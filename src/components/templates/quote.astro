@@ -5,140 +5,34 @@ import SelectTable from "@/components/organisms/selectproduct-table";
 import { Status } from "@/lib/shared";
 import Header from "../organisms/header.vue";
 import type { Product, Quote, Store } from "@/lib/shared";
-const { storeId } = Astro.props as { storeId: string };
+import { trpc } from "@/lib/trpc";
+const quoteId = Astro.params.quote_id as string;
+let quote!: Quote;
+try {
+  quote = await trpc.quote.getById.query(quoteId);
+} catch (e) {
+  console.error("Error fetching quote data:", e);
+}
 
-const quote: Quote = {
-  id: 1,
-  total: 53000,
-  orderDate: "2025-03-05",
-  shippingOn: "2025-03-08",
-  status: Status.paid,
-  customerId: 1,
-  customer: {
-    id: 1,
-    name: "Nicha P.",
-    address: "Pattaya, Thailand",
-    storeId: 1,
-    store: {
-      id: 1,
-      name: "Tech & Toys",
-      address: "Bangkok, Thailand",
-      revenue: 1000000,
-      owner: [],
-      admin: [],
-      quote: [],
-      products: [],
-      customers: [],
-    },
-    quotes: [],
-  },
-  storeId: 1,
-  store: {
-    id: 1,
-    name: "Tech & Toys",
-    address: "Bangkok, Thailand",
-    revenue: 1000000,
-    owner: [],
-    admin: [],
-    quote: [],
-    products: [],
-    customers: [],
-  },
-  products: [
-    {
-      id: 1,
-      quoteId: 1,
-      productId: 205,
-      product: {
-        id: 205,
-        name: "Smartwatch",
-        price: 8000,
-        storeId: 1,
-        store: {} as Store,
-        quoteProducts: [],
-      },
-      quantity: 1,
-      quote: {} as Quote, // จะถูกแทนด้วย quote ตัวนี้ใน runtime
-    },
-    {
-      id: 2,
-      quoteId: 1,
-      productId: 314,
-      product: {
-        id: 314,
-        name: "Smartphone",
-        price: 15000,
-        storeId: 1,
-        store: {} as Store,
-        quoteProducts: [],
-      },
-      quantity: 3,
-      quote: {} as Quote,
-    },
-    {
-      id: 3,
-      quoteId: 1,
-      productId: 1,
-      product: {
-        id: 1,
-        name: "Bear",
-        price: 8000,
-        storeId: 1,
-        store: {} as Store,
-        quoteProducts: [],
-      },
-      quantity: 6,
-      quote: {} as Quote,
-    },
-    {
-      id: 4,
-      quoteId: 1,
-      productId: 2,
-      product: {
-        id: 2,
-        name: "Guitar",
-        price: 15000,
-        storeId: 1,
-        store: {} as Store,
-        quoteProducts: [],
-      },
-      quantity: 9,
-      quote: {} as Quote,
-    },
-  ],
-};
-
-const product: Product[] = [
-  {
-    id: 1,
-    name: "Pen",
-    price: 20,
-    storeId: 1,
-    store: {} as Store,
-    quoteProducts: [],
-  },
-  {
-    id: 2,
-    name: "Pencil",
-    price: 10,
-    storeId: 1,
-    store: {} as Store,
-    quoteProducts: [],
-  },
-];
+let product: Product[] = [];
+try {
+  product = await trpc.product.getByStore.query(quote.storeId);
+} catch (e) {
+  console.error("Error fetching product data:", e);
+}
 ---
 
 <Header client:load />
 <div class="store-cotainer">
   <div class="navigation">
-    <Navigation client:load storeId={quote.storeId}/>
+    <Navigation client:load storeId={quote.storeId} />
   </div>
   <div class="workspace">
     <div class="data-container">
       <QuoteData client:load quote={quote} />
     </div>
     <div class="item-container">
-      <SelectTable client:load products={product} />
+      <SelectTable client:load products={product} quote={quote} />
     </div>
   </div>
 </div>

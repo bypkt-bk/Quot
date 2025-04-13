@@ -1,5 +1,5 @@
 export type User = {
-  id: number;
+  id: string;
   googleId: string;
   email: string;
   name: string;
@@ -10,7 +10,7 @@ export type User = {
 };
 
 export type Store = {
-  id: number;
+  id: string;
   name: string;
   address: string;
   revenue: number;
@@ -22,10 +22,10 @@ export type Store = {
 };
 
 export type Product = {
-  id: number;
+  id: string;
   name: string;
   price: number;
-  storeId: number;
+  storeId: string;
   store: Store;
   quoteProducts: QuoteProduct[];
 };
@@ -36,32 +36,32 @@ export enum Status {
 }
 
 export type Quote = {
-  id: number;
+  id: string;
   total: number;
   orderDate: string;
   shippingOn: string | null;
   status: Status;
   customerId: number | null;
   customer: Customer | null;
-  storeId: number;
+  storeId: string;
   store: Store;
   products: QuoteProduct[];
 };
 
 export type QuoteProduct = {
-  id: number;
-  quoteId: number;
+  id: string;
+  quoteId: string;
   quote: Quote;
-  productId: number;
+  productId: string;
   product: Product;
   quantity: number;
 };
 
 export type Customer = {
-  id: number;
+  id: string;
   name: string;
   address: string;
-  storeId: number;
+  storeId: string;
   store: Store;
   quotes: Quote[];
 };

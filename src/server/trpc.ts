@@ -6,6 +6,7 @@ import { customersService } from "./services/customers.service";
 import { quotesService } from "./services/quotes.service";
 import { usersService } from "./services/users.service";
 import { Status } from "@prisma/client";
+import { quoteproduct } from "./models/quoteproduct.model";
 
 const t = initTRPC.create();
 
@@ -222,6 +223,50 @@ export const appRouter = t.router({
     delete: t.procedure
       .input(z.string())
       .mutation(({ input }) => usersService.deleteUser(input)),
+  }),
+  quoteproduct: t.router({
+    getByQuoteId: t.procedure
+      .input(z.string())
+      .query(({ input }) => quoteproduct.getAllQuoteProducts()),
+    getById: t.procedure
+      .input(z.string())
+      .query(({ input }) => quoteproduct.getQuoteProductById(input)),
+    create: t.procedure
+      .input(
+        z.object({
+          quoteId: z.string(),
+          productId: z.string(),
+        }),
+      )
+      .mutation(({ input }) =>
+        quoteproduct.createQuoteProduct(input.quoteId, input.productId),
+      ),
+    update: t.procedure
+      .input(
+        z.object({
+          id: z.string(),
+          data: z.object({
+            quantity: z.number().optional(),
+            price: z.number().optional(),
+          }),
+        }),
+      )
+      .mutation(({ input }) =>
+        quoteproduct.updateQuoteProduct(input.id, input.data),
+      ),
+    delete: t.procedure
+      .input(z.string())
+      .mutation(({ input }) => quoteproduct.deleteQuoteProductById(input)),
+    deleteQuoteProduct: t.procedure
+      .input(
+        z.object({
+          productId: z.string(),
+          quoteId: z.string(),
+        }),
+      )
+      .mutation(({ input }) =>
+        quoteproduct.deleteQuoteProduct(input.productId, input.quoteId),
+      ),
   }),
 });
 

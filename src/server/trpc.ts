@@ -64,6 +64,7 @@ export const appRouter = t.router({
       .mutation(({ input }) =>
         storesService.updateStoreOwner(input.id, input.newOwnerIds),
       ),
+
     delete: t.procedure
       .input(z.string())
       .mutation(({ input }) => storesService.deleteStore(input)),
@@ -203,9 +204,41 @@ export const appRouter = t.router({
       .mutation(({ input }) =>
         quotesService.updateAddress(input.id, input.address),
       ),
+    updateOrderOnAndShippingOn: t.procedure
+      .input(
+        z.object({
+          id: z.string(),
+          orderDate: z.string(),
+          shippingOn: z.string().nullable().optional(),
+        }),
+      )
+      .mutation(({ input }) =>
+        quotesService.updateOrderOnAndShippingOn(
+          input.id,
+          input.orderDate,
+          input.shippingOn,
+        ),
+      ),
+    updateTotal: t.procedure
+      .input(
+        z.object({
+          id: z.string(),
+          total: z.number(),
+        }),
+      )
+      .mutation(({ input }) =>
+        quotesService.updateTotal(input.id, input.total),
+      ),
     markPaid: t.procedure
-      .input(z.string())
-      .mutation(({ input }) => quotesService.markAsPaid(input)),
+      .input(
+        z.object({
+          id: z.string(),
+          status: z.enum([Status.unpaid, Status.paid]),
+        }),
+      )
+      .mutation(({ input }) =>
+        quotesService.markAsPaid(input.id, input.status),
+      ),
     delete: t.procedure
       .input(z.string())
       .mutation(({ input }) => quotesService.deleteQuote(input)),
@@ -253,6 +286,7 @@ export const appRouter = t.router({
       .input(z.string())
       .mutation(({ input }) => usersService.deleteUser(input)),
   }),
+  // Quote Product Routes
   quoteproduct: t.router({
     getByQuoteId: t.procedure
       .input(z.string())

@@ -1,7 +1,19 @@
 <template>
   <a class="card" :href="`/store/${store.id}`">
     <Stores class="store-icon" />
-    <h3>{{ store.name }}</h3>
+    <h3
+      :title="store.name"
+      :style="{
+        textAlign: 'start',
+        fontFamily: 'Righteous',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        maxWidth: '100%',
+      }"
+    >
+      {{ store.name }}
+    </h3>
     <div class="group">
       <Crown class="icon" />
       <span class="badge" v-for="owner in store.owner" :key="owner.id">{{

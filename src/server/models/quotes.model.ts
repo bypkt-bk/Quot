@@ -74,7 +74,22 @@ export const quoteModel = {
       data: { status },
     });
   },
-
+  async updateOrderOnAndShippingOn(
+    id: string,
+    orderDate: string,
+    shippingOn?: string | null,
+  ) {
+    return await prisma.quote.update({
+      where: { id },
+      data: { orderDate, shippingOn },
+    });
+  },
+  async updateTotal(id: string, total: number) {
+    return await prisma.quote.update({
+      where: { id },
+      data: { total },
+    });
+  },
   async deleteQuote(id: string) {
     return await prisma.quote.delete({
       where: { id },

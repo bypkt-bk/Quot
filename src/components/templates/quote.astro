@@ -29,7 +29,7 @@ try {
   </div>
   <div class="workspace">
     <div class="data-container">
-      <QuoteData client:load quote={quote} />
+      <QuoteData client:load quote={quote} storeName={quote.store.name} />
     </div>
     <div class="item-container">
       <SelectTable client:load products={product} quote={quote} />

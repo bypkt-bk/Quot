@@ -39,7 +39,6 @@ export const storesService = {
   ) {
     return await storeModel.updateStore(id, data);
   },
-
   async updateStoreOwner(id: string, newOwnerIds: number[]) {
     return await storeModel.updateStoreOwner(id, newOwnerIds);
   },

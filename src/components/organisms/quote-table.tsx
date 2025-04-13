@@ -57,11 +57,45 @@ import { trpc } from "@/lib/trpc";
 
 export function DatePickerWithRange({
   className,
-}: React.HTMLAttributes<HTMLDivElement>) {
+  quote,
+}: React.HTMLAttributes<HTMLDivElement> & { quote: Quote }) {
   const [date, setDate] = React.useState<DateRange | undefined>({
-    from: undefined,
-    to: undefined,
+    from: new Date(quote.orderDate),
+    to: quote.shippingOn ? new Date(quote.shippingOn) : undefined,
   });
+  useEffect(() => {
+    const updateDates = async () => {
+      try {
+        if (date === undefined) {
+          await trpc.quote.updateOrderOnAndShippingOn.mutate({
+            id: quote.id,
+            orderDate: new Date().toISOString(),
+            shippingOn: null,
+          });
+          setDate({
+            from: new Date(),
+            to: undefined,
+          });
+        } else if (date?.from && date.to === undefined) {
+          await trpc.quote.updateOrderOnAndShippingOn.mutate({
+            id: quote.id,
+            orderDate: date.from.toISOString(),
+            shippingOn: null,
+          });
+        } else if (date?.from && date?.to) {
+          await trpc.quote.updateOrderOnAndShippingOn.mutate({
+            id: quote.id,
+            orderDate: date.from.toISOString(),
+            shippingOn: date.to.toISOString(),
+          });
+        }
+      } catch (err) {
+        console.error("❌ Failed to update quote dates:", err);
+      }
+    };
+
+    updateDates();
+  }, [date, quote.id]);
 
   return (
     <div className={cn("grid gap-2", className)}>
@@ -109,8 +143,9 @@ export function DatePickerWithRange({
 }
 interface DataTableProps {
   quote: Quote;
+  storeName: string;
 }
-const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
+const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
@@ -122,6 +157,26 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
   const [customerPhone, setCustomerPhone] = useState<string>(
     quote.customer?.phoneNumber ?? "",
   );
+  const [totalQuote, setTotalQuote] = useState<number>(quote.total ?? 0);
+  const [status, setStatus] = useState<Status>(quote.status);
+
+  useEffect(() => {
+    const total = product.reduce((sum, prod) => {
+      return sum + prod.quantity * prod.product.price;
+    }, 0);
+    setTotalQuote(total);
+  }, [product]);
+
+  useEffect(() => {
+    try {
+      trpc.quote.updateTotal.mutate({
+        id: quote.id,
+        total: totalQuote,
+      });
+    } catch (err) {
+      console.error("❌ Failed to update quote total:", err);
+    }
+  }, [totalQuote, quote.id]);
 
   const columns: ColumnDef<QuoteProduct>[] = [
     {
@@ -129,31 +184,26 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
       header: "Quantity",
       cell: ({ row }) => {
         const [quantity, setQuantity] = useState<number>(row.original.quantity);
-
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           const newValue = Number(e.target.value);
           setQuantity(newValue);
-          row.original.quantity = newValue;
         };
 
-        const handleBlur = () => {
+        const commitQuantity = async () => {
           setProduct((prevProducts) =>
             prevProducts.map((prod) =>
               prod.product.id === row.original.product.id
-                ? { ...prod, quantity: row.original.quantity }
+                ? { ...prod, quantity }
                 : prod,
             ),
           );
-        };
-        const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-          if (e.key === "Enter") {
-            setProduct((prevProducts) =>
-              prevProducts.map((prod) =>
-                prod.product.id === row.original.product.id
-                  ? { ...prod, quantity: row.original.quantity }
-                  : prod,
-              ),
-            );
+          try {
+            await trpc.quoteproduct.update.mutate({
+              id: row.original.id,
+              data: { quantity: quantity },
+            });
+          } catch (err) {
+            console.error("❌ Failed to update product quantity:", err);
           }
         };
 
@@ -163,8 +213,13 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
               type="number"
               value={quantity}
               onChange={handleChange}
-              onBlur={handleBlur}
-              onKeyDown={handleKeyDown}
+              onBlur={commitQuantity}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  commitQuantity();
+                }
+              }}
               className="w-full px-2 py-1 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             />
           </div>
@@ -203,6 +258,7 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
   const table = useReactTable<QuoteProduct>({
     data: product,
     columns,
+    autoResetPageIndex: false,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -270,17 +326,49 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
     };
   }, [quoteAddress]);
 
+  const toggleStatus = async () => {
+    const newStatus = status === Status.unpaid ? Status.paid : Status.unpaid;
+
+    setStatus(newStatus); // อัปเดต UI ทันที
+    try {
+      await trpc.quote.markPaid.mutate({
+        id: quote.id,
+        status: newStatus, // ใช้ค่าที่แน่นอน
+      });
+    } catch (err) {
+      console.error("❌ Failed to update quote status:", err);
+    }
+  };
+
   return (
     <div className="flex flex-col w-full h-[601px]">
-      <h1
-        style={{
-          textAlign: "start",
-          fontFamily: "Righteous",
-          fontSize: "36px",
-        }}
-      >
-        Banyaphon's store
-      </h1>
+      <div className="flex items-center justify-between py-2 gap-2">
+        <h1
+          title={storeName}
+          style={{
+            textAlign: "start",
+            fontFamily: "Righteous",
+            fontSize: "36px",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            maxWidth: "100%",
+          }}
+        >
+          {storeName}
+        </h1>
+        <Button
+          variant="outline"
+          onClick={toggleStatus}
+          className={
+            status === Status.paid
+              ? "text-green-500 hover:text-green-600 text-[12px] w-[70px] cursor-pointer bg-green-100 hover:bg-green-200 border-none"
+              : "text-red-500 hover:text-red-600 text-[12px] w-[70px] cursor-pointer bg-red-100 hover:bg-red-200 border-none"
+          }
+        >
+          {status.toUpperCase()}
+        </Button>
+      </div>
       <div className="flex w-full justify-between flex-wrap gap-2 py-2">
         <Input
           placeholder="Customer name"
@@ -288,7 +376,7 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
           onChange={(e) => setCustomerName(e.target.value)}
           className="flex-1 min-w-[248px] border-[#3C3C3C] rounded-[6px] py-[20px]"
         />
-        <DatePickerWithRange />
+        <DatePickerWithRange quote={quote} />
         <div className="flex gap-2 w-full flex-nowrap">
           <Input
             placeholder="Address"
@@ -356,8 +444,8 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
         </Table>
       </div>
       <div className="flex flex-grow justify-between items-end">
-        <div className="text-nowrap text-sm text-muted-foreground justify-end flex h-[32px] items-center">
-          {table.getFilteredRowModel().rows.length} product(s).
+        <div className="text-nowrap text-[20px] justify-end flex h-[32px] items-center">
+          total price: ฿{totalQuote}
         </div>
         <div className="space-x-2">
           <Button
@@ -382,3 +470,6 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
   );
 };
 export default QuoteData;
+function useDebounce(totalQuote: number, arg1: number) {
+  throw new Error("Function not implemented.");
+}

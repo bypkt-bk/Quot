@@ -153,6 +153,7 @@ const ProductData: React.FC<DataTableProps> = ({ products, quote }) => {
         productId: product.id,
       });
     }
+    window.location.reload();
   };
 
   return (
@@ -166,6 +167,7 @@ const ProductData: React.FC<DataTableProps> = ({ products, quote }) => {
       >
         Product
       </h1>
+
       <div className="flex items-center pb-2 pt-2 shrink-0">
         <Input
           placeholder="Search product..."

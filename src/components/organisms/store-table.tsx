@@ -148,8 +148,21 @@ export const columns: ColumnDef<Quote>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
-
+      const storeId = row.original.id;
+      const handleDelete = async () => {
+        const confirmed = confirm(
+          "Are you sure you want to delete this quote? This action cannot be undone.",
+        );
+        if (confirmed) {
+          try {
+            await trpc.quote.delete.mutate(storeId);
+            console.log("✅ Quote deleted:", storeId);
+            window.location.reload();
+          } catch (err) {
+            console.error("❌ Failed to delete quote:", err);
+          }
+        }
+      };
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -163,7 +176,14 @@ export const columns: ColumnDef<Quote>[] = [
             <DropdownMenuItem>Copy payment ID</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete();
+              }}
+            >
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -267,6 +287,7 @@ const DataTable: React.FC<DataProps> = (prop) => {
   return (
     <div className="flex flex-col w-full h-[588px]">
       <h1
+        title={name}
         style={{
           textAlign: "start",
           fontFamily: "Righteous",

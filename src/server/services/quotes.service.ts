@@ -32,10 +32,23 @@ export const quotesService = {
     return await quoteModel.updateAddress(id, address);
   },
 
-  async markAsPaid(id: string) {
-    return await quoteModel.updateQuoteStatus(id, Status.paid);
+  async markAsPaid(id: string, status: Status) {
+    return await quoteModel.updateQuoteStatus(id, status);
   },
-
+  async updateOrderOnAndShippingOn(
+    id: string,
+    orderDate: string,
+    shippingOn?: string | null,
+  ) {
+    return await quoteModel.updateOrderOnAndShippingOn(
+      id,
+      orderDate,
+      shippingOn,
+    );
+  },
+  async updateTotal(id: string, total: number) {
+    return await quoteModel.updateTotal(id, total);
+  },
   async deleteQuote(id: string) {
     return await quoteModel.deleteQuote(id);
   },

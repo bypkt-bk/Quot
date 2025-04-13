@@ -1,19 +1,30 @@
 ---
 import EditStores from "../organisms/edit-store.vue";
 import EditStaff from "../organisms/edit-staff.vue";
-
+import type { Store } from "@/lib/shared";
+import { trpc } from "@/lib/trpc";
+import Header from "../organisms/header.vue";
 function handleClick() {
   window.location.href = "/";
 }
+
+const { storeId } = Astro.props as { storeId: string };
+let store!: Store;
+try {
+  store = await trpc.store.getById.query(storeId);
+} catch (err) {
+  console.error("Failed to fetch store:", err);
+}
 ---
 
+<Header client:load/>
 <div class="edit-page">
-  <h1>Banyaphon’s Store</h1>
+  <h1>{store.name}</h1>
+  <button onclick="handleClick">Go Home</button>
   <div class="edit-form">
-    <EditStores client:load />
-    <EditStaff />
+    <EditStores client:load store={store} />
+    <EditStaff store={store} />
   </div>
-  <button onclick="handleClick()">Go Home</button>
 </div>
 
 <style scoped>

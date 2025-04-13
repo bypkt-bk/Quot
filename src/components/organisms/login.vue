@@ -22,7 +22,7 @@ async function handleClick() {
   signInWithGoogle()
     .then(async ({ user, token }) => {
       console.log("User signed in successfully");
-      let User = await trpc.user.getByUserId.query(user.uid);
+      let User = await trpc.user.getByGoogleId.query(user.uid);
 
       if (!User) {
         User = await trpc.user.create.mutate({
@@ -31,7 +31,7 @@ async function handleClick() {
           name: user.displayName,
         });
       }
-      VueCookies.set("auth", token, "7d");
+      VueCookies.set("auth", JSON.stringify({ token, userId: User.id }), "7d");
       window.location.href = `/home/${User.id}`;
     })
     .catch((error) => {

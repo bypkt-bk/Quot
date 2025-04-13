@@ -34,11 +34,11 @@ export const quoteModel = {
 
   async createQuote(
     storeId: string,
+    customerId: string,
     products: Array<{ productId: string; quantity: number }>,
     orderDate: string,
     status: Status = Status.unpaid,
     shippingOn?: string,
-    customerId?: string,
   ) {
     return await prisma.quote.create({
       data: {

@@ -9,8 +9,13 @@ export const customersService = {
     return await customersModel.getCustomerById(id);
   },
 
-  async createCustomer(storeId: string, name: string, address: string) {
-    return await customersModel.createCustomer(storeId, {
+  async createCustomer(
+    id: string,
+    storeId: string,
+    name: string,
+    address: string,
+  ) {
+    return await customersModel.createCustomer(id, storeId, {
       name,
       address,
     });

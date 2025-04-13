@@ -37,6 +37,7 @@
     "eslint-plugin-vue": "^10.0.0",
     "firebase": "^11.6.0",
     "firebase-admin": "^13.2.0",
+    "jotai": "^2.12.2",
     "lucide-react": "^0.485.0",
     "lucide-vue-next": "^0.484.0",
     "nanostores": "^0.11.4",

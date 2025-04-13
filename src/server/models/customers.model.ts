@@ -19,6 +19,7 @@ export const customersModel = {
   },
 
   async createCustomer(
+    id: string,
     storeId: string,
     data: {
       name: string;
@@ -28,6 +29,7 @@ export const customersModel = {
     return await prisma.customer.create({
       data: {
         ...data,
+        id,
         storeId,
       },
     });

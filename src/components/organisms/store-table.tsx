@@ -221,11 +221,24 @@ const DataTable: React.FC<DataProps> = (prop) => {
   }, [table]);
   const handleNewQuote = async () => {
     try {
-      const result = await trpc.quote.create.mutate({
+      const alreadyExists = await trpc.customer.getById.query(customerPhone);
+      let result;
+
+      if (alreadyExists === null) {
+        await trpc.customer.create.mutate({
+          id: customerPhone,
+          storeId,
+          name: "",
+          address: "",
+        });
+      }
+
+      result = await trpc.quote.create.mutate({
         storeId,
         orderDate: new Date().toISOString(),
         shippingOn: undefined,
         products: [],
+        customerId: customerPhone,
       });
 
       console.log("✅ New quote:", result);
@@ -234,6 +247,7 @@ const DataTable: React.FC<DataProps> = (prop) => {
       console.error("❌ Failed to create quote:", err);
     }
   };
+
   return (
     <div className="flex flex-col w-full h-[588px]">
       <h1
@@ -260,22 +274,22 @@ const DataTable: React.FC<DataProps> = (prop) => {
           }
           className="max-w-sm border-[#3C3C3C] rounded-[6px] py-[20px]"
         />
-        <Button
+        {/* <Button
           variant="outline"
           className="text-black"
           onClick={handleNewQuote}
         >
           Quote
           <PlusIcon />
-        </Button>
-        {/* <Popover>
+        </Button> */}
+        <Popover>
           <PopoverTrigger asChild>
             <Button variant="outline" className="text-black">
               Quote
               <PlusIcon />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-80">
+          <PopoverContent className="w-80" align="end">
             <div className="grid gap-4">
               <div className="space-y-2">
                 <h4 className="font-medium leading-none">Customer</h4>
@@ -296,7 +310,7 @@ const DataTable: React.FC<DataProps> = (prop) => {
               </div>
             </div>
           </PopoverContent>
-        </Popover> */}
+        </Popover>
         {/* <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button

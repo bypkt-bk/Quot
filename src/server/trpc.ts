@@ -7,6 +7,7 @@ import { quotesService } from "./services/quotes.service";
 import { usersService } from "./services/users.service";
 import { Status } from "@prisma/client";
 import { quoteproduct } from "./models/quoteproduct.model";
+import { custom } from "astro:schema";
 
 const t = initTRPC.create();
 
@@ -116,6 +117,7 @@ export const appRouter = t.router({
     create: t.procedure
       .input(
         z.object({
+          id: z.string(),
           storeId: z.string(),
           name: z.string(),
           address: z.string(),
@@ -123,6 +125,7 @@ export const appRouter = t.router({
       )
       .mutation(({ input }) =>
         customersService.createCustomer(
+          input.id,
           input.storeId,
           input.name,
           input.address,
@@ -164,11 +167,13 @@ export const appRouter = t.router({
           ),
           orderDate: z.string(),
           shippingOn: z.string().optional(),
+          customerId: z.string(),
         }),
       )
       .mutation(({ input }) =>
         quotesService.createQuote(
           input.storeId,
+          input.customerId,
           input.products,
           input.orderDate,
           input.shippingOn,

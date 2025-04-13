@@ -34,7 +34,7 @@
     <div class="mobile-nav">
       <Menu />
       <div class="badge-wrapper" @click.stop="togglePopover">
-        <span class="badge">{{ getInitials(user์ame) }}</span>
+        <span class="badge">{{ getInitials(userName) }}</span>
         <div v-if="showPopover" class="popover">
           <ul>
             <li @click="goToSettings">Account</li>

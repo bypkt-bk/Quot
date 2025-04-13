@@ -120,6 +120,9 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
   const [customerAddress, setCustomerAddress] = useState<string>(
     quote.customer?.address ?? "",
   );
+  const [customerPhone, setCustomerPhone] = useState<string>(
+    quote.customer?.id ?? "",
+  );
 
   const columns: ColumnDef<QuoteProduct>[] = [
     {
@@ -256,12 +259,20 @@ const QuoteData: React.FC<DataTableProps> = ({ quote }) => {
           className="flex-1 min-w-[248px] border-[#3C3C3C] rounded-[6px] py-[20px]"
         />
         <DatePickerWithRange />
-        <Input
-          placeholder="Address"
-          value={customerAddress}
-          onChange={(e) => setCustomerAddress(e.target.value)}
-          className="min-w-[248px] border-[#3C3C3C] rounded-[6px] py-[20px]"
-        />
+        <div className="flex gap-2 w-full flex-nowrap">
+          <Input
+            placeholder="Address"
+            value={customerAddress}
+            onChange={(e) => setCustomerAddress(e.target.value)}
+            className=" border-[#3C3C3C] rounded-[6px] py-[20px]"
+          />
+          <Input
+            placeholder="Phone"
+            value={customerPhone}
+            onChange={(e) => setCustomerPhone(e.target.value)}
+            className="max-w-[300px] border-[#3C3C3C] rounded-[6px] py-[20px]"
+          />
+        </div>
       </div>
       <div className="border border-[#3C3C3C] rounded-[6px]">
         <Table>

@@ -243,7 +243,7 @@ const ProductData: React.FC<DataTableProps> = ({ products, quote }) => {
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
         </div>
-        <div className="space-x-2">
+        <div className="flex flex-nowrap">
           <Button
             variant="ghost"
             size="sm"

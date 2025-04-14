@@ -333,9 +333,11 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
     }
   };
 
+  const handdlePrint = () => {};
+
   return (
     <div className="flex flex-col w-full min-h-[650px] h-fit">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-nowrap">
         <h1
           title={storeName}
           style={{
@@ -350,18 +352,9 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
         >
           {storeName}
         </h1>
-
-        {/* <Button
-          variant="outline"
-          onClick={toggleStatus}
-          className={
-            status === Status.paid
-              ? "text-green-500 hover:text-green-600 text-[12px] w-[70px] cursor-pointer bg-green-100 hover:bg-green-200 border-none"
-              : "text-red-500 hover:text-red-600 text-[12px] w-[70px] cursor-pointer bg-red-100 hover:bg-red-200 border-none"
-          }
-        >
-          {status.toUpperCase()}
-        </Button> */}
+        <Button variant="outline" onClick={handdlePrint} className="text-black">
+          Print
+        </Button>
       </div>
       <div className="flex w-full justify-between flex-wrap gap-2 py-2">
         <Input
@@ -447,7 +440,7 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
         <div className="text-nowrap text-[16px] justify-end flex h-[32px] items-center">
           total price: ฿{totalQuote}
         </div>
-        <div className="space-x-2">
+        <div className="flex flex-nowrap">
           <Button
             variant="ghost"
             size="sm"

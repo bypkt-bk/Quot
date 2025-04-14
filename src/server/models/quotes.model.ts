@@ -1,4 +1,9 @@
-import { PrismaClient, Status } from "@prisma/client";
+import {
+  PrismaClient,
+  Status,
+  PaymentType,
+  type QuoteProduct,
+} from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -35,25 +40,34 @@ export const quoteModel = {
   async createQuote(
     storeId: string,
     customerId: string,
-    products: Array<{ productId: string; quantity: number }>,
+    products: {
+      productId: string;
+      quantity: number;
+      unitPrice: number;
+    }[],
     orderDate: string,
+    type: PaymentType = PaymentType.cash,
     status: Status = Status.unpaid,
     address?: string,
-    shippingOn?: string,
+    shippingOn?: string | null,
+    creditTerm?: number,
   ) {
     return await prisma.quote.create({
       data: {
         storeId,
         orderDate,
         address,
+        type,
         status,
         shippingOn,
+        creditTerm,
         total: products.reduce((sum, p) => sum + p.quantity * 100, 0),
         ...(customerId && { customerId }),
         products: {
           create: products.map((p) => ({
             productId: p.productId,
             quantity: p.quantity,
+            unitPrice: p.unitPrice,
           })),
         },
       },

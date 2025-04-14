@@ -36,6 +36,7 @@ export const customersModel = {
       name: string;
       phoneNumber: string;
       address: string;
+      taxId: string;
     },
   ) {
     return await prisma.customer.create({
@@ -52,6 +53,7 @@ export const customersModel = {
       name?: string;
       address?: string;
       phoneNumber?: string;
+      taxId?: string;
     },
   ) {
     return await prisma.customer.update({

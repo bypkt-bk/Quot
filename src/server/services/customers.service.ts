@@ -20,11 +20,13 @@ export const customersService = {
     name: string,
     phoneNumber: string,
     address: string,
+    taxId: string,
   ) {
     return await customersModel.createCustomer(storeId, {
       name,
       phoneNumber,
       address,
+      taxId,
     });
   },
 
@@ -34,6 +36,7 @@ export const customersService = {
       name?: string;
       address?: string;
       phoneNumber?: string;
+      taxId?: string;
     },
   ) {
     return await customersModel.updateCustomer(id, data);

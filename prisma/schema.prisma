@@ -45,17 +45,24 @@ enum Status {
   paid
 }
 
+enum PaymentType {
+  cash
+  creditterm
+}
+
 model Quote {
   id          String          @id @default(cuid())
   total       Float
   orderDate   String
   shippingOn  String?
+  type        PaymentType
+  creditTerm  Float?
   status      Status
   address     String?
   customerId  String?
   customer    Customer?       @relation(fields: [customerId], references: [id])
   storeId     String
-  store       Store           @relation(fields: [storeId], references: [id])
+  store   1    Store           @relation(fields: [storeId], references: [id])
   products    QuoteProduct[]
 }
 
@@ -66,11 +73,13 @@ model QuoteProduct {
   productId  String
   product    Product        @relation(fields: [productId], references: [id])
   quantity   Int
+  unitPrice Float
 }
 
 model Customer {
   id         String     @id @default(cuid())
   name       String
+  taxId      String?
   phoneNumber String
   address    String
   storeId    String

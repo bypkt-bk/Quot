@@ -135,6 +135,7 @@ export const appRouter = t.router({
           name: z.string(),
           phoneNumber: z.string(),
           address: z.string(),
+          taxId: z.string(),
         }),
       )
       .mutation(({ input }) =>
@@ -143,6 +144,7 @@ export const appRouter = t.router({
           input.name,
           input.phoneNumber,
           input.address,
+          input.taxId,
         ),
       ),
     update: t.procedure
@@ -153,6 +155,7 @@ export const appRouter = t.router({
             name: z.string().optional(),
             address: z.string().optional(),
             phoneNumber: z.string().optional(),
+            taxId: z.string().optional(),
           }),
         }),
       )
@@ -174,15 +177,17 @@ export const appRouter = t.router({
       .input(
         z.object({
           storeId: z.string(),
+          customerId: z.string(),
           products: z.array(
             z.object({
               productId: z.string(),
               quantity: z.number(),
+              unitPrice: z.number(),
             }),
           ),
           orderDate: z.string(),
-          shippingOn: z.string().optional(),
-          customerId: z.string(),
+          address: z.string().optional(),
+          shippingOn: z.string().nullable().optional(),
         }),
       )
       .mutation(({ input }) =>
@@ -191,6 +196,7 @@ export const appRouter = t.router({
           input.customerId,
           input.products,
           input.orderDate,
+          input.address,
           input.shippingOn,
         ),
       ),
@@ -219,16 +225,7 @@ export const appRouter = t.router({
           input.shippingOn,
         ),
       ),
-    updateTotal: t.procedure
-      .input(
-        z.object({
-          id: z.string(),
-          total: z.number(),
-        }),
-      )
-      .mutation(({ input }) =>
-        quotesService.updateTotal(input.id, input.total),
-      ),
+
     markPaid: t.procedure
       .input(
         z.object({
@@ -299,10 +296,15 @@ export const appRouter = t.router({
         z.object({
           quoteId: z.string(),
           productId: z.string(),
+          unitPrice: z.number(),
         }),
       )
       .mutation(({ input }) =>
-        quoteproduct.createQuoteProduct(input.quoteId, input.productId),
+        quoteproduct.createQuoteProduct(
+          input.quoteId,
+          input.productId,
+          input.unitPrice,
+        ),
       ),
     update: t.procedure
       .input(
@@ -311,6 +313,7 @@ export const appRouter = t.router({
           data: z.object({
             quantity: z.number().optional(),
             price: z.number().optional(),
+            unitPrice: z.number().optional(),
           }),
         }),
       )

@@ -1,5 +1,5 @@
 import { quoteModel } from "../models/quotes.model";
-import { Status } from "@prisma/client";
+import { Status, type QuoteProduct, PaymentType } from "@prisma/client";
 
 export const quotesService = {
   async getAllQuotes() {
@@ -13,16 +13,21 @@ export const quotesService = {
   async createQuote(
     storeId: string,
     customerId: string,
-    products: Array<{ productId: string; quantity: number }>,
+    products: {
+      productId: string;
+      quantity: number;
+      unitPrice: number;
+    }[],
     orderDate: string,
     address?: string,
-    shippingOn?: string,
+    shippingOn?: string | null,
   ) {
     return await quoteModel.createQuote(
       storeId,
       customerId,
       products,
       orderDate,
+      PaymentType.cash,
       Status.unpaid,
       address,
       shippingOn,

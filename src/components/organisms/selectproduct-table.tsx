@@ -132,7 +132,7 @@ const ProductData: React.FC<DataTableProps> = ({ products, quote }) => {
     },
   });
   useEffect(() => {
-    table.setPageSize(11);
+    table.setPageSize(12);
   }, [table]);
 
   const toggleSelectProduct = async ({
@@ -146,6 +146,7 @@ const ProductData: React.FC<DataTableProps> = ({ products, quote }) => {
       await trpc.quoteproduct.create.mutate({
         quoteId: quote.id,
         productId: product.id,
+        unitPrice: product.price,
       });
     } else {
       await trpc.quoteproduct.deleteQuoteProduct.mutate({
@@ -157,7 +158,7 @@ const ProductData: React.FC<DataTableProps> = ({ products, quote }) => {
   };
 
   return (
-    <div className="flex flex-col w-full h-[601px]">
+    <div className="flex flex-col w-full min-h-[650px] h-fit">
       <h1
         style={{
           textAlign: "start",

@@ -263,6 +263,7 @@ const DataTable: React.FC<DataProps> = (prop) => {
           name: "",
           phoneNumber,
           address: "",
+          taxId: "",
         });
         customerId = newCustomer.id;
       } else {

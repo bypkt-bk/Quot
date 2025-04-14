@@ -22,12 +22,17 @@ export const quoteproduct = {
     });
   },
 
-  async createQuoteProduct(quoteId: string, productId: string) {
+  async createQuoteProduct(
+    quoteId: string,
+    productId: string,
+    unitPrice: number,
+  ) {
     return await prisma.quoteProduct.create({
       data: {
         quoteId,
         productId,
-        quantity: 1, // Default value for quantity
+        quantity: 1,
+        unitPrice,
       },
     });
   },
@@ -37,6 +42,7 @@ export const quoteproduct = {
     data: {
       quantity?: number;
       price?: number;
+      unitPrice?: number;
     },
   ) {
     return await prisma.quoteProduct.update({

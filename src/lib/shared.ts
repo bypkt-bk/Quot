@@ -35,12 +35,18 @@ export enum Status {
   paid = "paid",
 }
 
+export enum PaymentType {
+  cash = "cash",
+  creditterm = "credit term",
+}
 export type Quote = {
   id: string;
   total: number;
   orderDate: string;
   shippingOn: string | null;
   address: string | null;
+  type: PaymentType;
+  creditTerm: String | null;
   status: Status;
   customerId: number | null;
   customer: Customer | null;
@@ -56,6 +62,7 @@ export type QuoteProduct = {
   productId: string;
   product: Product;
   quantity: number;
+  unitPrice: number;
 };
 
 export type Customer = {
@@ -63,6 +70,7 @@ export type Customer = {
   name: string;
   phoneNumber: string | null;
   address: string;
+  taxId: string | null;
   storeId: string;
   store: Store;
   quotes: Quote[];

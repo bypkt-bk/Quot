@@ -9,8 +9,12 @@ export const quotesService = {
     return await quoteproduct.getQuoteProductById(id);
   },
 
-  async createQuoteProduct(quoteId: string, productId: string) {
-    return await quoteproduct.createQuoteProduct(quoteId, productId);
+  async createQuoteProduct(
+    quoteId: string,
+    productId: string,
+    unitPrice: number,
+  ) {
+    return await quoteproduct.createQuoteProduct(quoteId, productId, unitPrice);
   },
 
   async updateQuoteProduct(
@@ -18,6 +22,7 @@ export const quotesService = {
     data: {
       quantity?: number;
       price?: number;
+      unitPrice?: number;
     },
   ) {
     return await quoteproduct.updateQuoteProduct(id, data);

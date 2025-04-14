@@ -4,6 +4,7 @@ import SettingStaff from "../organisms/setting-staff.vue";
 import type { Store } from "@/lib/shared";
 import { trpc } from "@/lib/trpc";
 import Header from "../organisms/header.vue";
+import Navigation from "../organisms/navigation.vue";
 function handleClick() {
   window.location.href = "/";
 }
@@ -18,58 +19,56 @@ try {
 ---
 
 <Header client:load />
-<div class="edit-page">
-  <h1>{store.name}</h1>
-  <button onclick="handleClick">Go Home</button>
-  <div class="edit-form">
-    <SettingStores client:load store={store} />
-    <SettingStaff store={store} />
+<div class="setting-cotainer">
+  <div class="navigation">
+    <Navigation client:load storeId={storeId} />
   </div>
-</div>
+  <div class="workspace">
+    <SettingStores client:load store={store} />
+    <SettingStaff client:load store={store} />
+  </div>
 
-<style scoped>
-  .edit-page {
-    display: flex;
-    padding: 40px 80px 40px 80px;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
-    gap: 40px;
-    align-self: stretch;
-  }
-  @media (max-width: 440px) {
-    .edit-page {
-      padding: 40px 20px 40px 20px;
+  <style>
+    .setting-cotainer {
+      display: flex;
+      padding: 28px 80px 0px 80px;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 12px;
+      align-self: stretch;
+      width: 100%;
     }
-  }
-  h1 {
-    text-align: center;
-    font-family: Righteous;
-    font-size: 48px;
-  }
-  .edit-form {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 40px;
-    width: 100%;
-  }
-  button {
-    font-family: "Onest", sans-serif;
-    display: flex;
-    width: fit-content;
-    height: fit-content;
-    padding: 6px 20px;
-    align-items: center;
-    border-radius: 6px;
-    background-color: white;
-    color: black;
-    cursor: pointer;
-  }
+    .workspace {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      min-width: 300px;
+      align-items: flex-start;
+      justify-content: center;
+      flex: 1 0 0;
+      border-radius: 20px;
+      border: 1px solid #3c3c3c;
+      background: #242424;
+    }
 
-  button.light {
-    background-color: black;
-    color: white;
-  }
-</style>
+    @media (max-width: 1075px) {
+      .setting-container {
+        padding: 20px;
+      }
+    }
+    @media (max-width: 563px) {
+      .setting-cotainer {
+        padding: 10px 10px;
+        flex-wrap: wrap;
+      }
+    }
+    @media (max-width: 454px) {
+      .navigation {
+        overflow-x: scroll;
+      }
+      .navigation::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  </style>
+</div>

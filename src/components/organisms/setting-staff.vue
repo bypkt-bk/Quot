@@ -6,22 +6,22 @@
         <Crown />
         <p>Owner</p>
       </div>
-      <select class="owner" placeholder="Owner">
-        <option>Banyaphon Kongtham</option>
-      </select>
+      <p class="owner">{{ store.owner[0].name }}</p>
     </div>
     <div class="edit-admin">
       <div class="header-admin">
         <Users />
         <p>Admin</p>
       </div>
-      coming soon
+      <p class="admin">coming soon</p>
     </div>
   </div>
 </template>
 
 <script setup>
 import { Crown, Users, ContactRound } from "lucide-vue-next";
+const props = defineProps(["store"]);
+const store = props.store;
 </script>
 
 <style scoped>
@@ -38,9 +38,6 @@ import { Crown, Users, ContactRound } from "lucide-vue-next";
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  border-radius: 20px;
-  border: 1px solid #3c3c3c;
-  background: #242424;
 }
 .header-owner,
 .header-admin {
@@ -64,10 +61,7 @@ import { Crown, Users, ContactRound } from "lucide-vue-next";
   width: 100%;
   padding: 10px;
   align-items: center;
-  gap: 10px;
-  align-self: stretch;
-  border-radius: 6px;
-  border: 1px solid #3c3c3c;
+  font-family: Onest;
 }
 
 input::-webkit-outer-spin-button,

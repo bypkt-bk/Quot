@@ -52,7 +52,7 @@ function getInitials(name: string): string {
 
 <style scoped>
 .card {
-  display: inline-flex;
+  display: flex;
   padding: 20px 34px;
   flex-direction: column;
   align-items: flex-start;

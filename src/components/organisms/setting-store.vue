@@ -1,27 +1,72 @@
 <template>
   <div class="edit-container">
     <Store class="logo-head" />
+    
+    <!-- Store Name Section -->
     <div class="edit-name">
       <div class="header-name">
         <Store />
         <p>Store</p>
       </div>
-      <input class="name" placeholder="Store name" />
+      <input
+        class="name"
+        placeholder="Store name"
+        v-model="storeName"
     </div>
+    
+    <!-- Address Section -->
     <div class="edit-address">
       <div class="header-address">
         <MapPin />
         <p>Address</p>
       </div>
-      <input class="address" placeholder="Address" />
+      <input
+        class="address"
+        placeholder="Address"
+        v-model="storeAddress"
     </div>
+    
+    <!-- Save Button -->
+     <div class="btn-container">
+    <button class="save" v-on:click="handleSave">Save</button>
+    <!-- <button class="cancel" v-on:click="handleCancel">Cancel</button> -->
+  </div>
   </div>
 </template>
 
 <script setup>
 import { Store, MapPin } from "lucide-vue-next";
+import { ref } from "vue";
+import { trpc } from "@/lib/trpc";
+
 const props = defineProps(["store"]);
-const store = [props.store];
+
+const storeName = ref(props.store.name);
+const storeAddress = ref(props.store.address);
+
+const handleSave = async () => {
+  try {
+    if (!storeName.value || !storeAddress.value) {
+      alert("Store name or address is missing");
+      return;
+    }
+
+    const response = await trpc.store.update.mutate({
+      id: props.store.id,
+      data: {
+        name: storeName.value,
+        address: storeAddress.value,
+      },
+    });
+    alert("Save success");
+  } catch (err) {
+    console.error("Failed to update store:", err);
+  }
+};
+
+const handleCancel = () => {
+  window.history.back()
+}
 </script>
 
 <style scoped>
@@ -38,9 +83,6 @@ const store = [props.store];
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  border-radius: 20px;
-  border: 1px solid #3c3c3c;
-  background: #242424;
 }
 .header-name,
 .header-address {
@@ -78,4 +120,27 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+.btn-container{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  width: 100%;
+}
+.save{
+  background-color: white;
+  color: black;
+  border-radius: 6px;
+  border: 1px solid #ffffff;
+  width: 100px;
+  height: 32px;
+}
+.cancel{
+  color: white;
+  border-radius: 6px;
+  border: 1px solid #ffffff;
+  width: 100px;
+  height: 32px;
+}
+
 </style>

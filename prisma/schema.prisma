@@ -59,12 +59,24 @@ model Quote {
   creditTerm  Float?
   status      Status
   address     String?
-  customerId  String?
-  customer    Customer?       @relation(fields: [customerId], references: [id])
   storeId     String
-  store   1    Store           @relation(fields: [storeId], references: [id])
+  store       Store           @relation(fields: [storeId], references: [id])
   products    QuoteProduct[]
+  customers   QuoteCustomer[]
 }
+
+model QuoteCustomer {
+  id          String     @id @default(cuid())
+  quoteId     String
+  quote       Quote      @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  name        String
+  taxId       String?
+  phoneNumber String
+  address     String
+  customerId  String
+  customer    Customer @relation(fields: [customerId], references: [id])
+}
+
 
 model QuoteProduct {
   id         String         @id @default(cuid())
@@ -84,5 +96,5 @@ model Customer {
   address    String
   storeId    String
   store      Store      @relation(fields: [storeId], references: [id])
-  quotes     Quote[]
+  quotes     QuoteCustomer[]
 }

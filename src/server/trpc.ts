@@ -7,7 +7,7 @@ import { quotesService } from "./services/quotes.service";
 import { usersService } from "./services/users.service";
 import { Status } from "@prisma/client";
 import { quoteproduct } from "./models/quoteproduct.model";
-import { custom } from "astro:schema";
+import { quoteCustomerService } from "./services/quotecustomers.service";
 
 const t = initTRPC.create();
 
@@ -334,6 +334,61 @@ export const appRouter = t.router({
         quoteproduct.deleteQuoteProduct(input.productId, input.quoteId),
       ),
   }),
+  // Quote Customer Routes
+  quotecustomer: t.router({
+    getAll: t.procedure.query(async () => {
+      return await quoteCustomerService.getAll();
+    }),
+  
+    getById: t.procedure
+      .input(z.string())
+      .query(async ({ input }) => {
+        return await quoteCustomerService.getById(input);
+      }),
+  
+    getByQuoteId: t.procedure
+      .input(z.string())
+      .query(async ({ input }) => {
+        return await quoteCustomerService.getByQuoteId(input);
+      }),
+  
+    create: t.procedure
+      .input(
+        z.object({
+          quoteId: z.string(),
+          customerId: z.string(),
+          name: z.string(),
+          phoneNumber: z.string(),
+          address: z.string(),
+          taxId: z.string().optional(),
+        })
+      )
+      .mutation(async ({ input }) => {
+        return await quoteCustomerService.createQuoteCustomer(input);
+      }),
+  
+    update: t.procedure
+      .input(
+        z.object({
+          id: z.string(),
+          data: z.object({
+            name: z.string().optional(),
+            taxId: z.string().optional(),
+            phoneNumber: z.string().optional(),
+            address: z.string().optional(),
+          }),
+        })
+      )
+      .mutation(async ({ input }) => {
+        return await quoteCustomerService.updateQuoteCustomer(input.id, input.data);
+      }),
+  
+    delete: t.procedure
+      .input(z.string())
+      .mutation(async ({ input }) => {
+        return await quoteCustomerService.deleteQuoteCustomer(input);
+      }),
+  })
 });
 
 export type AppRouter = typeof appRouter;

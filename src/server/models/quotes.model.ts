@@ -11,7 +11,7 @@ export const quoteModel = {
   async getQuotes() {
     return await prisma.quote.findMany({
       include: {
-        customer: true,
+        customers: true,
         store: true,
         products: {
           include: {
@@ -26,7 +26,7 @@ export const quoteModel = {
     return await prisma.quote.findUnique({
       where: { id },
       include: {
-        customer: true,
+        customers: true,
         store: true,
         products: {
           include: {

@@ -237,7 +237,7 @@ const DataTable: React.FC<DataProps> = (prop) => {
   });
 
   React.useEffect(() => {
-    table.setPageSize(8);
+    table.setPageSize(9);
   }, [table]);
 
   const handleNewQuote = async () => {
@@ -286,7 +286,7 @@ const DataTable: React.FC<DataProps> = (prop) => {
   };
 
   return (
-    <div className="flex flex-col w-full h-[588px]">
+    <div className="flex flex-col w-full min-h-[650px] h-fit">
       <h1
         title={name}
         style={{

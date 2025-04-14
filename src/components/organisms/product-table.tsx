@@ -266,7 +266,7 @@ const ProductData: React.FC<DataTableProps> = ({ products, storeId }) => {
     },
   });
   React.useEffect(() => {
-    table.setPageSize(8);
+    table.setPageSize(9);
   }, [table]);
   const [newProductOpen, setNewProductOpen] = useState(false);
 
@@ -288,7 +288,7 @@ const ProductData: React.FC<DataTableProps> = ({ products, storeId }) => {
   };
 
   return (
-    <div className="flex flex-col w-full h-[588px]">
+    <div className="flex flex-col w-full min-h-[650px] h-fit">
       <h1
         style={{
           textAlign: "start",

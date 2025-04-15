@@ -353,9 +353,9 @@ export const appRouter = t.router({
         z.object({
           quoteId: z.string(),
           customerId: z.string(),
-          name: z.string(),
+          name: z.string().optional(),
           phoneNumber: z.string(),
-          address: z.string(),
+          address: z.string().optional(),
           taxId: z.string().optional(),
         }),
       )

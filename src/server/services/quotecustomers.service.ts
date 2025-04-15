@@ -17,14 +17,14 @@ export const quoteCustomerService = {
 
   async createQuoteCustomer(input: {
     quoteId: string;
-    name: string;
+    name?: string;
     taxId?: string;
     phoneNumber: string;
-    address: string;
+    address?: string;
     customerId: string;
   }) {
     const { quoteId, name, phoneNumber, address, customerId } = input;
-    if (!quoteId || !name || !phoneNumber || !address || !customerId) {
+    if (!quoteId || !phoneNumber || !customerId) {
       throw new Error("Missing required fields");
     }
 

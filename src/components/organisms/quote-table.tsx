@@ -150,14 +150,12 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [product, setProduct] = useState<QuoteProduct[]>(quote.products ?? []);
-  const [customerName, setCustomerName] = useState<string>(
-    quote.customer?.name ?? "",
+  const [name, setName] = useState<string>(quote.customers?.name ?? "");
+  const [address, setAddress] = useState<string>(quote.customers.address ?? "");
+  const [phone, setPhone] = useState<string>(
+    quote.customers?.phoneNumber ?? "",
   );
-  const [quoteAddress, setQuoteAddress] = useState<string>(quote.address ?? "");
-  const [customerPhone, setCustomerPhone] = useState<string>(
-    quote.customer?.phoneNumber ?? "",
-  );
-  const [taxId, setTaxId] = useState<string>(quote.customer?.taxId ?? "");
+  const [taxId, setTaxId] = useState<string>(quote.customers?.taxId ?? "");
   const [totalQuote, setTotalQuote] = useState<number>(quote.total ?? 0);
   const [status, setStatus] = useState<Status>(quote.status);
 
@@ -289,35 +287,25 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
 
   useEffect(() => {
     const handler = setTimeout(() => {
-      if (quote.customer?.id) {
-        trpc.customer.update.mutate({
-          id: quote.customer.id,
+      try {
+        trpc.quotecustomer.update.mutate({
+          id: quote.customers.id,
           data: {
-            name: customerName,
-            phoneNumber: customerPhone,
-            taxId: taxId,
+            name,
+            phoneNumber: phone,
+            taxId,
+            address,
           },
         });
+      } catch (e) {
+        console.error("❌ Failed to update quote customer:", e);
       }
     }, 1000);
 
     return () => {
       clearTimeout(handler);
     };
-  }, [customerName, customerPhone, taxId]);
-
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      trpc.quote.updateAddress.mutate({
-        id: quote.id,
-        address: quoteAddress,
-      });
-    }, 1000);
-
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [quoteAddress]);
+  }, [name, phone, taxId, address]);
 
   const toggleStatus = async () => {
     const newStatus = status === Status.unpaid ? Status.paid : Status.unpaid;
@@ -359,15 +347,15 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
       <div className="flex w-full justify-between flex-wrap gap-2 py-2">
         <Input
           placeholder="Customer name"
-          value={customerName}
-          onChange={(e) => setCustomerName(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           className=" min-w-[248px] border-[#3C3C3C] rounded-[6px] py-[20px]"
         />
         <DatePickerWithRange quote={quote} />
         <Input
           placeholder="Address"
-          value={quoteAddress}
-          onChange={(e) => setQuoteAddress(e.target.value)}
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
           className="flex-1 min-w-[248px] border-[#3C3C3C] rounded-[6px] py-[20px]"
         />
         <div className="flex gap-2 w-full flex-nowrap">
@@ -379,8 +367,8 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
           />
           <Input
             placeholder="Phone"
-            value={customerPhone}
-            onChange={(e) => setCustomerPhone(e.target.value)}
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
             className="w-full border-[#3C3C3C] rounded-[6px] py-[20px]"
           />
         </div>

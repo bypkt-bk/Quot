@@ -33,10 +33,10 @@ export const quoteCustomerModel = {
 
   async create(data: {
     quoteId: string;
-    name: string;
+    name?: string;
     taxId?: string;
     phoneNumber: string;
-    address: string;
+    address?: string;
     customerId: string;
   }) {
     return await prisma.quoteCustomer.create({

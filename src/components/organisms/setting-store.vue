@@ -1,36 +1,30 @@
 <template>
   <div class="edit-container">
     <Store class="logo-head" />
-    
+
     <!-- Store Name Section -->
     <div class="edit-name">
       <div class="header-name">
         <Store />
         <p>Store</p>
       </div>
-      <input
-        class="name"
-        placeholder="Store name"
-        v-model="storeName"
+      <input class="name" placeholder="Store name" v-model="storeName" />
     </div>
-    
+
     <!-- Address Section -->
     <div class="edit-address">
       <div class="header-address">
         <MapPin />
         <p>Address</p>
       </div>
-      <input
-        class="address"
-        placeholder="Address"
-        v-model="storeAddress"
+      <input class="address" placeholder="Address" v-model="storeAddress" />
     </div>
-    
+
     <!-- Save Button -->
-     <div class="btn-container">
-    <button class="save" v-on:click="handleSave">Save</button>
-    <!-- <button class="cancel" v-on:click="handleCancel">Cancel</button> -->
-  </div>
+    <div class="btn-container">
+      <button class="save" v-on:click="handleSave">Save</button>
+      <!-- <button class="cancel" v-on:click="handleCancel">Cancel</button> -->
+    </div>
   </div>
 </template>
 
@@ -65,8 +59,8 @@ const handleSave = async () => {
 };
 
 const handleCancel = () => {
-  window.history.back()
-}
+  window.history.back();
+};
 </script>
 
 <style scoped>
@@ -120,14 +114,14 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
-.btn-container{
+.btn-container {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 8px;
   width: 100%;
 }
-.save{
+.save {
   background-color: white;
   color: black;
   border-radius: 6px;
@@ -135,12 +129,11 @@ input[type="number"] {
   width: 100px;
   height: 32px;
 }
-.cancel{
+.cancel {
   color: white;
   border-radius: 6px;
   border: 1px solid #ffffff;
   width: 100px;
   height: 32px;
 }
-
 </style>

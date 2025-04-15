@@ -1,3 +1,5 @@
+import type { QuoteCustomer } from "@prisma/client";
+
 export type User = {
   id: string;
   googleId: string;
@@ -49,7 +51,7 @@ export type Quote = {
   creditTerm: String | null;
   status: Status;
   customerId: number | null;
-  customer: Customer | null;
+  customers: QuoteCustomer;
   storeId: string;
   store: Store;
   products: QuoteProduct[];

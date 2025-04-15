@@ -40,7 +40,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Quote, Store } from "@/lib/shared";
+import type { Customer, Quote, Store } from "@/lib/shared";
 import { trpc } from "@/lib/trpc";
 import { Label } from "@/components/ui/label";
 import {
@@ -51,7 +51,7 @@ import {
 
 export const columns: ColumnDef<Quote>[] = [
   {
-    accessorFn: (row) => row.customer?.name, // use accessorFn to access customer
+    accessorFn: (row) => row.customers?.name, // use accessorFn to access customer
     id: "customer",
     header: ({ column }) => {
       return (
@@ -64,7 +64,7 @@ export const columns: ColumnDef<Quote>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div>{row.original.customer?.name ?? ""}</div>,
+    cell: ({ row }) => <div>{row.original.customers?.name ?? ""}</div>,
   },
   {
     accessorKey: "status",
@@ -256,7 +256,8 @@ const DataTable: React.FC<DataProps> = (prop) => {
       });
 
       let customerId: string;
-
+      let customerName: string;
+      let customerAddress: string;
       if (!existingCustomer) {
         const newCustomer = await trpc.customer.create.mutate({
           storeId,
@@ -266,8 +267,12 @@ const DataTable: React.FC<DataProps> = (prop) => {
           taxId: "",
         });
         customerId = newCustomer.id;
+        customerName = newCustomer.name;
+        customerAddress = newCustomer.address;
       } else {
         customerId = existingCustomer.id;
+        customerName = existingCustomer.name;
+        customerAddress = existingCustomer.address;
       }
 
       const result = await trpc.quote.create.mutate({
@@ -277,7 +282,13 @@ const DataTable: React.FC<DataProps> = (prop) => {
         products: [],
         customerId,
       });
-
+      await trpc.quotecustomer.create.mutate({
+        name: customerName,
+        address: customerAddress,
+        phoneNumber,
+        customerId,
+        quoteId: result.id,
+      });
       console.log("✅ New quote:", result);
       window.location.href = `/store/quote/${result.id}`;
     } catch (err) {

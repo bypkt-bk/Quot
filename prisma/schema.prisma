@@ -8,35 +8,35 @@ datasource db {
 }
 
 model User {
-  id            String     @id @default(cuid())
-  googleId      String     @unique
-  email         String     @unique
-  name          String
-  taxId         String? 
-  phoneNumber   String?
-  ownedStores   Store[]    @relation("OwnedStores")
-  adminStores   Store[]    @relation("AdminStores")
+  id          String  @id @default(cuid())
+  googleId    String  @unique
+  email       String  @unique
+  name        String
+  taxId       String?
+  phoneNumber String?
+  ownedStores Store[] @relation("OwnedStores")
+  adminStores Store[] @relation("AdminStores")
 }
 
 model Store {
-  id         String     @id @default(cuid())
-  name       String
-  address    String
-  revenue    Float
+  id      String @id @default(cuid())
+  name    String
+  address String
+  revenue Float
 
-  owner      User[]     @relation("OwnedStores")
-  admin      User[]     @relation("AdminStores")
-  quote      Quote[]
-  products   Product[]
-  customers  Customer[]
+  owner     User[]     @relation("OwnedStores")
+  admin     User[]     @relation("AdminStores")
+  quote     Quote[]
+  products  Product[]
+  customers Customer[]
 }
 
 model Product {
-  id            String          @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String
   price         Float
   storeId       String
-  store         Store           @relation(fields: [storeId], references: [id])
+  store         Store          @relation(fields: [storeId], references: [id])
   quoteProducts QuoteProduct[]
 }
 
@@ -51,50 +51,50 @@ enum PaymentType {
 }
 
 model Quote {
-  id          String          @id @default(cuid())
-  total       Float
-  orderDate   String
-  shippingOn  String?
-  type        PaymentType
-  creditTerm  Float?
-  status      Status
-  address     String?
-  storeId     String
-  store       Store           @relation(fields: [storeId], references: [id])
-  products    QuoteProduct[]
-  customers   QuoteCustomer[]
+  id         String         @id @default(cuid())
+  total      Float
+  orderDate  String
+  shippingOn String?
+  type       PaymentType
+  creditTerm Float?
+  status     Status
+  address    String?
+  storeId    String
+  store      Store          @relation(fields: [storeId], references: [id])
+  products   QuoteProduct[]
+  customerId String?
+  customers  QuoteCustomer?
 }
 
 model QuoteCustomer {
-  id          String     @id @default(cuid())
-  quoteId     String
-  quote       Quote      @relation(fields: [quoteId], references: [id], onDelete: Cascade)
-  name        String
+  id          String   @id @default(cuid())
+  quoteId     String   @unique
+  quote       Quote    @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  name        String?
   taxId       String?
   phoneNumber String
-  address     String
+  address     String?
   customerId  String
   customer    Customer @relation(fields: [customerId], references: [id])
 }
 
-
 model QuoteProduct {
-  id         String         @id @default(cuid())
-  quoteId    String
-  quote      Quote          @relation(fields: [quoteId], references: [id], onDelete: Cascade)
-  productId  String
-  product    Product        @relation(fields: [productId], references: [id])
-  quantity   Int
+  id        String  @id @default(cuid())
+  quoteId   String
+  quote     Quote   @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
   unitPrice Float
 }
 
 model Customer {
-  id         String     @id @default(cuid())
-  name       String
-  taxId      String?
+  id          String          @id @default(cuid())
+  name        String
+  taxId       String?
   phoneNumber String
-  address    String
-  storeId    String
-  store      Store      @relation(fields: [storeId], references: [id])
-  quotes     QuoteCustomer[]
+  address     String
+  storeId     String
+  store       Store           @relation(fields: [storeId], references: [id])
+  quotes      QuoteCustomer[]
 }

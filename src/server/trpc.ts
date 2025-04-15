@@ -339,19 +339,15 @@ export const appRouter = t.router({
     getAll: t.procedure.query(async () => {
       return await quoteCustomerService.getAll();
     }),
-  
-    getById: t.procedure
-      .input(z.string())
-      .query(async ({ input }) => {
-        return await quoteCustomerService.getById(input);
-      }),
-  
-    getByQuoteId: t.procedure
-      .input(z.string())
-      .query(async ({ input }) => {
-        return await quoteCustomerService.getByQuoteId(input);
-      }),
-  
+
+    getById: t.procedure.input(z.string()).query(async ({ input }) => {
+      return await quoteCustomerService.getById(input);
+    }),
+
+    getByQuoteId: t.procedure.input(z.string()).query(async ({ input }) => {
+      return await quoteCustomerService.getByQuoteId(input);
+    }),
+
     create: t.procedure
       .input(
         z.object({
@@ -361,12 +357,12 @@ export const appRouter = t.router({
           phoneNumber: z.string(),
           address: z.string(),
           taxId: z.string().optional(),
-        })
+        }),
       )
       .mutation(async ({ input }) => {
         return await quoteCustomerService.createQuoteCustomer(input);
       }),
-  
+
     update: t.procedure
       .input(
         z.object({
@@ -377,18 +373,19 @@ export const appRouter = t.router({
             phoneNumber: z.string().optional(),
             address: z.string().optional(),
           }),
-        })
+        }),
       )
       .mutation(async ({ input }) => {
-        return await quoteCustomerService.updateQuoteCustomer(input.id, input.data);
+        return await quoteCustomerService.updateQuoteCustomer(
+          input.id,
+          input.data,
+        );
       }),
-  
-    delete: t.procedure
-      .input(z.string())
-      .mutation(async ({ input }) => {
-        return await quoteCustomerService.deleteQuoteCustomer(input);
-      }),
-  })
+
+    delete: t.procedure.input(z.string()).mutation(async ({ input }) => {
+      return await quoteCustomerService.deleteQuoteCustomer(input);
+    }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;

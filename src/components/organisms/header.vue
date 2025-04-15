@@ -33,15 +33,17 @@
     </nav>
     <div class="mobile-nav">
       <Menu />
-      <div class="badge-wrapper" @click.stop="togglePopover">
-        <span class="badge">{{ getInitials(userName) }}</span>
-        <div v-if="showPopover" class="popover">
-          <ul>
-            <li @click="goToSettings">Account</li>
-            <li @click="handleLogout">Logout</li>
-          </ul>
+      <template v-if="isLoggedIn">
+        <div class="badge-wrapper" @click.stop="togglePopover">
+          <span class="badge">{{ getInitials(userName) }}</span>
+          <div v-if="showPopover" class="popover">
+            <ul>
+              <li @click="goToSettings">Account</li>
+              <li @click="handleLogout">Logout</li>
+            </ul>
+          </div>
         </div>
-      </div>
+      </template>
     </div>
   </header>
 </template>
@@ -95,6 +97,7 @@ function handleLogout() {
   showPopover.value = false;
   isLoggedIn.value = false;
   VueCookies.remove("auth");
+  window.location.href = "/";
 }
 
 function toggleTheme() {

@@ -62,7 +62,7 @@ export const quoteCustomerModel = {
       taxId?: string;
       phoneNumber?: string;
       address?: string;
-    }
+    },
   ) {
     return await prisma.quoteCustomer.update({
       where: { id },

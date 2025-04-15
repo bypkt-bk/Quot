@@ -38,7 +38,7 @@ export const quoteCustomerService = {
       taxId?: string;
       phoneNumber?: string;
       address?: string;
-    }
+    },
   ) {
     if (!id) throw new Error("ID is required for update");
     return await quoteCustomerModel.update(id, data);

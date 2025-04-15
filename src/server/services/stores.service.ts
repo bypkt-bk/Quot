@@ -58,4 +58,12 @@ export const storesService = {
   async getStoreQuotes(storeId: string) {
     return await storeModel.getStoreQuotes(storeId);
   },
+
+  async addRevenue(storeId: string, revenue: number) {
+    return await storeModel.addRevenue(storeId, revenue);
+  },
+
+  async removeRevenue(storeId: string) {
+    return await storeModel.removeRevenue(storeId);
+  },
 };

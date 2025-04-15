@@ -109,4 +109,10 @@ export const quoteModel = {
       where: { id },
     });
   },
+  async updatePaymentType(id: string, type: PaymentType) {
+    return await prisma.quote.update({
+      where: { id },
+      data: { type },
+    });
+  },
 };

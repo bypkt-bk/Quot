@@ -57,4 +57,7 @@ export const quotesService = {
   async deleteQuote(id: string) {
     return await quoteModel.deleteQuote(id);
   },
+  async updatePaymentType(id: string, type: PaymentType) {
+    return await quoteModel.updatePaymentType(id, type);
+  },
 };

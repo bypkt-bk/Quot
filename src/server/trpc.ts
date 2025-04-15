@@ -8,6 +8,7 @@ import { usersService } from "./services/users.service";
 import { Status } from "@prisma/client";
 import { quoteproduct } from "./models/quoteproduct.model";
 import { quoteCustomerService } from "./services/quotecustomers.service";
+import { updateCurrentUser } from "firebase/auth";
 
 const t = initTRPC.create();
 
@@ -68,6 +69,25 @@ export const appRouter = t.router({
     delete: t.procedure
       .input(z.string())
       .mutation(({ input }) => storesService.deleteStore(input)),
+
+    updateRevenue: t.procedure
+      .input(
+        z.object({
+          id: z.string(),
+          revenue: z.number(),
+        }),
+      )
+      .mutation(({ input }) =>
+        storesService.updateStore(input.id, { revenue: input.revenue }),
+      ),
+
+    removeRevenue: t.procedure
+      .input(
+        z.object({
+          id: z.string(),
+        }),
+      )
+      .mutation(({ input }) => storesService.removeRevenue(input.id)),
   }),
 
   // Product Routes
@@ -239,6 +259,17 @@ export const appRouter = t.router({
     delete: t.procedure
       .input(z.string())
       .mutation(({ input }) => quotesService.deleteQuote(input)),
+
+    updatePaymentType: t.procedure
+      .input(
+        z.object({
+          id: z.string(),
+          type: z.enum(["cash", "creditterm"]),
+        }),
+      )
+      .mutation(({ input }) =>
+        quotesService.updatePaymentType(input.id, input.type),
+      ),
   }),
 
   // User Routes

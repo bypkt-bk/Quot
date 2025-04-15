@@ -139,4 +139,26 @@ export const storeModel = {
       },
     });
   },
+
+  async addRevenue(storeId: string, amount: number) {
+    return await prisma.store.update({
+      where: { id: storeId },
+      data: {
+        revenue: {
+          increment: amount,
+        },
+      },
+    });
+  },
+
+  async removeRevenue(storeId: string) {
+    return await prisma.store.update({
+      where: { id: storeId },
+      data: {
+        revenue: {
+          decrement: 0,
+        },
+      },
+    });
+  },
 };

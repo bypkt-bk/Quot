@@ -2,13 +2,6 @@
 import Layout from "@/layouts/Layout.astro";
 import "@/styles/globals.css";
 import Quote from "@/components/templates/quote.astro";
-export function getStaticPaths() {
-  return [
-    { params: { quote_id: "1" } },
-    { params: { quote_id: "2" } },
-    { params: { quote_id: "3" } },
-  ];
-}
 ---
 
 <Layout>

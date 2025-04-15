@@ -13,7 +13,7 @@
         <Archive />
         <p>Product</p>
       </a>
-      <a class="nav-btn" :href="`/dashboard/${props.storeId}`">
+      <a class="nav-btn" v-on:click="handleDash">
         <ChartPie />
         <p>Dashboard</p>
       </a>
@@ -37,6 +37,10 @@ onMounted(() => {
   const auth = VueCookies.get("auth");
   userId.value = auth.userId;
 });
+
+const handleDash = () => {
+  alert("coming soon");
+};
 </script>
 
 <style>

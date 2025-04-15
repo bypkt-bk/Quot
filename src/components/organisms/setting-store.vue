@@ -127,7 +127,8 @@ input[type="number"] {
   border-radius: 6px;
   border: 1px solid #ffffff;
   width: 100px;
-  height: 32px;
+  height: 38px;
+  cursor: pointer;
 }
 .cancel {
   color: white;

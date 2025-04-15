@@ -2,13 +2,6 @@
 import Layout from "@/layouts/Layout.astro";
 import "@/styles/globals.css";
 import Product from "@/components/templates/product.astro";
-export function getStaticPaths() {
-  return [
-    { params: { store_id: "1" } },
-    { params: { store_id: "2" } },
-    { params: { store_id: "3" } },
-  ];
-}
 ---
 
 <Layout>

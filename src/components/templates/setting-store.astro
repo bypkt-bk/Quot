@@ -5,11 +5,8 @@ import type { Store } from "@/lib/shared";
 import { trpc } from "@/lib/trpc";
 import Header from "../organisms/header.vue";
 import Navigation from "../organisms/navigation.vue";
-function handleClick() {
-  window.location.href = "/";
-}
 
-const { storeId } = Astro.props as { storeId: string };
+const storeId = Astro.params.store_id as string;
 let store!: Store;
 try {
   store = await trpc.store.getById.query(storeId);

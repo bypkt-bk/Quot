@@ -90,7 +90,7 @@ onBeforeUnmount(() => {
 
 function goToAccount() {
   showPopover.value = false;
-  window.location.href = `/setting/${user.value.id}`;
+  window.location.href = `/account`;
 }
 
 function handleLogout() {

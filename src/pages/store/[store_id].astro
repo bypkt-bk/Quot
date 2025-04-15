@@ -2,10 +2,8 @@
 import Layout from "../../layouts/Layout.astro";
 import "@/styles/globals.css";
 import Store from "@/components/templates/store.astro";
-
-const storeId = Astro.params.store_id as string;
 ---
 
 <Layout>
-  <Store storeId={storeId} />
+  <Store />
 </Layout>

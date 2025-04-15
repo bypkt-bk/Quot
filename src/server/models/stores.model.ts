@@ -140,7 +140,7 @@ export const storeModel = {
     });
   },
 
-  async addRevenue(storeId: string, amount: number) {
+  async incrementRevenue(storeId: string, amount: number) {
     return await prisma.store.update({
       where: { id: storeId },
       data: {

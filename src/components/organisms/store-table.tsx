@@ -172,7 +172,7 @@ export const columns: ColumnDef<Quote>[] = [
             status: newStatus,
           });
           if (newStatus === Status.paid) {
-            await trpc.store.updateRevenue.mutate({
+            await trpc.store.incrementRevenue.mutate({
               id: row.original.storeId,
               revenue: row.original.total,
             });

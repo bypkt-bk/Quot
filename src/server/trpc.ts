@@ -70,7 +70,7 @@ export const appRouter = t.router({
       .input(z.string())
       .mutation(({ input }) => storesService.deleteStore(input)),
 
-    updateRevenue: t.procedure
+    incrementRevenue: t.procedure
       .input(
         z.object({
           id: z.string(),
@@ -78,7 +78,7 @@ export const appRouter = t.router({
         }),
       )
       .mutation(({ input }) =>
-        storesService.updateStore(input.id, { revenue: input.revenue }),
+        storesService.incrementRevenue(input.id, input.revenue),
       ),
 
     decreaseRevenue: t.procedure

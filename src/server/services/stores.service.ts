@@ -59,8 +59,8 @@ export const storesService = {
     return await storeModel.getStoreQuotes(storeId);
   },
 
-  async addRevenue(storeId: string, revenue: number) {
-    return await storeModel.addRevenue(storeId, revenue);
+  async incrementRevenue(storeId: string, revenue: number) {
+    return await storeModel.incrementRevenue(storeId, revenue);
   },
 
   async decreaseRevenue(storeId: string, revenue: number) {

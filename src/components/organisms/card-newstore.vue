@@ -74,7 +74,7 @@ const handleSave = async () => {
     ownerIds: userId,
     revenue: 0,
   });
-  alert("Store created successfully");
+  window.location.reload();
   showPopover.value = false;
 };
 </script>

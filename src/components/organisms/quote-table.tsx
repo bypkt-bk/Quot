@@ -177,7 +177,6 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
   );
   const [taxId, setTaxId] = useState<string>(quote.customers?.taxId ?? "");
   const [totalQuote, setTotalQuote] = useState<number>(quote.total ?? 0);
-  const [status, setStatus] = useState<Status>(quote.status);
 
   useEffect(() => {
     const total = product.reduce((sum, prod) => {

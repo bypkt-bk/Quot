@@ -40,7 +40,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Product } from "@/lib/shared";
+import type { Customer, Product } from "@/lib/shared";
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import {
@@ -51,11 +51,11 @@ import {
 import { Label } from "@/components/ui/label";
 
 interface DataTableProps {
-  products: Product[];
+  customers: Customer[];
   storeId: string;
 }
-const ProductData: React.FC<DataTableProps> = ({ products, storeId }) => {
-  const data = products;
+const CustomerData: React.FC<DataTableProps> = ({ customers, storeId }) => {
+  const data = customers;
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -71,7 +71,7 @@ const ProductData: React.FC<DataTableProps> = ({ products, storeId }) => {
     setEditingRows: React.Dispatch<
       React.SetStateAction<Record<string, boolean>>
     >,
-  ): ColumnDef<Product>[] => [
+  ): ColumnDef<Customer>[] => [
     {
       accessorKey: "name",
       header: ({ column }) => {
@@ -80,59 +80,55 @@ const ProductData: React.FC<DataTableProps> = ({ products, storeId }) => {
             variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Product
+            Customer
             <ArrowUpDown />
           </Button>
         );
       },
       cell: ({ row }) => {
         const isEditing = editingRows[row.id];
-        const [productName, setProductName] = useState<string>(
-          row.original.name,
-        );
+        const [name, setName] = useState<string>(row.original.name);
 
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-          const newValue = e.target.value;
-          if (newValue) {
-            setProductName(newValue);
-            row.original.name = newValue;
-          }
+          const newValue = String(e.target.value);
+          setName(newValue);
+          row.original.name = newValue;
         };
 
         const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
           if (e.key === "Enter") {
-            row.original.name = productName;
+            row.original.name = name;
             setEditingRows((prev) => ({
               ...prev,
               [row.id]: !prev[row.id],
             }));
-            trpc.product.update.mutate({
+            trpc.customer.update.mutate({
               id: row.original.id,
               data: {
-                name: productName,
-                price: row.original.price,
+                name,
+                phoneNumber: row.original.phoneNumber,
               },
             });
           }
         };
         const handleOnblur = () => {
-          row.original.name = productName;
+          row.original.name = name;
           setEditingRows((prev) => ({
             ...prev,
             [row.id]: !prev[row.id],
           }));
-          trpc.product.update.mutate({
+          trpc.customer.update.mutate({
             id: row.original.id,
             data: {
-              name: productName,
-              price: row.original.price,
+              name,
+              phoneNumber: row.original.phoneNumber,
             },
           });
         };
         return (
           <Input
             className={`${!isEditing ? "border-none" : "border-[#3C3C3C]"}`}
-            value={productName}
+            value={name}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             onBlur={handleOnblur}
@@ -142,56 +138,49 @@ const ProductData: React.FC<DataTableProps> = ({ products, storeId }) => {
       },
     },
     {
-      accessorKey: "price",
-      header: "Price",
+      accessorKey: "phoneNumber",
+      header: "Phone number",
       cell: ({ row }) => {
-        const amount = parseFloat(row.getValue("price"));
-
-        const formatted = new Intl.NumberFormat("th-US", {
-          style: "currency",
-          currency: "THB",
-        }).format(amount);
-
         const isEditing = editingRows[row.id];
-        const [productPrice, setProductPrice] = useState<number>(
-          row.original.price,
+        const [phoneNumber, setPhoneNumber] = useState<string>(
+          row.original.phoneNumber,
         );
 
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-          const newValue = Number(e.target.value);
-          if (!isNaN(newValue)) {
-            setProductPrice(newValue);
-            row.original.price = newValue;
+          const newValue = e.target.value;
+          if (newValue) {
+            setPhoneNumber(newValue);
+            row.original.phoneNumber = newValue;
           }
         };
 
         const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
           if (e.key === "Enter") {
-            row.original.price = productPrice;
+            row.original.phoneNumber = phoneNumber;
             setEditingRows((prev) => ({
               ...prev,
               [row.id]: !prev[row.id],
             }));
-            trpc.product.update.mutate({
+            trpc.customer.update.mutate({
               id: row.original.id,
               data: {
                 name: row.original.name,
-                price: productPrice,
+                phoneNumber,
               },
             });
           }
         };
         const handleOnblur = () => {
-          row.original.price = productPrice;
+          row.original.phoneNumber = phoneNumber;
           setEditingRows((prev) => ({
             ...prev,
             [row.id]: !prev[row.id],
           }));
-          trpc.product.update.mutate({
+          trpc.customer.update.mutate({
             id: row.original.id,
             data: {
               name: row.original.name,
-              price: productPrice,
+              phoneNumber,
             },
           });
         };
@@ -199,7 +188,123 @@ const ProductData: React.FC<DataTableProps> = ({ products, storeId }) => {
         return (
           <Input
             className={`${!isEditing ? "border-none" : "border-[#3C3C3C]"}`}
-            value={productPrice}
+            value={phoneNumber}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            onBlur={handleOnblur}
+            disabled={!isEditing}
+          />
+        );
+      },
+    },
+    {
+      accessorKey: "taxId",
+      header: "tax ID",
+      cell: ({ row }) => {
+        const isEditing = editingRows[row.id];
+        const [taxId, setTaxId] = useState<string>(row.original.taxId);
+
+        const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+          const newValue = e.target.value;
+          setTaxId(newValue);
+          row.original.taxId = newValue;
+        };
+
+        const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+          if (e.key === "Enter") {
+            row.original.taxId = taxId;
+            setEditingRows((prev) => ({
+              ...prev,
+              [row.id]: !prev[row.id],
+            }));
+            trpc.customer.update.mutate({
+              id: row.original.id,
+              data: {
+                name: row.original.name,
+                phoneNumber: row.original.phoneNumber,
+                taxId,
+              },
+            });
+          }
+        };
+        const handleOnblur = () => {
+          row.original.taxId = taxId;
+          setEditingRows((prev) => ({
+            ...prev,
+            [row.id]: !prev[row.id],
+          }));
+          trpc.customer.update.mutate({
+            id: row.original.id,
+            data: {
+              name: row.original.name,
+              phoneNumber: row.original.phoneNumber,
+              taxId,
+            },
+          });
+        };
+
+        return (
+          <Input
+            className={`${!isEditing ? "border-none" : "border-[#3C3C3C]"}`}
+            value={taxId ?? ""}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            onBlur={handleOnblur}
+            disabled={!isEditing}
+          />
+        );
+      },
+    },
+    {
+      accessorKey: "address",
+      header: "Address",
+      cell: ({ row }) => {
+        const isEditing = editingRows[row.id];
+        const [address, setAddress] = useState<string>(row.original.address);
+
+        const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+          const newValue = e.target.value;
+          setAddress(newValue);
+          row.original.address = newValue;
+        };
+
+        const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+          if (e.key === "Enter") {
+            row.original.phoneNumber = address;
+            setEditingRows((prev) => ({
+              ...prev,
+              [row.id]: !prev[row.id],
+            }));
+            trpc.customer.update.mutate({
+              id: row.original.id,
+              data: {
+                name: row.original.name,
+                phoneNumber: row.original.phoneNumber,
+                address,
+              },
+            });
+          }
+        };
+        const handleOnblur = () => {
+          row.original.address = address;
+          setEditingRows((prev) => ({
+            ...prev,
+            [row.id]: !prev[row.id],
+          }));
+          trpc.customer.update.mutate({
+            id: row.original.id,
+            data: {
+              name: row.original.name,
+              phoneNumber: row.original.phoneNumber,
+              address,
+            },
+          });
+        };
+
+        return (
+          <Input
+            className={`${!isEditing ? "border-none" : "border-[#3C3C3C]"}`}
+            value={address}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             onBlur={handleOnblur}
@@ -215,9 +320,9 @@ const ProductData: React.FC<DataTableProps> = ({ products, storeId }) => {
         const isEditing = editingRows[row.id];
         const handleDelete = async () => {
           try {
-            await trpc.product.delete.mutate(row.original.id);
+            await trpc.customer.delete.mutate(row.original.id);
           } catch (error) {
-            alert("❌ this product is used in quote");
+            alert("❌ this customer is used in quote");
             console.error(error);
           }
         };
@@ -265,28 +370,8 @@ const ProductData: React.FC<DataTableProps> = ({ products, storeId }) => {
       rowSelection,
     },
   });
-  React.useEffect(() => {
-    table.setPageSize(9);
-  }, [table]);
-  const [newProductOpen, setNewProductOpen] = useState(false);
 
   const columnDefs = getColumns(editingRows, setEditingRows);
-  const [productName, setProductName] = useState<string>("");
-  const [productPrice, setProductPrice] = useState<number>(0);
-  const handleNewProduct = async () => {
-    if (productName) {
-      await trpc.product.create.mutate({
-        storeId,
-        name: productName,
-        price: productPrice,
-      });
-      setProductName("");
-      setProductPrice(0);
-      setNewProductOpen(false);
-      window.location.reload();
-    }
-  };
-
   return (
     <div className="flex flex-col w-full min-h-[650px] h-fit">
       <h1
@@ -296,64 +381,17 @@ const ProductData: React.FC<DataTableProps> = ({ products, storeId }) => {
           fontSize: "36px",
         }}
       >
-        Product
+        Customer
       </h1>
-      <div className="flex items-center justify-between pb-2 pt-2 shrink-0">
+      <div className="py-2 shrink-0">
         <Input
-          placeholder="Search product..."
+          placeholder="Search customer..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm border-[#3C3C3C] rounded-[6px] py-[20px]"
         />
-        <Popover open={newProductOpen} onOpenChange={setNewProductOpen}>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="text-black">
-              Quote
-              <PlusIcon />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-80" align="end">
-            <div className="grid gap-4">
-              <div className="space-y-2">
-                <h4 className="font-medium leading-none">Product</h4>
-                <p className="text-sm text-muted-foreground">Add product</p>
-              </div>
-              <div className="grid gap-2">
-                <div className="grid grid-cols-3 items-center gap-4">
-                  <Label htmlFor="name">Product</Label>
-                  <Input
-                    id="name"
-                    type="text"
-                    className="col-span-2 h-8"
-                    onChange={(e) => {
-                      setProductName(e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="grid grid-cols-3 items-center gap-4">
-                  <Label htmlFor="price">Price</Label>
-                  <Input
-                    id="price"
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    className="col-span-2 h-8"
-                    value={productPrice}
-                    onChange={(e) => {
-                      const value = e.target.value;
-                      if (/^\d*$/.test(value)) {
-                        setProductPrice(Number(value));
-                      }
-                    }}
-                  />
-                </div>
-                <Button onClick={handleNewProduct}>Create</Button>
-              </div>
-            </div>
-          </PopoverContent>
-        </Popover>
       </div>
       <div className="border border-[#3C3C3C] rounded-[6px]">
         <Table>
@@ -408,7 +446,7 @@ const ProductData: React.FC<DataTableProps> = ({ products, storeId }) => {
       </div>
       <div className="flex flex-grow justify-between items-end">
         <div className="text-nowrap text-sm text-muted-foreground justify-end flex h-[32px] items-center">
-          {table.getFilteredRowModel().rows.length} product(s).
+          {table.getFilteredRowModel().rows.length} customer(s).
         </div>
         <div className="space-x-2">
           <Button
@@ -433,4 +471,4 @@ const ProductData: React.FC<DataTableProps> = ({ products, storeId }) => {
   );
 };
 
-export default ProductData;
+export default CustomerData;

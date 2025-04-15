@@ -33,10 +33,10 @@ export const customersService = {
   async updateCustomer(
     id: string,
     data: {
-      name?: string;
-      address?: string;
-      phoneNumber?: string;
-      taxId?: string;
+      name?: string | null;
+      address?: string | null;
+      phoneNumber: string;
+      taxId?: string | null;
     },
   ) {
     return await customersModel.updateCustomer(id, data);

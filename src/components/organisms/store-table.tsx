@@ -290,9 +290,10 @@ const DataTable: React.FC<DataProps> = (prop) => {
         phoneNumber,
       });
 
-      let customerId: string;
-      let customerName: string;
-      let customerAddress: string;
+      let customerId: string | null;
+      let customerName: string | null;
+      let customerAddress: string | null;
+      let customerTaxId: string | null;
       if (!existingCustomer) {
         const newCustomer = await trpc.customer.create.mutate({
           storeId,
@@ -304,10 +305,12 @@ const DataTable: React.FC<DataProps> = (prop) => {
         customerId = newCustomer.id;
         customerName = newCustomer.name;
         customerAddress = newCustomer.address;
+        customerTaxId = newCustomer.taxId;
       } else {
         customerId = existingCustomer.id;
         customerName = existingCustomer.name;
         customerAddress = existingCustomer.address;
+        customerTaxId = existingCustomer.taxId;
       }
 
       const result = await trpc.quote.create.mutate({
@@ -322,6 +325,7 @@ const DataTable: React.FC<DataProps> = (prop) => {
         address: customerAddress,
         phoneNumber,
         customerId,
+        taxId: customerTaxId,
         quoteId: result.id,
       });
       console.log("✅ New quote:", result);

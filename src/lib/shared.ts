@@ -70,9 +70,9 @@ export type QuoteProduct = {
 export type Customer = {
   id: string;
   name: string;
-  phoneNumber: string | null;
+  phoneNumber: string;
   address: string;
-  taxId: string | null;
+  taxId: string;
   storeId: string;
   store: Store;
   quotes: Quote[];

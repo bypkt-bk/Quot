@@ -28,7 +28,7 @@
     </div>
     <div class="group">
       <Landmark class="icon" />
-      <span class="amount">{{ store.revenue }}</span>
+      <span class="amount">{{ formatRevenue(store.revenue) }}</span>
     </div>
   </a>
 </template>
@@ -48,6 +48,14 @@ function getInitials(name: string): string {
   const nameParts = name.split(" ");
   return nameParts.map((part) => part.charAt(0).toUpperCase()).join("");
 }
+function formatRevenue(revenue: number): string {
+  return new Intl.NumberFormat("th-TH", {
+    style: "currency",
+    currency: "THB",
+    notation: "standard", // หลีกเลี่ยง e+21
+    maximumFractionDigits: 2,
+  }).format(revenue);
+}
 </script>
 
 <style scoped>
@@ -60,7 +68,6 @@ function getInitials(name: string): string {
   border-radius: 20px;
   border: 1px solid #707070;
   background: #434343;
-  position: relative;
   cursor: pointer;
 }
 
@@ -105,9 +112,13 @@ h3 {
 }
 
 .amount {
-  color: white;
-  text-align: center;
+  display: block;
+  text-align: start;
   font-family: Onest;
   font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 50%;
 }
 </style>

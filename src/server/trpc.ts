@@ -175,10 +175,10 @@ export const appRouter = t.router({
         z.object({
           id: z.string(),
           data: z.object({
-            name: z.string().optional(),
-            address: z.string().optional(),
-            phoneNumber: z.string().optional(),
-            taxId: z.string().optional(),
+            name: z.string().nullable().optional(),
+            address: z.string().nullable().optional(),
+            phoneNumber: z.string(),
+            taxId: z.string().nullable().optional(),
           }),
         }),
       )
@@ -398,10 +398,10 @@ export const appRouter = t.router({
         z.object({
           quoteId: z.string(),
           customerId: z.string(),
-          name: z.string().optional(),
+          name: z.string().nullable().optional(),
           phoneNumber: z.string(),
-          address: z.string().optional(),
-          taxId: z.string().optional(),
+          address: z.string().nullable().optional(),
+          taxId: z.string().nullable().optional(),
         }),
       )
       .mutation(async ({ input }) => {

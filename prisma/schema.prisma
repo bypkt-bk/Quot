@@ -90,10 +90,10 @@ model QuoteProduct {
 
 model Customer {
   id          String          @id @default(cuid())
-  name        String
+  name        String?
   taxId       String?
   phoneNumber String
-  address     String
+  address     String?
   storeId     String
   store       Store           @relation(fields: [storeId], references: [id])
   quotes      QuoteCustomer[]

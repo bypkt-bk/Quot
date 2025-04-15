@@ -17,10 +17,10 @@ export const quoteCustomerService = {
 
   async createQuoteCustomer(input: {
     quoteId: string;
-    name?: string;
-    taxId?: string;
+    name?: string | null;
+    taxId?: string | null;
     phoneNumber: string;
-    address?: string;
+    address?: string | null;
     customerId: string;
   }) {
     const { quoteId, name, phoneNumber, address, customerId } = input;

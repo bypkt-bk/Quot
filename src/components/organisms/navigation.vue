@@ -13,13 +13,13 @@
         <Archive />
         <p>Product</p>
       </a>
-      <a class="nav-btn" v-on:click="handleDash">
-        <ChartPie />
-        <p>Dashboard</p>
+      <a class="nav-btn" :href="`/store/customer/${props.storeId}`">
+        <SquareUserRound />
+        <p>Customer</p>
       </a>
     </nav>
     <nav class="navigation1">
-      <a class="nav-btn" :href="`/store/setting/${props.storeId}`">
+      <a class="nav-btn" :href="`/store/customer/${props.storeId}`">
         <Settings />
         <p>Setting</p>
       </a>
@@ -28,7 +28,14 @@
 </template>
 
 <script setup>
-import { Home, Archive, ChartPie, Settings, Store } from "lucide-vue-next";
+import {
+  Home,
+  Archive,
+  ChartPie,
+  Settings,
+  Store,
+  SquareUserRound,
+} from "lucide-vue-next";
 import { defineProps, onMounted, ref } from "vue";
 import VueCookies from "vue-cookies";
 const props = defineProps(["storeId"]);
@@ -37,10 +44,6 @@ onMounted(() => {
   const auth = VueCookies.get("auth");
   userId.value = auth.userId;
 });
-
-const handleDash = () => {
-  alert("coming soon");
-};
 </script>
 
 <style>

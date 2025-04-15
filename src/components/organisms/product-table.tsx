@@ -274,7 +274,7 @@ const ProductData: React.FC<DataTableProps> = ({ products, storeId }) => {
   const [productName, setProductName] = useState<string>("");
   const [productPrice, setProductPrice] = useState<number>(0);
   const handleNewProduct = async () => {
-    if (productName && productPrice) {
+    if (productName) {
       await trpc.product.create.mutate({
         storeId,
         name: productName,
@@ -317,10 +317,8 @@ const ProductData: React.FC<DataTableProps> = ({ products, storeId }) => {
           <PopoverContent className="w-80" align="end">
             <div className="grid gap-4">
               <div className="space-y-2">
-                <h4 className="font-medium leading-none">Customer</h4>
-                <p className="text-sm text-muted-foreground">
-                  add customer phone number
-                </p>
+                <h4 className="font-medium leading-none">Product</h4>
+                <p className="text-sm text-muted-foreground">Add product</p>
               </div>
               <div className="grid gap-2">
                 <div className="grid grid-cols-3 items-center gap-4">

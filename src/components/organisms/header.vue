@@ -214,7 +214,8 @@ li {
 .popover li {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
+  font-size: 14px;
   width: 100%;
   padding: 6px 12px;
   cursor: pointer;

@@ -265,10 +265,11 @@ export const appRouter = t.router({
         z.object({
           id: z.string(),
           type: z.enum(["cash", "creditterm"]),
+          creditTerm: z.number().nullable().optional(),
         }),
       )
       .mutation(({ input }) =>
-        quotesService.updatePaymentType(input.id, input.type),
+        quotesService.updatePaymentType(input.id, input.type, input.creditTerm),
       ),
   }),
 

@@ -42,6 +42,7 @@ import {
   type QuoteProduct,
   type Customer,
   type Product,
+  PaymentType,
 } from "@/lib/shared";
 import { addDays } from "date-fns";
 import { CalendarIcon } from "lucide-react";
@@ -53,8 +54,26 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 import { trpc } from "@/lib/trpc";
-
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 export function DatePickerWithRange({
   className,
   quote,
@@ -322,6 +341,39 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
   };
 
   const handdlePrint = () => {};
+  const [paymentInfo, setPaymentInfo] = useState<[PaymentType, number | null]>([
+    quote.type,
+    quote.creditTerm !== null ? Number(quote.creditTerm) : null,
+  ]);
+
+  useEffect(() => {
+    const updatePaymentType = async () => {
+      try {
+        if (paymentInfo[0] === PaymentType.cash && paymentInfo[1] === null) {
+          await trpc.quote.updatePaymentType.mutate({
+            type: "cash",
+            id: quote.id,
+            creditTerm: null,
+          });
+        } else if (
+          paymentInfo[0] === PaymentType.creditterm &&
+          paymentInfo[1]
+        ) {
+          await trpc.quote.updatePaymentType.mutate({
+            type: "creditterm",
+            id: quote.id,
+            creditTerm: paymentInfo[1],
+          });
+        } else {
+          console.warn("⚠️ Invalid paymentInfo state", paymentInfo);
+        }
+      } catch (err) {
+        console.error("❌ Failed to update quote payment type:", err);
+      }
+    };
+
+    updatePaymentType();
+  }, [paymentInfo, quote.id]);
 
   return (
     <div className="flex flex-col w-full min-h-[650px] h-fit">
@@ -345,12 +397,43 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
         </Button>
       </div>
       <div className="flex w-full justify-between flex-wrap gap-2 py-2">
-        <Input
-          placeholder="Customer name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className=" min-w-[248px] border-[#3C3C3C] rounded-[6px] py-[20px]"
-        />
+        <div className="flex gap-2 w-full flex-nowrap">
+          <Input
+            placeholder="Customer name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className=" min-w-[248px] border-[#3C3C3C] rounded-[6px] py-[20px]"
+          />
+          <Select
+            defaultValue={
+              paymentInfo[0] === "cash"
+                ? "cash"
+                : `creditterm ${paymentInfo[1]}`
+            }
+            onValueChange={(value) => {
+              if (value === "cash") {
+                setPaymentInfo([PaymentType.cash, null]);
+              } else {
+                const [, term] = value.split(" "); // value = "creditterm 30"
+                setPaymentInfo([PaymentType.creditterm, parseInt(term)]);
+              }
+            }}
+          >
+            <SelectTrigger className="w-[140px] border-[#3C3C3C] data-[size=default]:h-[42px] py-0">
+              <SelectValue placeholder="Select payment" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Payment Type</SelectLabel>
+                <SelectItem value="cash">Cash</SelectItem>
+                <SelectItem value="creditterm 15">Credit 15 day</SelectItem>
+                <SelectItem value="creditterm 30">Credit 30 day</SelectItem>
+                <SelectItem value="creditterm 45">Credit 45 day</SelectItem>
+                <SelectItem value="creditterm 60">Credit 60 day</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
         <DatePickerWithRange quote={quote} />
         <Input
           placeholder="Address"

@@ -81,13 +81,16 @@ export const appRouter = t.router({
         storesService.updateStore(input.id, { revenue: input.revenue }),
       ),
 
-    removeRevenue: t.procedure
+    decreaseRevenue: t.procedure
       .input(
         z.object({
           id: z.string(),
+          revenue: z.number(),
         }),
       )
-      .mutation(({ input }) => storesService.removeRevenue(input.id)),
+      .mutation(({ input }) =>
+        storesService.decreaseRevenue(input.id, input.revenue),
+      ),
   }),
 
   // Product Routes
@@ -229,6 +232,16 @@ export const appRouter = t.router({
       )
       .mutation(({ input }) =>
         quotesService.updateAddress(input.id, input.address),
+      ),
+    updateTotal: t.procedure
+      .input(
+        z.object({
+          id: z.string(),
+          total: z.number(),
+        }),
+      )
+      .mutation(({ input }) =>
+        quotesService.updateTotal(input.id, input.total),
       ),
     updateOrderOnAndShippingOn: t.procedure
       .input(

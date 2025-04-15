@@ -340,6 +340,14 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
     }
   };
 
+  useEffect(() => {
+    try {
+      trpc.quote.updateTotal.mutate({ id: quote.id, total: totalQuote });
+    } catch (err) {
+      console.log("❌ Failed to update quote total:", err);
+    }
+  }, [totalQuote]);
+
   const handdlePrint = () => {};
   const [paymentInfo, setPaymentInfo] = useState<[PaymentType, number | null]>([
     quote.type,
@@ -396,13 +404,13 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
           Print
         </Button>
       </div>
-      <div className="flex w-full justify-between flex-wrap gap-2 py-2">
+      <div className="flex w-full flex-wrap gap-2 py-2">
         <div className="flex gap-2 w-full flex-nowrap">
           <Input
             placeholder="Customer name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className=" min-w-[248px] border-[#3C3C3C] rounded-[6px] py-[20px]"
+            className="border-[#3C3C3C] rounded-[6px] py-[20px]"
           />
           <Select
             defaultValue={
@@ -414,7 +422,7 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
               if (value === "cash") {
                 setPaymentInfo([PaymentType.cash, null]);
               } else {
-                const [, term] = value.split(" "); // value = "creditterm 30"
+                const [, term] = value.split(" ");
                 setPaymentInfo([PaymentType.creditterm, parseInt(term)]);
               }
             }}

@@ -32,7 +32,7 @@
       </div>
     </nav>
     <div class="mobile-nav">
-      <Menu />
+      <!-- <Menu /> -->
       <template v-if="isLoggedIn">
         <div class="badge-wrapper" @click.stop="togglePopover">
           <span class="badge">{{ getInitials(userName) }}</span>

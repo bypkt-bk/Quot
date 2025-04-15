@@ -151,12 +151,12 @@ export const storeModel = {
     });
   },
 
-  async removeRevenue(storeId: string) {
+  async decreaseRevenue(storeId: string, amount: number) {
     return await prisma.store.update({
       where: { id: storeId },
       data: {
         revenue: {
-          decrement: 0,
+          decrement: amount,
         },
       },
     });

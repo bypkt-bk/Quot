@@ -63,7 +63,7 @@ export const storesService = {
     return await storeModel.addRevenue(storeId, revenue);
   },
 
-  async removeRevenue(storeId: string) {
-    return await storeModel.removeRevenue(storeId);
+  async decreaseRevenue(storeId: string, revenue: number) {
+    return await storeModel.decreaseRevenue(storeId, revenue);
   },
 };

@@ -127,6 +127,7 @@ export function DatePickerWithRange({
               "flex-1 min-w-[248px] justify-start text-left font-normal bg-transparent border-[#3c3c3c] hover:bg-transparent hover:text-white rounded-[6px] py-[20px]",
               !date && "text-muted-foreground",
             )}
+            disabled={quote.status === "paid"}
           >
             <CalendarIcon />
             {date?.from ? (
@@ -230,6 +231,7 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
                 }
               }}
               className="w-full px-2 py-1 outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+              disabled={quote.status === "paid"}
             />
           </div>
         );
@@ -326,20 +328,6 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
     };
   }, [name, phone, taxId, address]);
 
-  const toggleStatus = async () => {
-    const newStatus = status === Status.unpaid ? Status.paid : Status.unpaid;
-
-    setStatus(newStatus);
-    try {
-      await trpc.quote.markPaid.mutate({
-        id: quote.id,
-        status: newStatus,
-      });
-    } catch (err) {
-      console.error("❌ Failed to update quote status:", err);
-    }
-  };
-
   useEffect(() => {
     try {
       trpc.quote.updateTotal.mutate({ id: quote.id, total: totalQuote });
@@ -411,6 +399,7 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             className="border-[#3C3C3C] rounded-[6px] py-[20px]"
+            disabled={quote.status === "paid"}
           />
           <Select
             defaultValue={
@@ -426,6 +415,7 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
                 setPaymentInfo([PaymentType.creditterm, parseInt(term)]);
               }
             }}
+            disabled={quote.status === "paid"}
           >
             <SelectTrigger className="w-[140px] border-[#3C3C3C] data-[size=default]:h-[42px] py-0">
               <SelectValue placeholder="Select payment" />
@@ -448,6 +438,7 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
           value={address}
           onChange={(e) => setAddress(e.target.value)}
           className="flex-1 min-w-[248px] border-[#3C3C3C] rounded-[6px] py-[20px]"
+          disabled={quote.status === "paid"}
         />
         <div className="flex gap-2 w-full flex-nowrap">
           <Input
@@ -455,12 +446,14 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
             value={taxId}
             onChange={(e) => setTaxId(e.target.value)}
             className="w-full border-[#3C3C3C] rounded-[6px] py-[20px]"
+            disabled={quote.status === "paid"}
           />
           <Input
             placeholder="Phone"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             className="w-full border-[#3C3C3C] rounded-[6px] py-[20px]"
+            disabled={quote.status === "paid"}
           />
         </div>
       </div>

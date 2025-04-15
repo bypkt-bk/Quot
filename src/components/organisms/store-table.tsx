@@ -40,7 +40,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Customer, Quote, Store } from "@/lib/shared";
+import { Status, type Customer, type Quote, type Store } from "@/lib/shared";
 import { trpc } from "@/lib/trpc";
 import { Label } from "@/components/ui/label";
 import {
@@ -148,20 +148,44 @@ export const columns: ColumnDef<Quote>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const storeId = row.original.id;
+      const quoteId = row.original.id;
       const handleDelete = async () => {
         const confirmed = confirm(
           "Are you sure you want to delete this quote? This action cannot be undone.",
         );
         if (confirmed) {
           try {
-            await trpc.quote.delete.mutate(storeId);
-            console.log("✅ Quote deleted:", storeId);
+            await trpc.quote.delete.mutate(quoteId);
+            console.log("✅ Quote deleted:", quoteId);
             window.location.reload();
           } catch (err) {
             console.error("❌ Failed to delete quote:", err);
           }
         }
+      };
+      const toggleStatus = async () => {
+        const newStatus =
+          row.original.status === Status.unpaid ? Status.paid : Status.unpaid;
+        try {
+          await trpc.quote.markPaid.mutate({
+            id: quoteId,
+            status: newStatus,
+          });
+          if (newStatus === Status.paid) {
+            await trpc.store.updateRevenue.mutate({
+              id: row.original.storeId,
+              revenue: row.original.total,
+            });
+          } else {
+            await trpc.store.decreaseRevenue.mutate({
+              id: row.original.storeId,
+              revenue: row.original.total,
+            });
+          }
+        } catch (err) {
+          console.error("❌ Failed to update quote status or revenue:", err);
+        }
+        window.location.reload();
       };
       return (
         <DropdownMenu>
@@ -175,12 +199,23 @@ export const columns: ColumnDef<Quote>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem>Edit</DropdownMenuItem>
-            {/* <DropdownMenuItem>View customer</DropdownMenuItem> */}
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleStatus();
+              }}
+            >
+              {row.original.status === Status.unpaid
+                ? "Mark as Paid"
+                : "Mark as Unpaid"}
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={(e) => {
                 e.stopPropagation();
                 handleDelete();
               }}
+              className="hover:!bg-red-100 hover:!text-red-600 text-red-600"
             >
               Delete
             </DropdownMenuItem>

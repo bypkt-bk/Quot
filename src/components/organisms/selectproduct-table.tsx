@@ -35,7 +35,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import type { Product, Quote } from "@/lib/shared";
+import { Status, type Product, type Quote } from "@/lib/shared";
 import { trpc } from "@/lib/trpc";
 import { useEffect, useState } from "react";
 
@@ -207,11 +207,12 @@ const ProductData: React.FC<DataTableProps> = ({ products, quote }) => {
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() => {
-                    const nextSelected = !row.getIsSelected(); // ✅ ใช้ตัวแปรก่อน toggle
+                    if (quote.status === Status.paid) return;
+                    const nextSelected = !row.getIsSelected();
                     row.toggleSelected(nextSelected);
                     toggleSelectProduct({
                       product: row.original,
-                      isSelected: !nextSelected, // ✅ ถูกต้อง
+                      isSelected: !nextSelected,
                     });
                   }}
                 >

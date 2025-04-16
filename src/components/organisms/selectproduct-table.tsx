@@ -32,16 +32,6 @@ import { useEffect } from "react";
 export const columns: ColumnDef<Product>[] = [
   {
     id: "select",
-    // header: ({ table }) => (
-    //   <Checkbox
-    //     checked={
-    //       table.getIsAllPageRowsSelected() ||
-    //       (table.getIsSomePageRowsSelected() && "indeterminate")
-    //     }
-    //     onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-    //     aria-label="Select all"
-    //   />
-    // ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}

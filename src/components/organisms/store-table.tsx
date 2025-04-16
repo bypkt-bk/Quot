@@ -13,11 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import {
-  ArrowUpDown,
-  MoreHorizontal,
-  PlusIcon,
-} from "lucide-react";
+import { ArrowUpDown, MoreHorizontal, PlusIcon } from "lucide-react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import {
@@ -359,14 +355,6 @@ const DataTable: React.FC<DataProps> = (prop) => {
           }
           className="max-w-sm border-[#3C3C3C] rounded-[6px] py-[20px]"
         />
-        {/* <Button
-          variant="outline"
-          className="text-black"
-          onClick={handleNewQuote}
-        >
-          Quote
-          <PlusIcon />
-        </Button> */}
         <Popover>
           <PopoverTrigger asChild>
             <Button variant="outline" className="text-black">
@@ -402,35 +390,6 @@ const DataTable: React.FC<DataProps> = (prop) => {
             </div>
           </PopoverContent>
         </Popover>
-        {/* <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              className="ml-auto text-white bg-transparent border-[#3C3C3C] rounded-[6px]"
-            >
-              Columns <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value: boolean) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu> */}
       </div>
       <div className="border border-[#3C3C3C] rounded-[6px]">
         <Table>

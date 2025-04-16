@@ -4,7 +4,7 @@ import { initializeApp, cert, getApps } from "firebase-admin/app";
 const activeApps = getApps();
 const serviceAccount = {
   type: "service_account",
-  project_id: "vlvu2025",
+  project_id: "bill-d585f",
   private_key_id: import.meta.env.FIREBASE_PRIVATE_KEY_ID,
   private_key: import.meta.env.FIREBASE_PRIVATE_KEY,
   client_email: import.meta.env.FIREBASE_CLIENT_EMAIL,

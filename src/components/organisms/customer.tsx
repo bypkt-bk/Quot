@@ -43,12 +43,6 @@ import {
 import type { Customer, Product } from "@/lib/shared";
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Label } from "@/components/ui/label";
 
 interface DataTableProps {
   customers: Customer[];

@@ -13,19 +13,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
-import { format } from "date-fns";
+import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -37,7 +27,7 @@ import {
 } from "@/components/ui/table";
 import { Status, type Product, type Quote } from "@/lib/shared";
 import { trpc } from "@/lib/trpc";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export const columns: ColumnDef<Product>[] = [
   {

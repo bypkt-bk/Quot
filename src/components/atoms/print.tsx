@@ -74,10 +74,12 @@ const PrintComponent: React.FC<DataTableProps> = (data) => {
           </div>
           <div>
             <p className="text-black text-[10px]">
-              Quotation Date: {quote.orderDate}
+              Quotation Date:{" "}
+              {new Date(quote.orderDate).toLocaleDateString("en-GB")}
             </p>
             <p className="text-black text-[10px]">
-              Delivery Due: {quote.shippingOn}
+              Delivery Due:{" "}
+              {new Date(quote.orderDate).toLocaleDateString("en-GB")}
             </p>
             <p className="text-black text-[10px]">Payment type: {quote.type}</p>
             <p className="text-black text-[10px]">

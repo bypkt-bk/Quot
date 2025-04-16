@@ -15,16 +15,13 @@ import {
 } from "@tanstack/react-table";
 import {
   ArrowUpDown,
-  ChevronDown,
   MoreHorizontal,
   PlusIcon,
 } from "lucide-react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
@@ -40,7 +37,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Status, type Customer, type Quote, type Store } from "@/lib/shared";
+import { Status, type Quote, type Store } from "@/lib/shared";
 import { trpc } from "@/lib/trpc";
 import { Label } from "@/components/ui/label";
 import {

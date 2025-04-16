@@ -31,7 +31,6 @@
 import {
   Home,
   Archive,
-  ChartPie,
   Settings,
   Store,
   SquareUserRound,

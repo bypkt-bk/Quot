@@ -65,6 +65,7 @@ export type QuoteProduct = {
   product: Product;
   quantity: number;
   unitPrice: number;
+  productName: string;
 };
 
 export type Customer = {

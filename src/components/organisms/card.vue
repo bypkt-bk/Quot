@@ -52,7 +52,7 @@ function formatRevenue(revenue: number): string {
   return new Intl.NumberFormat("th-TH", {
     style: "currency",
     currency: "THB",
-    notation: "standard", // หลีกเลี่ยง e+21
+    notation: "standard",
     maximumFractionDigits: 2,
   }).format(revenue);
 }
@@ -116,9 +116,5 @@ h3 {
   text-align: start;
   font-family: Onest;
   font-size: 16px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 50%;
 }
 </style>

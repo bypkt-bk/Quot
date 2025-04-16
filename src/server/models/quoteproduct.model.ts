@@ -26,6 +26,7 @@ export const quoteproduct = {
     quoteId: string,
     productId: string,
     unitPrice: number,
+    productName: string,
   ) {
     return await prisma.quoteProduct.create({
       data: {
@@ -33,6 +34,7 @@ export const quoteproduct = {
         productId,
         quantity: 1,
         unitPrice,
+        productName,
       },
     });
   },
@@ -43,6 +45,7 @@ export const quoteproduct = {
       quantity?: number;
       price?: number;
       unitPrice?: number;
+      productName?: string;
     },
   ) {
     return await prisma.quoteProduct.update({

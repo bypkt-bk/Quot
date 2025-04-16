@@ -147,6 +147,7 @@ const ProductData: React.FC<DataTableProps> = ({ products, quote }) => {
         quoteId: quote.id,
         productId: product.id,
         unitPrice: product.price,
+        productName: product.name,
       });
     } else {
       await trpc.quoteproduct.deleteQuoteProduct.mutate({

@@ -342,6 +342,7 @@ export const appRouter = t.router({
           quoteId: z.string(),
           productId: z.string(),
           unitPrice: z.number(),
+          productName: z.string(),
         }),
       )
       .mutation(({ input }) =>
@@ -349,6 +350,7 @@ export const appRouter = t.router({
           input.quoteId,
           input.productId,
           input.unitPrice,
+          input.productName,
         ),
       ),
     update: t.procedure
@@ -359,6 +361,7 @@ export const appRouter = t.router({
             quantity: z.number().optional(),
             price: z.number().optional(),
             unitPrice: z.number().optional(),
+            productName: z.string().optional(),
           }),
         }),
       )

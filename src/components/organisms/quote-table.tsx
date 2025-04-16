@@ -74,6 +74,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Print from "@/components/atoms/print";
 export function DatePickerWithRange({
   className,
   quote,
@@ -182,7 +183,7 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
     const total = product.reduce((sum, prod) => {
       return sum + prod.quantity * prod.unitPrice;
     }, 0);
-    setTotalQuote(total);
+    setTotalQuote(Number(total.toFixed(2)));
   }, [product]);
 
   const columns: ColumnDef<QuoteProduct>[] = [
@@ -240,7 +241,7 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
       accessorKey: "name",
       header: "Product",
       cell: ({ row }) => (
-        <div className="capitalize">{row.original.product.name}</div>
+        <div className="capitalize">{row.original.productName}</div>
       ),
     },
     {
@@ -335,7 +336,6 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
     }
   }, [totalQuote]);
 
-  const handdlePrint = () => {};
   const [paymentInfo, setPaymentInfo] = useState<[PaymentType, number | null]>([
     quote.type,
     quote.creditTerm !== null ? Number(quote.creditTerm) : null,
@@ -387,9 +387,7 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
         >
           {storeName}
         </h1>
-        <Button variant="outline" onClick={handdlePrint} className="text-black">
-          Print
-        </Button>
+        <Print quote={quote} />
       </div>
       <div className="flex w-full flex-wrap gap-2 py-2">
         <div className="flex gap-2 w-full flex-nowrap">

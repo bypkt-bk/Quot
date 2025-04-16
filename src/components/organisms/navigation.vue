@@ -19,7 +19,7 @@
       </a>
     </nav>
     <nav class="navigation1">
-      <a class="nav-btn" :href="`/store/customer/${props.storeId}`">
+      <a class="nav-btn" :href="`/store/setting/${props.storeId}`">
         <Settings />
         <p>Setting</p>
       </a>

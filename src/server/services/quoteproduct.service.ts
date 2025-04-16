@@ -13,8 +13,14 @@ export const quotesService = {
     quoteId: string,
     productId: string,
     unitPrice: number,
+    productName: string,
   ) {
-    return await quoteproduct.createQuoteProduct(quoteId, productId, unitPrice);
+    return await quoteproduct.createQuoteProduct(
+      quoteId,
+      productId,
+      unitPrice,
+      productName,
+    );
   },
 
   async updateQuoteProduct(
@@ -23,6 +29,7 @@ export const quotesService = {
       quantity?: number;
       price?: number;
       unitPrice?: number;
+      productName?: string;
     },
   ) {
     return await quoteproduct.updateQuoteProduct(id, data);

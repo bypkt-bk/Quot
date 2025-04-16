@@ -1,26 +1,71 @@
 <template>
-  <nav class="navigation">
-    <a class="nav-btn" href="/home/1">
-      <Home />
-      <p>Home</p>
-    </a>
-    <a class="nav-btn" href="/Item/1">
-      <Archive />
-      <p>Item</p>
-    </a>
-    <a class="nav-btn" href="/Dashboard/1">
-      <ChartPie />
-      <p>Dashboard</p>
-    </a>
-  </nav>
+  <div class="navbar">
+    <nav class="navigation2">
+      <a class="nav-btn" :href="`/home/${userId}`">
+        <Home />
+        <p>Home</p>
+      </a>
+      <a class="nav-btn" :href="`/store/${props.storeId}`">
+        <Store />
+        <p>Store</p>
+      </a>
+      <a class="nav-btn" :href="`/store/product/${props.storeId}`">
+        <Archive />
+        <p>Product</p>
+      </a>
+      <a class="nav-btn" :href="`/store/customer/${props.storeId}`">
+        <SquareUserRound />
+        <p>Customer</p>
+      </a>
+    </nav>
+    <nav class="navigation1">
+      <a class="nav-btn" :href="`/store/setting/${props.storeId}`">
+        <Settings />
+        <p>Setting</p>
+      </a>
+    </nav>
+  </div>
 </template>
 
 <script setup>
-import { Home, Archive, ChartPie } from "lucide-vue-next";
+import {
+  Home,
+  Archive,
+  ChartPie,
+  Settings,
+  Store,
+  SquareUserRound,
+} from "lucide-vue-next";
+import { defineProps, onMounted, ref } from "vue";
+import VueCookies from "vue-cookies";
+const props = defineProps(["storeId"]);
+const userId = ref("");
+onMounted(() => {
+  const auth = VueCookies.get("auth");
+  userId.value = auth.userId;
+});
 </script>
 
 <style>
-.navigation {
+.navbar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.navigation1 {
+  display: flex;
+  padding: 14px 14px;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  gap: 20px;
+  border-radius: 20px;
+  border: 1px solid #3c3c3c;
+  background: #242424;
+}
+
+.navigation2 {
   display: flex;
   padding: 28px 14px;
   flex-direction: column;
@@ -30,6 +75,16 @@ import { Home, Archive, ChartPie } from "lucide-vue-next";
   border-radius: 20px;
   border: 1px solid #3c3c3c;
   background: #242424;
+}
+@media (max-width: 563px) {
+  .navigation1,
+  .navigation2 {
+    flex-direction: row;
+    padding: 10px 10px;
+  }
+  .navbar {
+    flex-direction: row;
+  }
 }
 
 .nav-btn {

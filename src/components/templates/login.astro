@@ -9,14 +9,12 @@ import Footer from "@/components/organisms/footer.vue";
   <div class="login-container">
     <Logins client:load />
   </div>
-  <Footer client:load />
 </div>
 
 <style scoped>
   .login-page {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     min-height: 100vh;
     width: 100%;
   }
@@ -25,6 +23,7 @@ import Footer from "@/components/organisms/footer.vue";
     flex-grow: 1;
     display: flex;
     align-items: center;
+    margin-top: -80px;
     justify-content: center;
     width: 100%;
   }

@@ -65,6 +65,9 @@ const showPopover = ref(false);
 function togglePopover() {
   showPopover.value = !showPopover.value;
 }
+function handleClick() {
+  window.location.href = "/login";
+}
 function handleClickOutside(event) {
   const popoverElements = document.querySelectorAll(".badge-wrapper");
   let isInside = false;

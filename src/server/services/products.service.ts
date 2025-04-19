@@ -1,20 +1,20 @@
-import { productsModel } from "../models/products.model";
+import type { IProductRepository } from "../domain/interfaces/repositories/product.repository";
 
-export const productsService = {
+export class ProductsService {
+  private productsModel: IProductRepository;
+  constructor(productsModel: IProductRepository) {
+    this.productsModel = productsModel;
+  }
   async getStoreProducts(storeId: string) {
-    return await productsModel.getProductsByStoreId(storeId);
-  },
-
-  async getProduct(id: string) {
-    return await productsModel.getProductById(id);
-  },
+    return await this.productsModel.getProductsByStoreId(storeId);
+  }
 
   async createProduct(storeId: string, name: string, price: number) {
-    return await productsModel.createProduct(storeId, {
+    return await this.productsModel.createProduct(storeId, {
       name,
       price,
     });
-  },
+  }
 
   async updateProduct(
     id: string,
@@ -23,10 +23,10 @@ export const productsService = {
       price?: number;
     },
   ) {
-    return await productsModel.updateProduct(id, data);
-  },
+    return await this.productsModel.updateProduct(id, data);
+  }
 
   async deleteProduct(id: string) {
-    return await productsModel.deleteProduct(id);
-  },
+    return await this.productsModel.deleteProduct(id);
+  }
 };

@@ -1,26 +1,27 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, type User } from "@prisma/client";
+import { type User as UserEntity } from "../domain/entities/user.entity";
 
-const prisma = new PrismaClient();
+class UsersModel {
+  private static prisma = new PrismaClient();
 
-export const usersModel = {
-  async getAllUser() {
-    return await prisma.user.findMany();
-  },
+  public async getAllUser(): Promise<User[]> {
+    return await UsersModel.prisma.user.findMany();
+  }
 
-  async getUserById(id: string) {
-    return await prisma.user.findUnique({
+  public async getUserById(id: string): Promise<User | null> {
+    return await UsersModel.prisma.user.findUnique({
       where: { id },
     });
-  },
+  }
 
-  async getUserByGoogleId(id: string) {
-    return await prisma.user.findUnique({
+  public async getUserByGoogleId(id: string): Promise<User | null> {
+    return await UsersModel.prisma.user.findUnique({
       where: { googleId: id },
     });
-  },
+  }
 
-  async getStoreOwnerByGoogleId(id: string) {
-    return await prisma.user.findUnique({
+  public async getStoreOwnerByGoogleId(id: string): Promise<User | null> {
+    return await UsersModel.prisma.user.findUnique({
       where: { googleId: id },
       include: {
         ownedStores: {
@@ -32,39 +33,49 @@ export const usersModel = {
         },
       },
     });
-  },
+  }
 
-  async createUser(name: string, email: string, googleId: string) {
-    return await prisma.user.create({
+  public async createUser(
+    name: string,
+    email: string,
+    googleId: string
+  ): Promise<User> {
+    return await UsersModel.prisma.user.create({
       data: {
         name,
         email,
         googleId,
       },
     });
-  },
+  }
 
-  async updateUser(
-    googleId: string,
+  public async updateUser(user: Partial<UserEntity>): Promise<User> {
+    const data = this.buildUpdateData(user.name ?? "" , user.email, user.taxId ?? "", user.phoneNumber ?? "");
+    return await UsersModel.prisma.user.update({
+      where: { googleId: user.googleId },
+      data,
+    });
+  }
+
+  public async deleteUser(googleId: string): Promise<User> {
+    return await UsersModel.prisma.user.delete({
+      where: { googleId },
+    });
+  }
+
+  private buildUpdateData(
     name: string,
     email?: string,
     taxId?: string,
-    phoneNumber?: string,
+    phoneNumber?: string
   ) {
-    return await prisma.user.update({
-      where: { googleId },
-      data: {
-        name,
-        ...(email && { email }),
-        ...(taxId && { taxId }),
-        ...(phoneNumber && { phoneNumber }),
-      },
-    });
-  },
+    return {
+      name,
+      ...(email && { email }),
+      ...(taxId && { taxId }),
+      ...(phoneNumber && { phoneNumber }),
+    };
+  }
+}
 
-  async deleteUser(googleId: string) {
-    return await prisma.user.delete({
-      where: { googleId },
-    });
-  },
-};
+export const usersModel = new UsersModel();

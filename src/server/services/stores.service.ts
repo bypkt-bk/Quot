@@ -1,17 +1,21 @@
-import { storeModel } from "../models/stores.model";
+import type { IStoreRepository } from "../domain/interfaces/repositories/store.repository";
+import { StoreRepository } from "../infrastructure/prisma/store.repository";
 
-export const storesService = {
-  async getStores() {
-    return await storeModel.getAllStores();
-  },
+
+export class StoresService {
+  private storeRepository: IStoreRepository;
+  constructor(storeRepository: IStoreRepository) {
+    this.storeRepository = storeRepository;
+  }
+
 
   async getStoreById(id: string) {
-    return await storeModel.getStoreById(id);
-  },
+    return await this.storeRepository.getStoreById(id);
+  }
 
   async getStoreByOwnerId(userId: string) {
-    return await storeModel.getStoreByOwnerId(userId);
-  },
+    return await this.storeRepository.getStoreByOwnerId(userId);
+  }
 
   async createStore(
     name: string,
@@ -20,14 +24,14 @@ export const storesService = {
     revenue?: number,
     adminIds?: string[],
   ) {
-    return await storeModel.createStore({
+    return await this.storeRepository.createStore(
       name,
       address,
-      revenue: revenue || 0,
       ownerIds,
+      revenue || 0,
       adminIds,
-    });
-  },
+    );
+  }
 
   async updateStore(
     id: string,
@@ -37,33 +41,32 @@ export const storesService = {
       revenue?: number;
     },
   ) {
-    return await storeModel.updateStore(id, data);
-  },
+    return await this.storeRepository.updateStore(id, data);
+  }
   async updateStoreOwner(id: string, newOwnerIds: number[]) {
-    return await storeModel.updateStoreOwner(id, newOwnerIds);
-  },
-
-  async deleteStore(id: string) {
-    return await storeModel.deleteStore(id);
-  },
-
-  async getStoreProducts(storeId: string) {
-    return await storeModel.getStoreProducts(storeId);
-  },
-
-  async getStoreCustomers(storeId: string) {
-    return await storeModel.getStoreCustomers(storeId);
-  },
-
-  async getStoreQuotes(storeId: string) {
-    return await storeModel.getStoreQuotes(storeId);
-  },
+    return await this.storeRepository.updateStoreOwner(id, newOwnerIds.map(String));
+  }
 
   async incrementRevenue(storeId: string, revenue: number) {
-    return await storeModel.incrementRevenue(storeId, revenue);
-  },
+    const store = await this.storeRepository.getStoreById(storeId);
+    if (!store) {
+      throw new Error(`Store with ID ${storeId} not found`);
+    }
+    const updatedRevenue = (store.revenue || 0) + revenue;
+    return await this.storeRepository.updateStore(storeId, {
+      revenue: updatedRevenue,
+    });
+    
+  }
 
   async decreaseRevenue(storeId: string, revenue: number) {
-    return await storeModel.decreaseRevenue(storeId, revenue);
-  },
+    const store = await this.storeRepository.getStoreById(storeId);
+    if (!store) {
+      throw new Error(`Store with ID ${storeId} not found`);
+    }
+    const updatedRevenue = (store.revenue || 0) - revenue;
+    return await this.storeRepository.updateStore(storeId, {
+      revenue: updatedRevenue,
+    });
+  }
 };

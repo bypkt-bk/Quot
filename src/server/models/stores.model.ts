@@ -1,10 +1,10 @@
-import { Prisma, PrismaClient, type Store } from "@prisma/client";
+import { PaymentType, PrismaClient, Status, type Store } from "@prisma/client";
 
-const prisma = new PrismaClient();
+class StoreModel {
+  private static prisma = new PrismaClient();
 
-export const storeModel = {
-  async getAllStores() {
-    return await prisma.store.findMany({
+  public async getAllStores(): Promise<Store[]> {
+    return await StoreModel.prisma.store.findMany({
       include: {
         owner: true,
         admin: true,
@@ -13,16 +13,16 @@ export const storeModel = {
         customers: true,
       },
     });
-  },
+  }
 
-  async createStore(data: {
+  public async createStore(data: {
     name: string;
     address: string;
     revenue?: number;
     ownerIds: string[];
     adminIds?: string[];
-  }) {
-    return await prisma.store.create({
+  }): Promise<Store> {
+    return await StoreModel.prisma.store.create({
       data: {
         name: data.name,
         address: data.address,
@@ -35,10 +35,10 @@ export const storeModel = {
         },
       },
     });
-  },
+  }
 
-  async getStoreById(id: string) {
-    return await prisma.store.findUnique({
+  public async getStoreById(id: string): Promise<Store | null> {
+    return await StoreModel.prisma.store.findUnique({
       where: { id },
       include: {
         owner: true,
@@ -52,9 +52,10 @@ export const storeModel = {
         customers: true,
       },
     });
-  },
-  async getStoreByOwnerId(userId: string) {
-    return await prisma.store.findMany({
+  }
+
+  public async getStoreByOwnerId(userId: string): Promise<Store[]> {
+    return await StoreModel.prisma.store.findMany({
       where: {
         owner: {
           some: {
@@ -70,17 +71,17 @@ export const storeModel = {
         customers: true,
       },
     });
-  },
+  }
 
-  async updateStore(
+  public async updateStore(
     id: string,
     data: {
       name?: string;
       address?: string;
       revenue?: number;
     },
-  ) {
-    return await prisma.store.update({
+  ): Promise<Store> {
+    return await StoreModel.prisma.store.update({
       where: { id },
       data: {
         name: data.name,
@@ -88,10 +89,13 @@ export const storeModel = {
         revenue: data.revenue,
       },
     });
-  },
+  }
 
-  async updateStoreOwner(storeId: string, newOwnerIds: number[]) {
-    return await prisma.store.update({
+  public async updateStoreOwner(
+    storeId: string,
+    newOwnerIds: number[],
+  ): Promise<Store> {
+    return await StoreModel.prisma.store.update({
       where: { id: storeId },
       data: {
         owner: {
@@ -99,16 +103,16 @@ export const storeModel = {
         },
       },
     });
-  },
+  }
 
-  async deleteStore(id: string) {
-    return await prisma.store.delete({
+  public async deleteStore(id: string): Promise<Store> {
+    return await StoreModel.prisma.store.delete({
       where: { id },
     });
-  },
+  }
 
-  async getStoreProducts(storeId: string) {
-    return await prisma.store.findUnique({
+  public async getStoreProducts(storeId: string): Promise<Store | null> {
+    return await StoreModel.prisma.store.findUnique({
       where: { id: storeId },
       include: {
         products: {
@@ -120,28 +124,40 @@ export const storeModel = {
         },
       },
     });
-  },
+  }
 
-  async getStoreCustomers(storeId: string) {
-    return await prisma.store.findUnique({
+  public async getStoreCustomers(storeId: string): Promise<{ customers: { name: string | null; id: string; address: string | null; taxId: string | null; phoneNumber: string; storeId: string; }[] } | null> {
+    return await StoreModel.prisma.store.findUnique({
       where: { id: storeId },
       select: {
-        customers: true,
+        customers: {
+          select: {
+            name: true,
+            id: true,
+            address: true,
+            taxId: true,
+            phoneNumber: true,
+            storeId: true,
+          },
+        },
       },
     });
-  },
+  }
 
-  async getStoreQuotes(storeId: string) {
-    return await prisma.store.findUnique({
+  public async getStoreQuotes(storeId: string): Promise<{ quote: { id: string; address: string | null; storeId: string; total: number; orderDate: string; shippingOn: string | null; type: PaymentType; creditTerm: number | null; status: Status; customerId: string | null; }[] } | null> {
+    return await StoreModel.prisma.store.findUnique({
       where: { id: storeId },
       select: {
         quote: true,
       },
     });
-  },
+  }
 
-  async incrementRevenue(storeId: string, amount: number) {
-    return await prisma.store.update({
+  public async incrementRevenue(
+    storeId: string,
+    amount: number,
+  ): Promise<Store> {
+    return await StoreModel.prisma.store.update({
       where: { id: storeId },
       data: {
         revenue: {
@@ -149,10 +165,13 @@ export const storeModel = {
         },
       },
     });
-  },
+  }
 
-  async decreaseRevenue(storeId: string, amount: number) {
-    return await prisma.store.update({
+  public async decreaseRevenue(
+    storeId: string,
+    amount: number,
+  ): Promise<Store> {
+    return await StoreModel.prisma.store.update({
       where: { id: storeId },
       data: {
         revenue: {
@@ -160,5 +179,7 @@ export const storeModel = {
         },
       },
     });
-  },
-};
+  }
+}
+
+export const storeModel = new StoreModel();

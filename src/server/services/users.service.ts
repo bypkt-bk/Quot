@@ -1,18 +1,20 @@
-import { usersModel } from "../models/users.model";
+import { User } from "../domain/entities/user.entity";
+import type { IUserRepository } from "../domain/interfaces/repositories/user.repository";
 
-export const usersService = {
-  async getAllUsers() {
-    return await usersModel.getAllUser();
-  },
+export class UsersService  {
+  private userRepository: IUserRepository;
+  constructor(userRepository: IUserRepository) {
+    this.userRepository = userRepository;
+  }
   async getUserByGoogleId(id: string) {
-    return await usersModel.getUserByGoogleId(id);
-  },
+    return await this.userRepository.getUserByGoogleId(id);
+  }
   async getUserById(id: string) {
-    return await usersModel.getUserById(id);
-  },
+    return await this.userRepository.getUserById(id);
+  }
   async createUser(name: string, email: string, googleId: string) {
-    return await usersModel.createUser(name, email, googleId);
-  },
+    return await this.userRepository.createUser(name, email, googleId);
+  }
   async updateUser(
     googleId: string,
     name: string,
@@ -20,19 +22,28 @@ export const usersService = {
     taxId?: string,
     phoneNumber?: string,
   ) {
-    return await usersModel.updateUser(
-      googleId,
+    const user  = await this.userRepository.getUserByGoogleId(googleId);
+    if (!user) {
+      throw new Error("User not found");
+    }
+    const updatedUser = new User(
+      user.id,
       name,
-      email,
-      taxId,
-      phoneNumber,
+      email || user.email,
+      googleId,
+      phoneNumber || user.phoneNumber,
+      taxId || user.taxId,
     );
-  },
-  async deleteUser(googleId: string) {
-    return await usersModel.deleteUser(googleId);
-  },
+    updatedUser.validate();
+    return await this.userRepository.updateUser(
+      googleId,
+      {
+        name: updatedUser.name,
+        email: updatedUser.email,
+        phoneNumber: updatedUser.phoneNumber,
+        taxId: updatedUser.taxId,
+      },
+    );
+  }
 
-  async getStoreOwnerByGoogleId(id: string) {
-    return await usersModel.getStoreOwnerByGoogleId(id);
-  },
 };

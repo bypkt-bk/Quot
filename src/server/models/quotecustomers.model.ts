@@ -1,45 +1,45 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, type QuoteCustomer } from "@prisma/client";
 
-const prisma = new PrismaClient();
+class QuoteCustomerModel {
+  private static prisma = new PrismaClient();
 
-export const quoteCustomerModel = {
-  async getAll() {
-    return await prisma.quoteCustomer.findMany({
+  public async getAll(): Promise<QuoteCustomer[]> {
+    return await QuoteCustomerModel.prisma.quoteCustomer.findMany({
       include: {
         quote: true,
         customer: true,
       },
     });
-  },
+  }
 
-  async getById(id: string) {
-    return await prisma.quoteCustomer.findUnique({
+  public async getById(id: string): Promise<QuoteCustomer | null> {
+    return await QuoteCustomerModel.prisma.quoteCustomer.findUnique({
       where: { id },
       include: {
         quote: true,
         customer: true,
       },
     });
-  },
+  }
 
-  async getByQuoteId(quoteId: string) {
-    return await prisma.quoteCustomer.findMany({
+  public async getByQuoteId(quoteId: string): Promise<QuoteCustomer[]> {
+    return await QuoteCustomerModel.prisma.quoteCustomer.findMany({
       where: { quoteId },
       include: {
         customer: true,
       },
     });
-  },
+  }
 
-  async create(data: {
+  public async create(data: {
     quoteId: string;
     name?: string | null;
     taxId?: string | null;
     phoneNumber: string;
     address?: string | null;
     customerId: string;
-  }) {
-    return await prisma.quoteCustomer.create({
+  }): Promise<QuoteCustomer> {
+    return await QuoteCustomerModel.prisma.quoteCustomer.create({
       data: {
         quote: {
           connect: { id: data.quoteId },
@@ -53,9 +53,9 @@ export const quoteCustomerModel = {
         address: data.address,
       },
     });
-  },
+  }
 
-  async update(
+  public async update(
     id: string,
     data: {
       name?: string;
@@ -63,16 +63,18 @@ export const quoteCustomerModel = {
       phoneNumber?: string;
       address?: string;
     },
-  ) {
-    return await prisma.quoteCustomer.update({
+  ): Promise<QuoteCustomer> {
+    return await QuoteCustomerModel.prisma.quoteCustomer.update({
       where: { id },
       data,
     });
-  },
+  }
 
-  async delete(id: string) {
-    return await prisma.quoteCustomer.delete({
+  public async delete(id: string): Promise<QuoteCustomer> {
+    return await QuoteCustomerModel.prisma.quoteCustomer.delete({
       where: { id },
     });
-  },
-};
+  }
+}
+
+export const quoteCustomerModel = new QuoteCustomerModel();

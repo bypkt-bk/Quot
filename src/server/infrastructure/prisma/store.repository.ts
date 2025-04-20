@@ -97,16 +97,8 @@ export class StoreRepository implements IStoreRepository {
         owner.googleId,
       );
     });
-    const storeWithAdmins = store.admin.map((admin) => {
-      return new User(
-        admin.id,
-        admin.name,
-        admin.email,
-        admin.googleId
-      );
-    });
 
-    return new Store(store.id, store.name, store.address, store.revenue || 0, storeWithOwners, storeWithAdmins, storeWithQuotes, storeWithProducts, storeWithCustomers);
+    return new Store(store.id, store.name, store.address, store.revenue || 0, storeWithOwners,  storeWithQuotes, storeWithProducts, storeWithCustomers);
   }
   public async getAllStores(): Promise<Store[]> {
     const stores = await this.prisma.store.findMany({

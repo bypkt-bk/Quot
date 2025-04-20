@@ -9,7 +9,6 @@ export class Store {
   address: string | null;
   revenue: number;
   owner:     User[] | undefined ;
-  admin:     User[] | undefined ;
   quote:     Quote[] | undefined;
   products:  Product[] | undefined;
   customers: Customer[] | undefined;
@@ -20,7 +19,6 @@ export class Store {
     address: string | null,
     revenue: number,
     owner?: User[],
-    admin?: User[],
     quote?: Quote[],
     products?: Product[],
     customers?: Customer[],
@@ -30,7 +28,6 @@ export class Store {
     this.address = address || null;
     this.revenue = revenue || 0;
     this.owner = owner || [];
-    this.admin = admin || [];
     this.quote = quote || [];
     this.products = products || [];
     this.customers = customers || [];

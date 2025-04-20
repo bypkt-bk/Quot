@@ -12,15 +12,12 @@ export class QuotesProductService {
     unitPrice: number,
     productName: string,
   ) {
-    return await this.quoteProductModel.createQuoteProduct(
-      quoteId,
-      {
-        productId,
-        quantity,
-        unitPrice,
-        productName,
-      }
-    );
+    return await this.quoteProductModel.createQuoteProduct(quoteId, {
+      productId,
+      quantity,
+      unitPrice,
+      productName,
+    });
   }
 
   async updateQuoteProduct(
@@ -38,4 +35,4 @@ export class QuotesProductService {
   async deleteQuoteProductById(quoteId: string, productId: string) {
     return await this.quoteProductModel.deleteQuoteProduct(quoteId, productId);
   }
-};
+}

@@ -38,7 +38,7 @@ class UsersModel {
   public async createUser(
     name: string,
     email: string,
-    googleId: string
+    googleId: string,
   ): Promise<User> {
     return await UsersModel.prisma.user.create({
       data: {
@@ -50,7 +50,12 @@ class UsersModel {
   }
 
   public async updateUser(user: Partial<UserEntity>): Promise<User> {
-    const data = this.buildUpdateData(user.name ?? "" , user.email, user.taxId ?? "", user.phoneNumber ?? "");
+    const data = this.buildUpdateData(
+      user.name ?? "",
+      user.email,
+      user.taxId ?? "",
+      user.phoneNumber ?? "",
+    );
     return await UsersModel.prisma.user.update({
       where: { googleId: user.googleId },
       data,
@@ -67,7 +72,7 @@ class UsersModel {
     name: string,
     email?: string,
     taxId?: string,
-    phoneNumber?: string
+    phoneNumber?: string,
   ) {
     return {
       name,

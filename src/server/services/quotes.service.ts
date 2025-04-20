@@ -3,12 +3,15 @@ import type { PaymentType } from "../domain/enums/payment-type.enum";
 import type { Status } from "../domain/enums/status.enum";
 import type { IQuoteRepository } from "../domain/interfaces/repositories/quote.repository";
 
-export class QuotesService{
+export class QuotesService {
   private quoteModel: IQuoteRepository;
   constructor(quoteModel: IQuoteRepository) {
     this.quoteModel = quoteModel;
   }
-  async getQuoteById(id: string, p0: { include: { store: boolean; }; }) {
+  async getQuotesByStoreId(storeId: string) {
+    return await this.quoteModel.getQuotesByStoreId(storeId);
+  }
+  async getQuoteById(id: string, p0: { include: { store: boolean } }) {
     return await this.quoteModel.getQuoteById(id);
   }
   async createQuote(
@@ -31,13 +34,13 @@ export class QuotesService{
     const quoteProducts = products.map(
       (product) =>
         new QuoteProduct(
-          '', // id will be assigned by the database
+          "", // id will be assigned by the database
           product.productId,
           product.productName,
           product.unitPrice,
           product.quantity,
-          '' // quoteId will be assigned after quote creation
-        )
+          "", // quoteId will be assigned after quote creation
+        ),
     );
     return await this.quoteModel.createQuote(
       storeId,
@@ -79,4 +82,4 @@ export class QuotesService{
   ) {
     return await this.quoteModel.updatePaymentType(id, type, creditTerm);
   }
-};
+}

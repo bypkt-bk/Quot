@@ -1,5 +1,4 @@
-import type { Product
- } from "../../entities/product.entity";
+import type { Product } from "../../entities/product.entity";
 
 export interface IProductRepository {
   getProductsByStoreId(storeId: string): Promise<Product[]>;

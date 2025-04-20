@@ -20,7 +20,7 @@ class CustomersModel {
 
   public async getCustomerByStoreIdAndPhone(
     storeId: string,
-    phoneNumber: string
+    phoneNumber: string,
   ): Promise<Customer | null> {
     return await CustomersModel.prisma.customer.findFirst({
       where: {
@@ -41,7 +41,7 @@ class CustomersModel {
       phoneNumber: string;
       address: string;
       taxId: string;
-    }
+    },
   ): Promise<Customer> {
     return await CustomersModel.prisma.customer.create({
       data: {
@@ -58,7 +58,7 @@ class CustomersModel {
       address?: string | null;
       phoneNumber: string;
       taxId?: string | null;
-    }
+    },
   ): Promise<Customer> {
     return await CustomersModel.prisma.customer.update({
       where: { id },

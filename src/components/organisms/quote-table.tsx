@@ -173,9 +173,7 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
   const [product, setProduct] = useState<QuoteProduct[]>(quote.products ?? []);
   const [name, setName] = useState<string>(quote.customer?.name ?? "");
   const [address, setAddress] = useState<string>(quote.customer.address ?? "");
-  const [phone, setPhone] = useState<string>(
-    quote.customer?.phoneNumber ?? "",
-  );
+  const [phone, setPhone] = useState<string>(quote.customer?.phoneNumber ?? "");
   const [taxId, setTaxId] = useState<string>(quote.customer?.taxId ?? "");
   const [totalQuote, setTotalQuote] = useState<number>(quote.total ?? 0);
 

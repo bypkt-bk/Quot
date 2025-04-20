@@ -1,6 +1,4 @@
-
-import { Quote
- } from "@/server/domain/entities/quote.entity";
+import { Quote } from "@/server/domain/entities/quote.entity";
 import type { PaymentType } from "@/server/domain/enums/payment-type.enum";
 import type { Status } from "@/server/domain/enums/status.enum";
 import type { IQuoteRepository } from "@/server/domain/interfaces/repositories/quote.repository";
@@ -14,6 +12,67 @@ export class QuoteRepository implements IQuoteRepository {
 
   constructor() {
     this.prisma = new PrismaClient();
+  }
+  public async getQuotesByStoreId(storeId: string): Promise<Quote[]> {
+    const quotes = await this.prisma.quote.findMany({
+      where: { storeId },
+      include: {
+        customers: true,
+        store: true,
+        products: {
+          include: {
+            product: true,
+          },
+        },
+      },
+    });
+
+    return quotes
+      .map((quote) => {
+        const productsList: QuoteProduct[] = quote.products.map(
+          (product) =>
+            new QuoteProduct(
+              product.id,
+              product.productId ?? "",
+              product.productName ?? "",
+              product.unitPrice ?? 0,
+              product.quantity ?? 0,
+              product.quoteId ?? "",
+            ),
+        );
+        const store = quote.store;
+        const customer = quote.customers;
+        if (!store || !customer) return null;
+        const storeEntity = new Store(
+          store.id,
+          store.name,
+          store.address,
+          store.revenue,
+        );
+        const customerEntity = new QuoteCustomer(
+          customer.id,
+          customer.name ?? "",
+          customer.address ?? "",
+          customer.phoneNumber ?? "",
+        );
+
+        return new Quote(
+          quote.id,
+          quote.customerId ?? "",
+          quote.storeId,
+          productsList,
+          quote.total ?? 0,
+          quote.orderDate ?? "",
+          quote.address ?? "",
+          quote.shippingOn ?? null,
+          (quote.type as PaymentType) ?? "",
+          quote.creditTerm ?? null,
+          (quote.status as Status) ?? "",
+          storeEntity,
+          customerEntity,
+        );
+      })
+      .filter((quote): quote is Quote => quote !== null);
   }
   public async getQuoteById(id: string): Promise<Quote | null> {
     const quote = await this.prisma.quote.findUnique({
@@ -29,15 +88,16 @@ export class QuoteRepository implements IQuoteRepository {
       },
     });
     if (!quote) return null;
-    const productsList: QuoteProduct[] = quote.products.map((product) =>
-      new QuoteProduct(
-        product.id,
-        product.productId ?? '',
-        product.productName ?? '',
-        product.unitPrice ?? 0,
-        product.quantity ?? 0,
-        product.quoteId ?? ''
-      )
+    const productsList: QuoteProduct[] = quote.products.map(
+      (product) =>
+        new QuoteProduct(
+          product.id,
+          product.productId ?? "",
+          product.productName ?? "",
+          product.unitPrice ?? 0,
+          product.quantity ?? 0,
+          product.quoteId ?? "",
+        ),
     );
     const store = quote.store;
     const customer = quote.customers;
@@ -50,25 +110,25 @@ export class QuoteRepository implements IQuoteRepository {
     );
     const customerEntity = new QuoteCustomer(
       customer.id,
-      customer.name ?? '',
-      customer.address ?? '',
-      customer.phoneNumber ?? ''
+      customer.name ?? "",
+      customer.address ?? "",
+      customer.phoneNumber ?? "",
     );
-    
+
     return new Quote(
       quote.id,
-      quote.customerId ?? '',
+      quote.customerId ?? "",
       quote.storeId,
       productsList,
       quote.total ?? 0,
-      quote.orderDate ?? '',
-      quote.address ?? '',
+      quote.orderDate ?? "",
+      quote.address ?? "",
       quote.shippingOn ?? null,
-      quote.type as PaymentType ?? '',
+      (quote.type as PaymentType) ?? "",
       quote.creditTerm ?? null,
-      quote.status as Status ?? '',
+      (quote.status as Status) ?? "",
       storeEntity,
-      customerEntity
+      customerEntity,
     );
   }
 
@@ -103,43 +163,46 @@ export class QuoteRepository implements IQuoteRepository {
         type: type as PaymentType,
         creditTerm,
         status: status as Status,
-        total: products.reduce((sum, product) => sum + product.unitPrice * product.quantity, 0), 
+        total: products.reduce(
+          (sum, product) => sum + product.unitPrice * product.quantity,
+          0,
+        ),
       },
       include: {
         products: true,
       },
     });
-    const productsList: QuoteProduct[] = quote.products.map((product) =>
-      new QuoteProduct(
-        product.id,
-        product.productId ?? '', 
-        product.productName ?? '',
-        product.unitPrice ?? 0,
-        product.quantity ?? 0,
-        product.quoteId ?? ''
-      )
+    const productsList: QuoteProduct[] = quote.products.map(
+      (product) =>
+        new QuoteProduct(
+          product.id,
+          product.productId ?? "",
+          product.productName ?? "",
+          product.unitPrice ?? 0,
+          product.quantity ?? 0,
+          product.quoteId ?? "",
+        ),
     );
-        
 
     return new Quote(
       quote.id,
-      quote.customerId ?? '',
+      quote.customerId ?? "",
       quote.storeId,
       productsList,
       quote.total ?? 0,
-      quote.orderDate ?? '',
-      quote.address ?? '',
+      quote.orderDate ?? "",
+      quote.address ?? "",
       quote.shippingOn ?? null,
-      quote.type as PaymentType ?? '',
+      (quote.type as PaymentType) ?? "",
       quote.creditTerm ?? null,
-      quote.status as Status ?? '',
+      (quote.status as Status) ?? "",
     );
   }
   public async updateOrderOnAndShippingOn(
     id: string,
     orderDate: string,
     shippingOn?: string | null,
-  ): Promise<Quote> {   
+  ): Promise<Quote> {
     const quote = await this.prisma.quote.update({
       where: { id },
       data: {
@@ -151,29 +214,30 @@ export class QuoteRepository implements IQuoteRepository {
       },
     });
 
-    const productsList: QuoteProduct[] = quote.products.map((product) =>
-      new QuoteProduct(
-        product.id,
-        product.productId ?? '',
-        product.productName ?? '',
-        product.unitPrice ?? 0,
-        product.quantity ?? 0,
-        product.quoteId ?? ''
-      )
+    const productsList: QuoteProduct[] = quote.products.map(
+      (product) =>
+        new QuoteProduct(
+          product.id,
+          product.productId ?? "",
+          product.productName ?? "",
+          product.unitPrice ?? 0,
+          product.quantity ?? 0,
+          product.quoteId ?? "",
+        ),
     );
 
     return new Quote(
       quote.id,
-      quote.customerId ?? '',
+      quote.customerId ?? "",
       quote.storeId,
       productsList,
       quote.total ?? 0,
-      quote.orderDate ?? '',
-      quote.address ?? '',
+      quote.orderDate ?? "",
+      quote.address ?? "",
       quote.shippingOn ?? null,
-      quote.type as PaymentType ?? '',
+      (quote.type as PaymentType) ?? "",
       quote.creditTerm ?? null,
-      quote.status as Status ?? '',
+      (quote.status as Status) ?? "",
     );
   }
   public async updateTotal(id: string, total: number): Promise<Quote> {
@@ -187,25 +251,26 @@ export class QuoteRepository implements IQuoteRepository {
 
     return new Quote(
       quote.id,
-      quote.customerId ?? '',
+      quote.customerId ?? "",
       quote.storeId,
-      quote.products.map((product) =>
-        new QuoteProduct(
-          product.id,
-          product.productId ?? '',
-          product.productName ?? '',
-          product.unitPrice ?? 0,
-          product.quantity ?? 0,
-          product.quoteId ?? ''
-        )
+      quote.products.map(
+        (product) =>
+          new QuoteProduct(
+            product.id,
+            product.productId ?? "",
+            product.productName ?? "",
+            product.unitPrice ?? 0,
+            product.quantity ?? 0,
+            product.quoteId ?? "",
+          ),
       ),
       quote.total ?? 0,
-      quote.orderDate ?? '',
-      quote.address ?? '',
+      quote.orderDate ?? "",
+      quote.address ?? "",
       quote.shippingOn ?? null,
-      quote.type as PaymentType ?? '',
+      (quote.type as PaymentType) ?? "",
       quote.creditTerm ?? null,
-      quote.status as Status ?? '',
+      (quote.status as Status) ?? "",
     );
   }
   public async deleteQuote(id: string): Promise<Quote> {
@@ -218,25 +283,26 @@ export class QuoteRepository implements IQuoteRepository {
 
     return new Quote(
       quote.id,
-      quote.customerId ?? '',
+      quote.customerId ?? "",
       quote.storeId,
-      quote.products.map((product) =>
-        new QuoteProduct(
-          product.id,
-          product.productId ?? '',
-          product.productName ?? '',
-          product.unitPrice ?? 0,
-          product.quantity ?? 0,
-          product.quoteId ?? ''
-        )
+      quote.products.map(
+        (product) =>
+          new QuoteProduct(
+            product.id,
+            product.productId ?? "",
+            product.productName ?? "",
+            product.unitPrice ?? 0,
+            product.quantity ?? 0,
+            product.quoteId ?? "",
+          ),
       ),
       quote.total ?? 0,
-      quote.orderDate ?? '',
-      quote.address ?? '',
+      quote.orderDate ?? "",
+      quote.address ?? "",
       quote.shippingOn ?? null,
-      quote.type as PaymentType ?? '',
+      (quote.type as PaymentType) ?? "",
       quote.creditTerm ?? null,
-      quote.status as Status ?? '',
+      (quote.status as Status) ?? "",
     );
   }
   public async updatePaymentType(
@@ -255,29 +321,30 @@ export class QuoteRepository implements IQuoteRepository {
       },
     });
 
-    const productsList: QuoteProduct[] = quote.products.map((product) =>
-      new QuoteProduct(
-        product.id,
-        product.productId ?? '',
-        product.productName ?? '',
-        product.unitPrice ?? 0,
-        product.quantity ?? 0,
-        product.quoteId ?? ''
-      )
+    const productsList: QuoteProduct[] = quote.products.map(
+      (product) =>
+        new QuoteProduct(
+          product.id,
+          product.productId ?? "",
+          product.productName ?? "",
+          product.unitPrice ?? 0,
+          product.quantity ?? 0,
+          product.quoteId ?? "",
+        ),
     );
 
     return new Quote(
       quote.id,
-      quote.customerId ?? '',
+      quote.customerId ?? "",
       quote.storeId,
       productsList,
       quote.total ?? 0,
-      quote.orderDate ?? '',
-      quote.address ?? '',
+      quote.orderDate ?? "",
+      quote.address ?? "",
       quote.shippingOn ?? null,
-      quote.type as PaymentType ?? '',
+      (quote.type as PaymentType) ?? "",
       quote.creditTerm ?? null,
-      quote.status as Status ?? '',
+      (quote.status as Status) ?? "",
     );
   }
   public async updateQuoteStatus(id: string, status: string): Promise<Quote> {
@@ -289,29 +356,30 @@ export class QuoteRepository implements IQuoteRepository {
       },
     });
 
-    const productsList: QuoteProduct[] = quote.products.map((product) =>
-      new QuoteProduct(
-        product.id,
-        product.productId ?? '',
-        product.productName ?? '',
-        product.unitPrice ?? 0,
-        product.quantity ?? 0,
-        product.quoteId ?? ''
-      )
+    const productsList: QuoteProduct[] = quote.products.map(
+      (product) =>
+        new QuoteProduct(
+          product.id,
+          product.productId ?? "",
+          product.productName ?? "",
+          product.unitPrice ?? 0,
+          product.quantity ?? 0,
+          product.quoteId ?? "",
+        ),
     );
 
     return new Quote(
       quote.id,
-      quote.customerId ?? '',
+      quote.customerId ?? "",
       quote.storeId,
       productsList,
       quote.total ?? 0,
-      quote.orderDate ?? '',
-      quote.address ?? '',
+      quote.orderDate ?? "",
+      quote.address ?? "",
       quote.shippingOn ?? null,
-      quote.type as PaymentType ?? '',
+      (quote.type as PaymentType) ?? "",
       quote.creditTerm ?? null,
-      quote.status as Status ?? '',
+      (quote.status as Status) ?? "",
     );
   }
 }

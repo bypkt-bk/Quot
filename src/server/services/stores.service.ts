@@ -1,13 +1,11 @@
 import type { IStoreRepository } from "../domain/interfaces/repositories/store.repository";
 import { StoreRepository } from "../infrastructure/prisma/store.repository";
 
-
 export class StoresService {
   private storeRepository: IStoreRepository;
   constructor(storeRepository: IStoreRepository) {
     this.storeRepository = storeRepository;
   }
-
 
   async getStoreById(id: string) {
     return await this.storeRepository.getStoreById(id);
@@ -44,7 +42,10 @@ export class StoresService {
     return await this.storeRepository.updateStore(id, data);
   }
   async updateStoreOwner(id: string, newOwnerIds: number[]) {
-    return await this.storeRepository.updateStoreOwner(id, newOwnerIds.map(String));
+    return await this.storeRepository.updateStoreOwner(
+      id,
+      newOwnerIds.map(String),
+    );
   }
 
   async incrementRevenue(storeId: string, revenue: number) {
@@ -56,7 +57,6 @@ export class StoresService {
     return await this.storeRepository.updateStore(storeId, {
       revenue: updatedRevenue,
     });
-    
   }
 
   async decreaseRevenue(storeId: string, revenue: number) {
@@ -69,4 +69,4 @@ export class StoresService {
       revenue: updatedRevenue,
     });
   }
-};
+}

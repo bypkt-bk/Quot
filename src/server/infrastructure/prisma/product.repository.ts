@@ -1,5 +1,4 @@
-import { Product
- } from "@/server/domain/entities/product.entity";
+import { Product } from "@/server/domain/entities/product.entity";
 import { type IProductRepository } from "@/server/domain/interfaces/repositories/product.repository";
 import { PrismaClient } from "@prisma/client";
 

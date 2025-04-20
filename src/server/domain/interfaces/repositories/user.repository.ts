@@ -21,5 +21,5 @@ export interface IUserRepository {
       taxId?: string | null;
     },
   ): Promise<User | null>;
- deleteUser(id: string): Promise<User | null>;
+  deleteUser(id: string): Promise<User | null>;
 }

@@ -5,7 +5,7 @@ export class User {
   googleId: string;
   phoneNumber?: string | null;
   taxId?: string | null;
-  private store: string[]    
+  private store: string[];
 
   constructor(
     id: string,
@@ -14,7 +14,7 @@ export class User {
     googleId: string,
     phoneNumber?: string | null,
     taxId?: string | null,
-    store?: string[]
+    store?: string[],
   ) {
     this.id = id;
     this.name = name;
@@ -24,7 +24,7 @@ export class User {
     this.taxId = taxId || null;
     this.store = store || [];
   }
-  validate() {  
+  validate() {
     if (!this.name) {
       throw new Error("Name is required");
     }
@@ -35,5 +35,4 @@ export class User {
       throw new Error("Google ID is required");
     }
   }
-
 }

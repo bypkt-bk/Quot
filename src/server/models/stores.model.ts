@@ -126,7 +126,18 @@ class StoreModel {
     });
   }
 
-  public async getStoreCustomers(storeId: string): Promise<{ customers: { name: string | null; id: string; address: string | null; taxId: string | null; phoneNumber: string; storeId: string; }[] } | null> {
+  public async getStoreCustomers(
+    storeId: string,
+  ): Promise<{
+    customers: {
+      name: string | null;
+      id: string;
+      address: string | null;
+      taxId: string | null;
+      phoneNumber: string;
+      storeId: string;
+    }[];
+  } | null> {
     return await StoreModel.prisma.store.findUnique({
       where: { id: storeId },
       select: {
@@ -144,7 +155,22 @@ class StoreModel {
     });
   }
 
-  public async getStoreQuotes(storeId: string): Promise<{ quote: { id: string; address: string | null; storeId: string; total: number; orderDate: string; shippingOn: string | null; type: PaymentType; creditTerm: number | null; status: Status; customerId: string | null; }[] } | null> {
+  public async getStoreQuotes(
+    storeId: string,
+  ): Promise<{
+    quote: {
+      id: string;
+      address: string | null;
+      storeId: string;
+      total: number;
+      orderDate: string;
+      shippingOn: string | null;
+      type: PaymentType;
+      creditTerm: number | null;
+      status: Status;
+      customerId: string | null;
+    }[];
+  } | null> {
     return await StoreModel.prisma.store.findUnique({
       where: { id: storeId },
       select: {

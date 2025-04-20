@@ -1,5 +1,4 @@
 export enum PaymentType {
-    cash = "cash",
-    credit = "creditterm",
+  cash = "cash",
+  credit = "creditterm",
 }
-    

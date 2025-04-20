@@ -45,4 +45,4 @@ export class CustomersService {
   async deleteCustomer(id: string) {
     return await this.customersModel.deleteCustomer(id);
   }
-};
+}

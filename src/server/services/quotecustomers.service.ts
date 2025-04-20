@@ -13,7 +13,6 @@ export class QuoteCustomerService {
     address: string,
     taxId: string,
   ) {
-
     const quoteCustomer = await this.quoteCustomerModel.createQuoteCustomer(
       quoteId,
       {
@@ -39,5 +38,4 @@ export class QuoteCustomerService {
     if (!id) throw new Error("ID is required for update");
     return await this.quoteCustomerModel.updateQuoteCustomer(id, data);
   }
-
-};
+}

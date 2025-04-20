@@ -4,7 +4,6 @@ export class Store {
   address: string | null;
   revenue: number;
 
-
   constructor(
     id: string,
     name: string,
@@ -27,14 +26,9 @@ export class Store {
       throw new Error("Revenue is required");
     }
   }
-  update(
-    name?: string,
-    address?: string | null,
-    revenue?: number,
-  ) {
+  update(name?: string, address?: string | null, revenue?: number) {
     if (name) this.name = name;
     if (address) this.address = address;
     if (revenue) this.revenue = revenue;
   }
 }
-  

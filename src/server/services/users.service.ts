@@ -1,7 +1,7 @@
 import { User } from "../domain/entities/user.entity";
 import type { IUserRepository } from "../domain/interfaces/repositories/user.repository";
 
-export class UsersService  {
+export class UsersService {
   private userRepository: IUserRepository;
   constructor(userRepository: IUserRepository) {
     this.userRepository = userRepository;
@@ -22,7 +22,7 @@ export class UsersService  {
     taxId?: string,
     phoneNumber?: string,
   ) {
-    const user  = await this.userRepository.getUserByGoogleId(googleId);
+    const user = await this.userRepository.getUserByGoogleId(googleId);
     if (!user) {
       throw new Error("User not found");
     }
@@ -35,15 +35,11 @@ export class UsersService  {
       taxId || user.taxId,
     );
     updatedUser.validate();
-    return await this.userRepository.updateUser(
-      googleId,
-      {
-        name: updatedUser.name,
-        email: updatedUser.email,
-        phoneNumber: updatedUser.phoneNumber,
-        taxId: updatedUser.taxId,
-      },
-    );
+    return await this.userRepository.updateUser(googleId, {
+      name: updatedUser.name,
+      email: updatedUser.email,
+      phoneNumber: updatedUser.phoneNumber,
+      taxId: updatedUser.taxId,
+    });
   }
-
-};
+}

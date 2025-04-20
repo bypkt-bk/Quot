@@ -29,4 +29,4 @@ export class ProductsService {
   async deleteProduct(id: string) {
     return await this.productsModel.deleteProduct(id);
   }
-};
+}

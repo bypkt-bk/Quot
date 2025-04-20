@@ -17,7 +17,7 @@ export class CustomerRepository implements ICustomerRepository {
     return customers.map((customer) => {
       return new Customer(
         customer.id,
-        customer.name ?? '',
+        customer.name ?? "",
         customer.phoneNumber,
         customer.address,
         customer.taxId,
@@ -27,7 +27,7 @@ export class CustomerRepository implements ICustomerRepository {
   }
   public async getCustomerByStoreIdAndPhone(
     storeId: string,
-    phoneNumber: string
+    phoneNumber: string,
   ): Promise<Customer | null> {
     const customer = await this.prisma.customer.findFirst({
       where: {
@@ -43,12 +43,12 @@ export class CustomerRepository implements ICustomerRepository {
     if (!customer) return null;
 
     return new Customer(
-        customer.id,
-        customer.name ?? '',
-        customer.phoneNumber,
-        customer.address,
-        customer.taxId,
-        customer.storeId,
+      customer.id,
+      customer.name ?? "",
+      customer.phoneNumber,
+      customer.address,
+      customer.taxId,
+      customer.storeId,
     );
   }
   public async createCustomer(
@@ -58,7 +58,7 @@ export class CustomerRepository implements ICustomerRepository {
       phoneNumber: string;
       address: string;
       taxId: string;
-    }
+    },
   ): Promise<Customer> {
     const customer = await this.prisma.customer.create({
       data: {
@@ -68,12 +68,12 @@ export class CustomerRepository implements ICustomerRepository {
     });
 
     return new Customer(
-        customer.id,
-        customer.name ?? '',
-        customer.phoneNumber,
-        customer.address,
-        customer.taxId,
-        customer.storeId,
+      customer.id,
+      customer.name ?? "",
+      customer.phoneNumber,
+      customer.address,
+      customer.taxId,
+      customer.storeId,
     );
   }
   public async updateCustomer(
@@ -83,7 +83,7 @@ export class CustomerRepository implements ICustomerRepository {
       address?: string | null;
       phoneNumber: string;
       taxId?: string | null;
-    }
+    },
   ): Promise<Customer> {
     const customer = await this.prisma.customer.update({
       where: { id },
@@ -91,12 +91,12 @@ export class CustomerRepository implements ICustomerRepository {
     });
 
     return new Customer(
-        customer.id,
-        customer.name ?? '',
-        customer.phoneNumber,
-        customer.address,
-        customer.taxId,
-        customer.storeId,
+      customer.id,
+      customer.name ?? "",
+      customer.phoneNumber,
+      customer.address,
+      customer.taxId,
+      customer.storeId,
     );
   }
   public async deleteCustomer(id: string): Promise<Customer> {
@@ -105,12 +105,12 @@ export class CustomerRepository implements ICustomerRepository {
     });
 
     return new Customer(
-        customer.id,
-        customer.name ?? '',
-        customer.phoneNumber,
-        customer.address,
-        customer.taxId,
-        customer.storeId,
+      customer.id,
+      customer.name ?? "",
+      customer.phoneNumber,
+      customer.address,
+      customer.taxId,
+      customer.storeId,
     );
   }
 }

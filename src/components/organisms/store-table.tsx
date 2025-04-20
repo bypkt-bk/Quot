@@ -320,7 +320,7 @@ const DataTable: React.FC<DataProps> = (prop) => {
         products: [],
         customerId,
         type: "CASH",
-        status: Status.unpaid
+        status: Status.unpaid,
       });
       await trpc.quoteCustomer.create.mutate({
         name: customerName ?? "",

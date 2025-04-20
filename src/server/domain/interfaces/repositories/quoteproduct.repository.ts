@@ -8,17 +8,19 @@ export interface IQuoteProductRepository {
       quantity: number;
       unitPrice: number;
       productName: string;
-      
     },
   ): Promise<QuoteProduct | null>;
   updateQuoteProduct(
     id: string,
     data: {
-        productId?: string;
-        quantity?: number;
-        unitPrice?: number;
-        productName?: string;
+      productId?: string;
+      quantity?: number;
+      unitPrice?: number;
+      productName?: string;
     },
   ): Promise<QuoteProduct | null>;
-  deleteQuoteProduct(        quoteId: string,        productId: string,): Promise<QuoteProduct | null>;
+  deleteQuoteProduct(
+    quoteId: string,
+    productId: string,
+  ): Promise<QuoteProduct | null>;
 }

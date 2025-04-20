@@ -6,7 +6,6 @@ export class QuoteProduct {
   unitPrice: number;
   productName: string;
 
-
   constructor(
     id: string,
     quoteId: string,

@@ -4,7 +4,7 @@ export interface ICustomerRepository {
   getCustomersByStoreId(storeId: string): Promise<Customer[]>;
   getCustomerByStoreIdAndPhone(
     storeId: string,
-    phoneNumber: string
+    phoneNumber: string,
   ): Promise<Customer | null>;
   createCustomer(
     storeId: string,
@@ -13,7 +13,7 @@ export interface ICustomerRepository {
       phoneNumber: string;
       address: string;
       taxId: string;
-    }
+    },
   ): Promise<Customer>;
   updateCustomer(
     id: string,
@@ -22,7 +22,7 @@ export interface ICustomerRepository {
       address?: string | null;
       phoneNumber: string;
       taxId?: string | null;
-    }
+    },
   ): Promise<Customer>;
-    deleteCustomer(id: string): Promise<Customer>;
+  deleteCustomer(id: string): Promise<Customer>;
 }

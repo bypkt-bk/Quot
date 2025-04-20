@@ -1,4 +1,4 @@
 export enum Status {
   unpaid = "unpaid",
-  paid = "paid"
+  paid = "paid",
 }

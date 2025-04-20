@@ -20,5 +20,5 @@ export interface IQuoteProductRepository {
         productName?: string;
     },
   ): Promise<QuoteProduct | null>;
-  deleteQuoteProduct(id: string): Promise<QuoteProduct | null>;
+  deleteQuoteProduct(        quoteId: string,        productId: string,): Promise<QuoteProduct | null>;
 }

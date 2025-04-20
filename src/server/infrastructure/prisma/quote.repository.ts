@@ -6,12 +6,70 @@ import type { Status } from "@/server/domain/enums/status.enum";
 import type { IQuoteRepository } from "@/server/domain/interfaces/repositories/quote.repository";
 import { PrismaClient } from "@prisma/client";
 import { QuoteProduct } from "@/server/domain/entities/quoteproduct.entity";
+import { Store } from "@/server/domain/entities/store.entity";
+import { QuoteCustomer } from "@/server/domain/entities/quotecustomer.entity";
 
 export class QuoteRepository implements IQuoteRepository {
   private readonly prisma: PrismaClient;
 
   constructor() {
     this.prisma = new PrismaClient();
+  }
+  public async getQuoteById(id: string): Promise<Quote | null> {
+    const quote = await this.prisma.quote.findUnique({
+      where: { id },
+      include: {
+        customers: true,
+        store: true,
+        products: {
+          include: {
+            product: true,
+          },
+        },
+      },
+    });
+    if (!quote) return null;
+    const productsList: QuoteProduct[] = quote.products.map((product) =>
+      new QuoteProduct(
+        product.id,
+        product.productId ?? '',
+        product.productName ?? '',
+        product.unitPrice ?? 0,
+        product.quantity ?? 0,
+        product.quoteId ?? ''
+      )
+    );
+    const store = quote.store;
+    const customer = quote.customers;
+    if (!store || !customer) return null;
+    const storeEntity = new Store(
+      store.id,
+      store.name,
+      store.address,
+      store.revenue,
+    );
+    const customerEntity = new QuoteCustomer(
+      customer.id,
+      customer.name ?? '',
+      customer.address ?? '',
+      customer.phoneNumber ?? ''
+    );
+    
+    return new Quote(
+      quote.id,
+      quote.customerId ?? '',
+      quote.storeId,
+      productsList,
+      quote.total ?? 0,
+      quote.orderDate ?? '',
+      quote.address ?? '',
+      quote.shippingOn ?? null,
+      quote.type as PaymentType ?? '',
+      quote.creditTerm ?? null,
+      quote.status as Status ?? '',
+      storeEntity,
+      customerEntity
+    );
   }
 
   public async createQuote(

@@ -51,7 +51,7 @@ import {
 
 export const columns: ColumnDef<Quote>[] = [
   {
-    accessorFn: (row) => row.customers?.name, // use accessorFn to access customer
+    accessorFn: (row) => row.customer?.name, // use accessorFn to access customer
     id: "customer",
     header: ({ column }) => {
       return (
@@ -64,7 +64,7 @@ export const columns: ColumnDef<Quote>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div>{row.original.customers?.name ?? ""}</div>,
+    cell: ({ row }) => <div>{row.original.customer?.name ?? ""}</div>,
   },
   {
     accessorKey: "status",
@@ -167,18 +167,18 @@ export const columns: ColumnDef<Quote>[] = [
         const newStatus =
           row.original.status === Status.unpaid ? Status.paid : Status.unpaid;
         try {
-          await trpc.quote.markPaid.mutate({
+          await trpc.quote.markAsPaid.mutate({
             id: quoteId,
             status: newStatus,
           });
           if (newStatus === Status.paid) {
             await trpc.store.incrementRevenue.mutate({
-              id: row.original.storeId,
+              storeId: row.original.storeId,
               revenue: row.original.total,
             });
           } else {
             await trpc.store.decreaseRevenue.mutate({
-              id: row.original.storeId,
+              storeId: row.original.storeId,
               revenue: row.original.total,
             });
           }
@@ -319,13 +319,15 @@ const DataTable: React.FC<DataProps> = (prop) => {
         shippingOn: undefined,
         products: [],
         customerId,
+        type: "CASH",
+        status: Status.unpaid
       });
-      await trpc.quotecustomer.create.mutate({
-        name: customerName,
-        address: customerAddress,
+      await trpc.quoteCustomer.create.mutate({
+        name: customerName ?? "",
+        address: customerAddress ?? "",
         phoneNumber,
         customerId,
-        taxId: customerTaxId,
+        taxId: customerTaxId ?? "",
         quoteId: result.id,
       });
       console.log("✅ New quote:", result);

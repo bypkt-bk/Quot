@@ -35,7 +35,7 @@ export class QuotesProductService {
     return await this.quoteProductModel.updateQuoteProduct(id, data);
   }
 
-  async deleteQuoteProductById(id: string) {
-    return await this.quoteProductModel.deleteQuoteProduct(id);
+  async deleteQuoteProductById(quoteId: string, productId: string) {
+    return await this.quoteProductModel.deleteQuoteProduct(quoteId, productId);
   }
 };

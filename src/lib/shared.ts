@@ -51,7 +51,7 @@ export type Quote = {
   creditTerm: String | null;
   status: Status;
   customerId: number | null;
-  customers: QuoteCustomer;
+  customer: QuoteCustomer;
   storeId: string;
   store: Store;
   products: QuoteProduct[];

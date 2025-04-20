@@ -72,11 +72,17 @@ export class QuoteProductRepository implements IQuoteProductRepository {
             quoteProduct.productName,
         );
     }
-    public async deleteQuoteProduct(id: string): Promise<QuoteProduct | null> {
-        const quoteProduct = await this.prisma.quoteProduct.delete({
-            where: { id },
+    public async deleteQuoteProduct(quoteId: string, productId: string): Promise<QuoteProduct | null> {
+        const quoteProduct = await this.prisma.quoteProduct.findFirst({
+            where: {
+                productId,
+                quoteId,
+            },
         });
         if (!quoteProduct) return null;
+        await this.prisma.quoteProduct.delete({
+            where: { id: quoteProduct.id },
+        });
         return new QuoteProduct(
             quoteProduct.id,
             quoteProduct.quoteId,

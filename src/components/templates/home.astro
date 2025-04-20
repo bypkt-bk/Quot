@@ -9,12 +9,8 @@ const { userId } = Astro.props as { userId: string };
 
 let stores: Store[] = [];
 let user!: User;
-try {
-  user = await trpc.user.getByUserId.query(userId);
-  stores = await trpc.store.getStoreByOwnerId.query(userId);
-} catch (err) {
-  console.error("Failed to fetch stores:", err);
-}
+  user = await trpc.user.getById.query(userId);
+  stores = await trpc.store.getByOwnerId.query(userId);
 ---
 
 <Header client:load />

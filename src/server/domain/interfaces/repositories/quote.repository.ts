@@ -26,4 +26,5 @@ export interface IQuoteRepository {
     creditTerm?: number | null,
   ): Promise<Quote>;
   updateQuoteStatus(id: string, status: string): Promise<Quote>;
+  getQuoteById(id: string): Promise<Quote | null>;
 }

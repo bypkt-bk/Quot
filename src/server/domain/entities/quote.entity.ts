@@ -1,6 +1,8 @@
 import type { PaymentType } from "../enums/payment-type.enum";
 import type { Status } from "../enums/status.enum";
+import type { QuoteCustomer } from "./quotecustomer.entity";
 import { QuoteProduct } from "./quoteproduct.entity";
+import type { Store } from "./store.entity";
 
 export class Quote {
     id: string;
@@ -14,6 +16,8 @@ export class Quote {
     type: PaymentType;
     creditTerm: number | null;
     status: Status;
+    store: Store | undefined;
+    customer: QuoteCustomer | undefined;
     constructor(
         id: string,
         customerId: string,
@@ -26,6 +30,8 @@ export class Quote {
         type: PaymentType,
         creditTerm: number | null,
         status: Status,
+        store?: Store,
+        customer?: QuoteCustomer,
     ) { 
         this.id = id;
         this.customerId = customerId;
@@ -38,6 +44,8 @@ export class Quote {
         this.type = type;
         this.creditTerm = creditTerm;
         this.status = status;
+        this.store = store;
+        this.customer = customer;
     }
     update(
         orderDate: string,

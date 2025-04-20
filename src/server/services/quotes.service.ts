@@ -8,6 +8,9 @@ export class QuotesService{
   constructor(quoteModel: IQuoteRepository) {
     this.quoteModel = quoteModel;
   }
+  async getQuoteById(id: string, p0: { include: { store: boolean; }; }) {
+    return await this.quoteModel.getQuoteById(id);
+  }
   async createQuote(
     storeId: string,
     customerId: string,

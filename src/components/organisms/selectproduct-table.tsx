@@ -143,14 +143,15 @@ const ProductData: React.FC<DataTableProps> = ({ products, quote }) => {
     isSelected: boolean;
   }) => {
     if (!isSelected) {
-      await trpc.quoteproduct.create.mutate({
+      await trpc.quoteProduct.create.mutate({
         quoteId: quote.id,
         productId: product.id,
         unitPrice: product.price,
         productName: product.name,
+        quantity: 1
       });
     } else {
-      await trpc.quoteproduct.deleteQuoteProduct.mutate({
+      await trpc.quoteProduct.deleteQuoteProduct.mutate({
         quoteId: quote.id,
         productId: product.id,
       });

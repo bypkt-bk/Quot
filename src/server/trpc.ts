@@ -40,12 +40,12 @@ const quoteService = new QuotesService(quoteRepository);
 export const appRouter = t.router({
   user: t.router({
     getByGoogleId: t.procedure
-      .input(z.object({ id: z.string() }))
-      .query(({ input }) => usersService.getUserByGoogleId(input.id)),
+      .input(z.string())
+      .query(({ input }) => usersService.getUserByGoogleId(input)),
       
     getById: t.procedure
-      .input(z.object({ id: z.string() }))
-      .query(({ input }) => usersService.getUserById(input.id)),
+      .input(z.string())
+      .query(({ input }) => usersService.getUserById(input)),
 
     create: t.procedure
       .input(z.object({
@@ -74,12 +74,12 @@ export const appRouter = t.router({
 
   store: t.router({
     getById: t.procedure
-      .input(z.object({ id: z.string() }))
-      .query(({ input }) => storesService.getStoreById(input.id)),
+    .input(z.string())
+      .query(({ input }) => storesService.getStoreById(input)),
 
     getByOwnerId: t.procedure
-      .input(z.object({ userId: z.string() }))
-      .query(({ input }) => storesService.getStoreByOwnerId(input.userId)),
+    .input(z.string())
+      .query(({ input }) => storesService.getStoreByOwnerId(input)),
 
     create: t.procedure
       .input(z.object({
@@ -132,8 +132,8 @@ export const appRouter = t.router({
 
   product: t.router({
     getByStore: t.procedure
-      .input(z.object({ storeId: z.string() }))
-      .query(({ input }) => productsService.getStoreProducts(input.storeId)),
+    .input(z.string())
+      .query(({ input }) => productsService.getStoreProducts(input)),
 
     create: t.procedure
       .input(z.object({
@@ -154,16 +154,16 @@ export const appRouter = t.router({
       .mutation(({ input }) => productsService.updateProduct(input.id, input.data)),
 
     delete: t.procedure
-      .input(z.object({ id: z.string() }))
-      .mutation(({ input }) => productsService.deleteProduct(input.id))
+    .input(z.string())
+      .mutation(({ input }) => productsService.deleteProduct(input))
   }),
 
   customer: t.router({
     getByStore: t.procedure
-      .input(z.object({ storeId: z.string() }))
-      .query(({ input }) => customersService.getStoreCustomers(input.storeId)),
+    .input(z.string())
+      .query(({ input }) => customersService.getStoreCustomers(input)),
 
-    getByPhone: t.procedure
+    getByStoreIdAndPhone: t.procedure
       .input(z.object({
         storeId: z.string(),
         phoneNumber: z.string()
@@ -199,11 +199,18 @@ export const appRouter = t.router({
       .mutation(({ input }) => customersService.updateCustomer(input.id, input.data)),
 
     delete: t.procedure
-      .input(z.object({ id: z.string() }))
-      .mutation(({ input }) => customersService.deleteCustomer(input.id))
+    .input(z.string())
+      .mutation(({ input }) => customersService.deleteCustomer(input))
   }),
 
   quote: t.router({
+    getById: t.procedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input }) => {
+      return await quoteService.getQuoteById(input.id, {
+        include: { store: true }
+      });
+    }),
     create: t.procedure
       .input(z.object({
         storeId: z.string(),
@@ -240,7 +247,7 @@ export const appRouter = t.router({
       }))
       .mutation(({ input }) => quoteService.markAsPaid(input.id, input.status)),
 
-    updateDates: t.procedure
+    updateOrderOnAndShippingOn: t.procedure
       .input(z.object({
         id: z.string(),
         orderDate: z.string(),
@@ -260,18 +267,18 @@ export const appRouter = t.router({
       .mutation(({ input }) => quoteService.updateTotal(input.id, input.total)),
 
     delete: t.procedure
-      .input(z.object({ id: z.string() }))
-      .mutation(({ input }) => quoteService.deleteQuote(input.id)),
+    .input(z.string())
+      .mutation(({ input }) => quoteService.deleteQuote(input)),
 
     updatePaymentType: t.procedure
       .input(z.object({
         id: z.string(),
-        type: z.enum(['CASH', 'CREDIT']),
+        type: z.enum(['cash', 'creditterm']),
         creditTerm: z.number().nullable().optional()
       }))
       .mutation(({ input }) => quoteService.updatePaymentType(
         input.id,
-        input.type === 'CASH' ? PaymentType.cash : PaymentType.credit,
+        input.type === 'cash' ? PaymentType.cash : PaymentType.credit,
         input.creditTerm
       ))
   }),
@@ -305,9 +312,12 @@ export const appRouter = t.router({
       }))
       .mutation(({ input }) => quoteproductService.updateQuoteProduct(input.id, input.data)),
 
-    delete: t.procedure
-      .input(z.object({ id: z.string() }))
-      .mutation(({ input }) => quoteproductService.deleteQuoteProductById(input.id))
+    deleteQuoteProduct: t.procedure
+      .input(z.object({
+        quoteId: z.string(),
+        productId: z.string()
+      }))
+      .mutation(({ input }) => quoteproductService.deleteQuoteProductById(input.quoteId, input.productId))
   }),
 
   quoteCustomer: t.router({

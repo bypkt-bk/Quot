@@ -3,13 +3,15 @@ import {
   Status,
   PaymentType,
   type QuoteProduct,
+  type Quote,
+  Prisma,
 } from "@prisma/client";
 
-const prisma = new PrismaClient();
+class QuoteModel {
+  private static prisma = new PrismaClient();
 
-export const quoteModel = {
-  async getQuotes() {
-    return await prisma.quote.findMany({
+  public async getQuotes(): Promise<Quote[]> {
+    return await QuoteModel.prisma.quote.findMany({
       include: {
         customers: true,
         store: true,
@@ -20,10 +22,10 @@ export const quoteModel = {
         },
       },
     });
-  },
+  }
 
-  async getQuoteById(id: string) {
-    return await prisma.quote.findUnique({
+  public async getQuoteById(id: string): Promise<Quote | null> {
+    return await QuoteModel.prisma.quote.findUnique({
       where: { id },
       include: {
         customers: true,
@@ -35,9 +37,9 @@ export const quoteModel = {
         },
       },
     });
-  },
+  }
 
-  async createQuote(
+  public async createQuote(
     storeId: string,
     customerId: string,
     products: {
@@ -51,8 +53,8 @@ export const quoteModel = {
     address?: string,
     shippingOn?: string | null,
     creditTerm?: number,
-  ) {
-    return await prisma.quote.create({
+  ): Promise<Quote> {
+    return await QuoteModel.prisma.quote.create({
       data: {
         storeId,
         orderDate,
@@ -61,62 +63,93 @@ export const quoteModel = {
         status,
         shippingOn,
         creditTerm,
-        total: products.reduce((sum, p) => sum + p.quantity * 100, 0),
+        total: this.calculateTotal(products),
         ...(customerId && { customerId }),
         products: {
-          create: products.map((p) => ({
-            productId: p.productId,
-            quantity: p.quantity,
-            unitPrice: p.unitPrice,
-          })),
+          create: this.mapProducts(products),
         },
       },
       include: {
         products: true,
       },
     });
-  },
-  async updateAddress(id: string, address: string) {
-    return await prisma.quote.update({
+  }
+
+  public async updateAddress(id: string, address: string): Promise<Quote> {
+    return await QuoteModel.prisma.quote.update({
       where: { id },
       data: { address },
     });
-  },
-  async updateQuoteStatus(id: string, status: Status) {
-    return await prisma.quote.update({
+  }
+
+  public async updateQuoteStatus(id: string, status: Status): Promise<Quote> {
+    return await QuoteModel.prisma.quote.update({
       where: { id },
       data: { status },
     });
-  },
-  async updateOrderOnAndShippingOn(
+  }
+
+  public async updateOrderOnAndShippingOn(
     id: string,
     orderDate: string,
     shippingOn?: string | null,
-  ) {
-    return await prisma.quote.update({
+  ): Promise<Quote> {
+    return await QuoteModel.prisma.quote.update({
       where: { id },
       data: { orderDate, shippingOn },
     });
-  },
-  async updateTotal(id: string, total: number) {
-    return await prisma.quote.update({
+  }
+
+  public async updateTotal(id: string, total: number): Promise<Quote> {
+    return await QuoteModel.prisma.quote.update({
       where: { id },
       data: { total },
     });
-  },
-  async deleteQuote(id: string) {
-    return await prisma.quote.delete({
+  }
+
+  public async deleteQuote(id: string): Promise<Quote> {
+    return await QuoteModel.prisma.quote.delete({
       where: { id },
     });
-  },
-  async updatePaymentType(
+  }
+
+  public async updatePaymentType(
     id: string,
     type: PaymentType,
     creditTerm?: number | null,
-  ) {
-    return await prisma.quote.update({
+  ): Promise<Quote> {
+    return await QuoteModel.prisma.quote.update({
       where: { id },
       data: { type, creditTerm },
     });
-  },
-};
+  }
+
+  private calculateTotal(
+    products: {
+      quantity: number;
+      unitPrice: number;
+    }[],
+  ): number {
+    return products.reduce((sum, p) => sum + p.quantity * p.unitPrice, 0);
+  }
+
+  private mapProducts(
+    products: {
+      productId: string;
+      quantity: number;
+      unitPrice: number;
+    }[],
+  ): Prisma.QuoteProductCreateWithoutQuoteInput[] {
+    return products.map((p) => ({
+      productId: p.productId,
+      quantity: p.quantity,
+      productName: p.productId,
+      unitPrice: p.unitPrice,
+      product: {
+        connect: { id: p.productId },
+      },
+    }));
+  }
+}
+
+export const quoteModel = new QuoteModel();

@@ -1,34 +1,34 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient, type QuoteProduct } from "@prisma/client";
 
-const prisma = new PrismaClient();
+class QuoteProductModel {
+  private static prisma = new PrismaClient();
 
-export const quoteproduct = {
-  async getAllQuoteProducts() {
-    return await prisma.quoteProduct.findMany({
+  public async getAllQuoteProducts(): Promise<QuoteProduct[]> {
+    return await QuoteProductModel.prisma.quoteProduct.findMany({
       include: {
         quote: true,
         product: true,
       },
     });
-  },
+  }
 
-  async getQuoteProductById(id: string) {
-    return await prisma.quoteProduct.findUnique({
+  public async getQuoteProductById(id: string): Promise<QuoteProduct | null> {
+    return await QuoteProductModel.prisma.quoteProduct.findUnique({
       where: { id },
       include: {
         quote: true,
         product: true,
       },
     });
-  },
+  }
 
-  async createQuoteProduct(
+  public async createQuoteProduct(
     quoteId: string,
     productId: string,
     unitPrice: number,
     productName: string,
-  ) {
-    return await prisma.quoteProduct.create({
+  ): Promise<QuoteProduct> {
+    return await QuoteProductModel.prisma.quoteProduct.create({
       data: {
         quoteId,
         productId,
@@ -37,9 +37,9 @@ export const quoteproduct = {
         productName,
       },
     });
-  },
+  }
 
-  async updateQuoteProduct(
+  public async updateQuoteProduct(
     id: string,
     data: {
       quantity?: number;
@@ -47,28 +47,34 @@ export const quoteproduct = {
       unitPrice?: number;
       productName?: string;
     },
-  ) {
-    return await prisma.quoteProduct.update({
+  ): Promise<QuoteProduct> {
+    return await QuoteProductModel.prisma.quoteProduct.update({
       where: { id },
       data,
     });
-  },
+  }
 
-  async deleteQuoteProductById(id: string) {
-    return await prisma.quoteProduct.delete({
+  public async deleteQuoteProductById(id: string): Promise<QuoteProduct> {
+    return await QuoteProductModel.prisma.quoteProduct.delete({
       where: { id },
       include: {
         quote: true,
         product: true,
       },
     });
-  },
-  async deleteQuoteProduct(productId: string, quoteId: string) {
-    return await prisma.quoteProduct.deleteMany({
+  }
+
+  public async deleteQuoteProduct(
+    productId: string,
+    quoteId: string,
+  ): Promise<Prisma.BatchPayload> {
+    return await QuoteProductModel.prisma.quoteProduct.deleteMany({
       where: {
         productId,
         quoteId,
       },
     });
-  },
-};
+  }
+}
+
+export const quoteProductModel = new QuoteProductModel();

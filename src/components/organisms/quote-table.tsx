@@ -171,12 +171,10 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [product, setProduct] = useState<QuoteProduct[]>(quote.products ?? []);
-  const [name, setName] = useState<string>(quote.customers?.name ?? "");
-  const [address, setAddress] = useState<string>(quote.customers.address ?? "");
-  const [phone, setPhone] = useState<string>(
-    quote.customers?.phoneNumber ?? "",
-  );
-  const [taxId, setTaxId] = useState<string>(quote.customers?.taxId ?? "");
+  const [name, setName] = useState<string>(quote.customer?.name ?? "");
+  const [address, setAddress] = useState<string>(quote.customer.address ?? "");
+  const [phone, setPhone] = useState<string>(quote.customer?.phoneNumber ?? "");
+  const [taxId, setTaxId] = useState<string>(quote.customer?.taxId ?? "");
   const [totalQuote, setTotalQuote] = useState<number>(quote.total ?? 0);
 
   useEffect(() => {
@@ -206,7 +204,7 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
             ),
           );
           try {
-            await trpc.quoteproduct.update.mutate({
+            await trpc.quoteProduct.update.mutate({
               id: row.original.id,
               data: {
                 quantity,
@@ -309,8 +307,8 @@ const QuoteData: React.FC<DataTableProps> = ({ quote, storeName }) => {
   useEffect(() => {
     const handler = setTimeout(() => {
       try {
-        trpc.quotecustomer.update.mutate({
-          id: quote.customers.id,
+        trpc.quoteCustomer.update.mutate({
+          id: quote.customer.id,
           data: {
             name,
             phoneNumber: phone,

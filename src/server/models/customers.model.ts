@@ -1,24 +1,28 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, type Customer } from "@prisma/client";
 
-const prisma = new PrismaClient();
+class CustomersModel {
+  private static prisma = new PrismaClient();
 
-export const customersModel = {
-  async getCustomersByStoreId(storeId: string) {
-    return await prisma.customer.findMany({
+  public async getCustomersByStoreId(storeId: string): Promise<Customer[]> {
+    return await CustomersModel.prisma.customer.findMany({
       where: { storeId },
     });
-  },
+  }
 
-  async getCustomerById(id: string) {
-    return await prisma.customer.findUnique({
+  public async getCustomerById(id: string): Promise<Customer | null> {
+    return await CustomersModel.prisma.customer.findUnique({
       where: { id },
       include: {
         quotes: true,
       },
     });
-  },
-  async getCustomerByStoreIdAndPhone(storeId: string, phoneNumber: string) {
-    return await prisma.customer.findFirst({
+  }
+
+  public async getCustomerByStoreIdAndPhone(
+    storeId: string,
+    phoneNumber: string,
+  ): Promise<Customer | null> {
+    return await CustomersModel.prisma.customer.findFirst({
       where: {
         storeId,
         phoneNumber,
@@ -28,9 +32,9 @@ export const customersModel = {
         store: true,
       },
     });
-  },
+  }
 
-  async createCustomer(
+  public async createCustomer(
     storeId: string,
     data: {
       name: string;
@@ -38,16 +42,16 @@ export const customersModel = {
       address: string;
       taxId: string;
     },
-  ) {
-    return await prisma.customer.create({
+  ): Promise<Customer> {
+    return await CustomersModel.prisma.customer.create({
       data: {
         ...data,
         storeId,
       },
     });
-  },
+  }
 
-  async updateCustomer(
+  public async updateCustomer(
     id: string,
     data: {
       name?: string | null;
@@ -55,16 +59,18 @@ export const customersModel = {
       phoneNumber: string;
       taxId?: string | null;
     },
-  ) {
-    return await prisma.customer.update({
+  ): Promise<Customer> {
+    return await CustomersModel.prisma.customer.update({
       where: { id },
       data,
     });
-  },
+  }
 
-  async deleteCustomer(id: string) {
-    return await prisma.customer.delete({
+  public async deleteCustomer(id: string): Promise<Customer> {
+    return await CustomersModel.prisma.customer.delete({
       where: { id },
     });
-  },
-};
+  }
+}
+
+export const customersModel = new CustomersModel();

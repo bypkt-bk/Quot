@@ -1,67 +1,85 @@
-import { quoteModel } from "../models/quotes.model";
-import { Status, type QuoteProduct, PaymentType } from "@prisma/client";
+import { QuoteProduct } from "../domain/entities/quoteproduct.entity";
+import type { PaymentType } from "../domain/enums/payment-type.enum";
+import type { Status } from "../domain/enums/status.enum";
+import type { IQuoteRepository } from "../domain/interfaces/repositories/quote.repository";
 
-export const quotesService = {
-  async getAllQuotes() {
-    return await quoteModel.getQuotes();
-  },
-
-  async getQuote(id: string) {
-    return await quoteModel.getQuoteById(id);
-  },
-
+export class QuotesService {
+  private quoteModel: IQuoteRepository;
+  constructor(quoteModel: IQuoteRepository) {
+    this.quoteModel = quoteModel;
+  }
+  async getQuotesByStoreId(storeId: string) {
+    return await this.quoteModel.getQuotesByStoreId(storeId);
+  }
+  async getQuoteById(id: string, p0: { include: { store: boolean } }) {
+    return await this.quoteModel.getQuoteById(id);
+  }
   async createQuote(
     storeId: string,
     customerId: string,
     products: {
       productId: string;
-      quantity: number;
+      productName: string;
       unitPrice: number;
+      quantity: number;
     }[],
     orderDate: string,
+    type: PaymentType,
+    status: Status,
     address?: string,
     shippingOn?: string | null,
+    creditTerm?: number,
   ) {
-    return await quoteModel.createQuote(
+    // Convert plain product objects to QuoteProduct instances
+    const quoteProducts = products.map(
+      (product) =>
+        new QuoteProduct(
+          "", // id will be assigned by the database
+          product.productId,
+          product.productName,
+          product.unitPrice,
+          product.quantity,
+          "", // quoteId will be assigned after quote creation
+        ),
+    );
+    return await this.quoteModel.createQuote(
       storeId,
       customerId,
-      products,
+      quoteProducts,
       orderDate,
-      PaymentType.cash,
-      Status.unpaid,
       address,
       shippingOn,
+      type,
+      creditTerm,
+      status,
     );
-  },
-  async updateAddress(id: string, address: string) {
-    return await quoteModel.updateAddress(id, address);
-  },
+  }
 
   async markAsPaid(id: string, status: Status) {
-    return await quoteModel.updateQuoteStatus(id, status);
-  },
+    return await this.quoteModel.updateQuoteStatus(id, status);
+  }
   async updateOrderOnAndShippingOn(
     id: string,
     orderDate: string,
     shippingOn?: string | null,
   ) {
-    return await quoteModel.updateOrderOnAndShippingOn(
+    return await this.quoteModel.updateOrderOnAndShippingOn(
       id,
       orderDate,
       shippingOn,
     );
-  },
+  }
   async updateTotal(id: string, total: number) {
-    return await quoteModel.updateTotal(id, total);
-  },
+    return await this.quoteModel.updateTotal(id, total);
+  }
   async deleteQuote(id: string) {
-    return await quoteModel.deleteQuote(id);
-  },
+    return await this.quoteModel.deleteQuote(id);
+  }
   async updatePaymentType(
     id: string,
     type: PaymentType,
     creditTerm?: number | null,
   ) {
-    return await quoteModel.updatePaymentType(id, type, creditTerm);
-  },
-};
+    return await this.quoteModel.updatePaymentType(id, type, creditTerm);
+  }
+}

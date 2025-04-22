@@ -112,7 +112,7 @@ onMounted(async () => {
   const auth = typeof raw === "string" ? JSON.parse(raw) : raw;
 
   try {
-    const fetchedUser = await trpc.user.getByUserId.query(auth.userId);
+    const fetchedUser = await trpc.user.getById.query(auth.userId);
     user.value = fetchedUser;
     userName.value = fetchedUser.name;
     isLoggedIn.value = true;

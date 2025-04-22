@@ -6,7 +6,7 @@ import { httpBatchLink } from "@trpc/client";
 export const trpc = createTRPCClient<AppRouter>({
   links: [
     httpBatchLink({
-      url: "https://quot-vert.vercel.app",
+      url: "http://localhost:4321/api/trpc",
     }),
   ],
 });

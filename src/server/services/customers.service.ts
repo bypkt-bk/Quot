@@ -1,19 +1,19 @@
-import { customersModel } from "../models/customers.model";
+import type { ICustomerRepository } from "../domain/interfaces/repositories/customer.repository";
 
-export const customersService = {
+export class CustomersService {
+  private customersModel: ICustomerRepository;
+  constructor(customersModel: ICustomerRepository) {
+    this.customersModel = customersModel;
+  }
   async getStoreCustomers(storeId: string) {
-    return await customersModel.getCustomersByStoreId(storeId);
-  },
-
-  async getCustomer(id: string) {
-    return await customersModel.getCustomerById(id);
-  },
+    return await this.customersModel.getCustomersByStoreId(storeId);
+  }
   async getCustomerByStoreIdAndPhone(storeId: string, phoneNumber: string) {
-    return await customersModel.getCustomerByStoreIdAndPhone(
+    return await this.customersModel.getCustomerByStoreIdAndPhone(
       storeId,
       phoneNumber,
     );
-  },
+  }
 
   async createCustomer(
     storeId: string,
@@ -22,13 +22,13 @@ export const customersService = {
     address: string,
     taxId: string,
   ) {
-    return await customersModel.createCustomer(storeId, {
+    return await this.customersModel.createCustomer(storeId, {
       name,
       phoneNumber,
       address,
       taxId,
     });
-  },
+  }
 
   async updateCustomer(
     id: string,
@@ -39,10 +39,10 @@ export const customersService = {
       taxId?: string | null;
     },
   ) {
-    return await customersModel.updateCustomer(id, data);
-  },
+    return await this.customersModel.updateCustomer(id, data);
+  }
 
   async deleteCustomer(id: string) {
-    return await customersModel.deleteCustomer(id);
-  },
-};
+    return await this.customersModel.deleteCustomer(id);
+  }
+}

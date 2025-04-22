@@ -60,16 +60,16 @@ const PrintComponent: React.FC<DataTableProps> = (data) => {
         <section className="grid grid-cols-2 gap-4 px-4 pt-4 pb-3 border-b-1 border-black">
           <div>
             <p className="text-black text-[10px]">
-              Customer: {quote.customers.name}
+              Customer: {quote.customer.name}
             </p>
             <p className="text-black text-[10px]">
-              Address: {quote.customers.address}
+              Address: {quote.customer.address}
             </p>
             <p className="text-black text-[10px]">
-              Phone: {quote.customers.phoneNumber}
+              Phone: {quote.customer.phoneNumber}
             </p>
             <p className="text-black text-[10px]">
-              Tax ID: {quote.customers.taxId}
+              Tax ID: {quote.customer.taxId}
             </p>
           </div>
           <div>

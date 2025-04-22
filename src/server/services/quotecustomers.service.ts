@@ -1,35 +1,30 @@
-import { quoteCustomerModel } from "../models/quotecustomers.model";
+import type { IQuoteCustomerRepository } from "../domain/interfaces/repositories/quotecustomer.repository";
 
-export const quoteCustomerService = {
-  async getAll() {
-    return await quoteCustomerModel.getAll();
-  },
-
-  async getById(id: string) {
-    if (!id) throw new Error("ID is required");
-    return await quoteCustomerModel.getById(id);
-  },
-
-  async getByQuoteId(quoteId: string) {
-    if (!quoteId) throw new Error("quoteId is required");
-    return await quoteCustomerModel.getByQuoteId(quoteId);
-  },
-
-  async createQuoteCustomer(input: {
-    quoteId: string;
-    name?: string | null;
-    taxId?: string | null;
-    phoneNumber: string;
-    address?: string | null;
-    customerId: string;
-  }) {
-    const { quoteId, name, phoneNumber, address, customerId } = input;
-    if (!quoteId || !phoneNumber || !customerId) {
-      throw new Error("Missing required fields");
-    }
-
-    return await quoteCustomerModel.create(input);
-  },
+export class QuoteCustomerService {
+  private quoteCustomerModel: IQuoteCustomerRepository;
+  constructor(quoteCustomerModel: IQuoteCustomerRepository) {
+    this.quoteCustomerModel = quoteCustomerModel;
+  }
+  async createQuoteCustomer(
+    quoteId: string,
+    customerId: string,
+    name: string,
+    phoneNumber: string,
+    address: string,
+    taxId: string,
+  ) {
+    const quoteCustomer = await this.quoteCustomerModel.createQuoteCustomer(
+      quoteId,
+      {
+        customerId,
+        name,
+        phoneNumber,
+        address,
+        taxId,
+      },
+    );
+    return quoteCustomer;
+  }
 
   async updateQuoteCustomer(
     id: string,
@@ -41,11 +36,6 @@ export const quoteCustomerService = {
     },
   ) {
     if (!id) throw new Error("ID is required for update");
-    return await quoteCustomerModel.update(id, data);
-  },
-
-  async deleteQuoteCustomer(id: string) {
-    if (!id) throw new Error("ID is required for deletion");
-    return await quoteCustomerModel.delete(id);
-  },
-};
+    return await this.quoteCustomerModel.updateQuoteCustomer(id, data);
+  }
+}

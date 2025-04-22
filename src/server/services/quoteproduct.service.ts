@@ -1,27 +1,24 @@
-import { quoteproduct } from "../models/quoteproduct.model";
+import type { IQuoteProductRepository } from "../domain/interfaces/repositories/quoteproduct.repository";
 
-export const quotesService = {
-  async getAllQuoteProducts() {
-    return await quoteproduct.getAllQuoteProducts();
-  },
-
-  async getQuoteProductById(id: string) {
-    return await quoteproduct.getQuoteProductById(id);
-  },
-
+export class QuotesProductService {
+  private quoteProductModel: IQuoteProductRepository;
+  constructor(quoteProductModel: IQuoteProductRepository) {
+    this.quoteProductModel = quoteProductModel;
+  }
   async createQuoteProduct(
     quoteId: string,
     productId: string,
+    quantity: number,
     unitPrice: number,
     productName: string,
   ) {
-    return await quoteproduct.createQuoteProduct(
-      quoteId,
+    return await this.quoteProductModel.createQuoteProduct(quoteId, {
       productId,
+      quantity,
       unitPrice,
       productName,
-    );
-  },
+    });
+  }
 
   async updateQuoteProduct(
     id: string,
@@ -32,13 +29,10 @@ export const quotesService = {
       productName?: string;
     },
   ) {
-    return await quoteproduct.updateQuoteProduct(id, data);
-  },
+    return await this.quoteProductModel.updateQuoteProduct(id, data);
+  }
 
-  async deleteQuoteProductById(id: string) {
-    return await quoteproduct.deleteQuoteProductById(id);
-  },
-  async deleteQuoteProduct(productId: string, quoteId: string) {
-    return await quoteproduct.deleteQuoteProduct(productId, quoteId);
-  },
-};
+  async deleteQuoteProductById(quoteId: string, productId: string) {
+    return await this.quoteProductModel.deleteQuoteProduct(quoteId, productId);
+  }
+}

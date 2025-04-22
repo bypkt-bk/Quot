@@ -2,6 +2,7 @@
   <!-- Trigger Button -->
   <div class="card" @click="togglePopover">
     <PlusIcon class="plus" />
+    <h2>Add store</h2>
   </div>
 
   <!-- Popover + Backdrop -->
@@ -91,7 +92,7 @@ const handleSave = async () => {
   border-radius: 20px;
   border: 1px solid #707070;
   background: #434343;
-  height: 253px;
+  height: 207px;
   cursor: pointer;
   transition: background 0.2s ease;
 }

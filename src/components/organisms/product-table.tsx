@@ -310,7 +310,7 @@ const ProductData: React.FC<DataTableProps> = ({ products, storeId }) => {
         <Popover open={newProductOpen} onOpenChange={setNewProductOpen}>
           <PopoverTrigger asChild>
             <Button variant="outline" className="text-black">
-              Quote
+              Product
               <PlusIcon />
             </Button>
           </PopoverTrigger>

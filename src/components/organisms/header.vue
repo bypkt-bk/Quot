@@ -13,8 +13,8 @@
       </ul>
 
       <div class="desktop-theme-login">
-        <Moon v-if="isDarkMode" @click="toggleTheme" />
-        <Sun v-else @click="toggleTheme" />
+        <!-- <Moon v-if="isDarkMode" @click="toggleTheme" />
+        <Sun v-else @click="toggleTheme" /> -->
         <template v-if="isLoggedIn">
           <div class="badge-wrapper" @click.stop="togglePopover">
             <span class="badge">{{ getInitials(userName) }}</span>

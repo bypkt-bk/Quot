@@ -21,12 +21,6 @@
       }}</span>
     </div>
     <div class="group">
-      <Users class="icon" />
-      <span class="badge" v-for="admin in store.admin" :key="admin.id">
-        {{ getInitials(admin.name) }}
-      </span>
-    </div>
-    <div class="group">
       <Landmark class="icon" />
       <span class="amount">{{ formatRevenue(store.revenue) }}</span>
     </div>
